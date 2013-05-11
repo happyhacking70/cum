@@ -48,7 +48,7 @@ public class PresterChnlTestClsChnl extends PrestrChnlTestAbst {
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void TEST_clsChnl_DISCNED() throws CumExcpIllegalChnlStatus,
-			CumExcpChnlNotExist, CumExcpIllegalSeshStatus {
+			CumExcpChnlNotExist, CumExcpIllegalSeshStatus, TestExcp {
 		PrestrChnl chnl = gotoDscned();
 		chnl.clsChnl();
 	}

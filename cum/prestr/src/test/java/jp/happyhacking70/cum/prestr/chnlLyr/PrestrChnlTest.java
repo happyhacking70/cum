@@ -813,14 +813,14 @@ public class PrestrChnlTest extends PrestrChnlTestAbst {
 	}
 
 	@Test
-	public void testDiscned() {
+	public void testDiscned() throws CumExcpIllegalChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 		assertTrue(chnlView.isDiscned());
 	}
 
 	@Test
-	public void testDiscned_REGED() {
+	public void testDiscned_REGED() throws CumExcpIllegalChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -833,7 +833,7 @@ public class PrestrChnlTest extends PrestrChnlTestAbst {
 	}
 
 	@Test
-	public void testDiscned_CLOSING() {
+	public void testDiscned_CLOSING() throws CumExcpIllegalChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -848,7 +848,7 @@ public class PrestrChnlTest extends PrestrChnlTestAbst {
 	}
 
 	@Test
-	public void testDiscned_CLOSED() {
+	public void testDiscned_CLOSED() throws CumExcpIllegalChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();

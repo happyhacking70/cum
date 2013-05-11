@@ -71,7 +71,7 @@ public class PresterChnlTestAudJoinedChnl extends PrestrChnlTestAbst {
 
 	@Test
 	public void TEST_audJoinedChnl_DISCNED() throws CumExcpIllegalChnlStatus,
-			CumExcpAudExists {
+			CumExcpAudExists, TestExcp {
 		PrestrChnl chnl = gotoDscned();
 
 		chnl.audJoinedChnl(audNameB);

@@ -158,6 +158,9 @@ public class PrestrSeshTestAbst {
 		} catch (CumExcpIllegalSeshStatus e) {
 			e.printStackTrace();
 			throw new TestExcp("discned");
+		} catch (CumExcpIllegalChnlStatuMulti e) {
+			e.printStackTrace();
+			throw new TestExcp("discned");
 		}
 
 		return sesh;

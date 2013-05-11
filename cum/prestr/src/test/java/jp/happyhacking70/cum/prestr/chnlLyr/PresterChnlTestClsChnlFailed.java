@@ -49,7 +49,8 @@ public class PresterChnlTestClsChnlFailed extends PrestrChnlTestAbst {
 	}
 
 	@Test
-	public void TEST_clsChnlFailed_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void TEST_clsChnlFailed_DISCNED() throws CumExcpIllegalChnlStatus,
+			TestExcp {
 		PrestrChnl chnl = gotoDscned();
 		chnl.clsChnlFailed(rslt);
 		assertNull(chnlView.getRslt());

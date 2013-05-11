@@ -42,7 +42,8 @@ public class PresterChnlTestClsChnlClsed extends PrestrChnlTestAbst {
 	}
 
 	@Test
-	public void TEST_chnlClsed_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void TEST_chnlClsed_DISCNED() throws CumExcpIllegalChnlStatus,
+			TestExcp {
 		PrestrChnl chnl = gotoDscned();
 		chnl.chnlClsed();
 	}
