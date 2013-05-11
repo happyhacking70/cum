@@ -395,7 +395,9 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 		if (chnlStatus == ChnlStatus.reging) {
 		} else if (chnlStatus == ChnlStatus.reged) {
 		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == ChnlStatus.dscned) {
 			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
 		}
