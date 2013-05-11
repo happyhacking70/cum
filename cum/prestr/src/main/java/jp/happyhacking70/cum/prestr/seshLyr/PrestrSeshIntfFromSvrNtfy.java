@@ -129,10 +129,12 @@ public interface PrestrSeshIntfFromSvrNtfy {
 	 * </UL>
 	 * 
 	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIllegalChnlStatuMulti
 	 * 
 	 * 
 	 */
-	public abstract void discned() throws CumExcpIllegalSeshStatus;
+	public abstract void discned() throws CumExcpIllegalSeshStatus,
+			CumExcpIllegalChnlStatuMulti;
 
 	/**
 	 * callback interface when audience is disconnected

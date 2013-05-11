@@ -81,8 +81,10 @@ public interface PrestrChnlNotfyIntf {
 	 * <UL>
 	 * <LI>notify channel view via {@link PrestrChnlViewIntf#discned()}</LI>
 	 * </UL>
+	 * 
+	 * @throws CumExcpIllegalChnlStatus
 	 */
-	void discnded();
+	void discnded() throws CumExcpIllegalChnlStatus;
 
 	/**
 	 * session is under closing

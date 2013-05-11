@@ -234,7 +234,7 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * @see jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnlNotfyIntf#discnded()
 	 */
 	@Override
-	public void discnded() {
+	public void discnded() throws CumExcpIllegalChnlStatus {
 		discndedCheckStates();
 		chnlStatus = ChnlStatus.dscned;
 		chnlView.discned();
@@ -381,12 +381,13 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 		}
 	}
 
-	protected void discndedCheckStates() {
+	protected void discndedCheckStates() throws CumExcpIllegalChnlStatus {
 		if (chnlStatus == ChnlStatus.reging) {
 		} else if (chnlStatus == ChnlStatus.reged) {
 		} else if (chnlStatus == ChnlStatus.clsing) {
 		} else if (chnlStatus == ChnlStatus.clsed) {
 		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		}
 	}
 

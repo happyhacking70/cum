@@ -335,12 +335,22 @@ public class PrestrSesh implements PrestrSeshIntf
 	 * jp.happyhacking70.cum3.prestr.seshLyr.PrestrSeshIntfFromSvrNtfy#discned()
 	 */
 	@Override
-	synchronized public void discned() throws CumExcpIllegalSeshStatus {
+	synchronized public void discned() throws CumExcpIllegalSeshStatus,
+			CumExcpIllegalChnlStatuMulti {
 		discnedCheckStates();
 		seshStatus = SeshStatus.discned;
 		seshView.dscned();
+
+		CumExcpIllegalChnlStatuMulti multi = new CumExcpIllegalChnlStatuMulti();
 		for (PrestrChnlNotfyIntf chnl : chnls.values()) {
-			chnl.discnded();
+			try {
+				chnl.discnded();
+			} catch (CumExcpIllegalChnlStatus e) {
+				multi.add(e);
+			}
+		}
+		if (multi.size() != 0) {
+			throw multi;
 		}
 
 	}

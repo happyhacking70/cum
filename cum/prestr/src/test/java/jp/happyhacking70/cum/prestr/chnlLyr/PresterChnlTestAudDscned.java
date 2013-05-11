@@ -71,7 +71,7 @@ public class PresterChnlTestAudDscned extends PrestrChnlTestAbst {
 
 	@Test
 	public void TEST_audDiscned_DISCNED() throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist {
+			CumExcpAudNotExist, TestExcp {
 		PrestrChnl chnl = gotoDscned();
 		chnl.audDiscned(audName);
 		assertNull(chnlView.getAudDiscned());

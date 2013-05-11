@@ -20,6 +20,11 @@ public class DummyPrestrChnlViewIntf implements PrestrChnlViewIntf {
 	protected boolean isDiscned = false;
 	protected boolean isSeshClsing = false;
 	protected boolean isSeshClsed = false;
+	protected String rslt = null;
+
+	public String getRslt() {
+		return rslt;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -185,7 +190,7 @@ public class DummyPrestrChnlViewIntf implements PrestrChnlViewIntf {
 	 */
 	@Override
 	public void clsChnlFailed(String rslt) {
-		// TODO Auto-generated method stub
+		this.rslt = rslt;
 
 	}
 
