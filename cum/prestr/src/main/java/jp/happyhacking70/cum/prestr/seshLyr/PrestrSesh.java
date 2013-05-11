@@ -126,15 +126,7 @@ public class PrestrSesh implements PrestrSeshIntf
 
 		for (PrestrChnlNotfyIntf chnl : chnls.values()) {
 
-			// this session know if disconnected or not.
-			// channel should not raise, channel is disconnected.
-			try {
-				chnl.seshClsing();
-			} catch (CumExcpIllegalChnlStatus e) {
-
-				mutiExcp.add(e);
-
-			}
+			chnl.seshClsing();
 		}
 		if (mutiExcp.size() != 0) {
 			throw mutiExcp;
@@ -370,16 +362,16 @@ public class PrestrSesh implements PrestrSeshIntf
 		if (auds.containsKey(audName)) {
 			seshView.audDscned(audName);
 			auds.remove(audName);
-			CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
+			CumExcpIllegalChnlStatuMulti multiExcp = new CumExcpIllegalChnlStatuMulti();
 			for (PrestrChnlNotfyIntf chnl : chnls.values()) {
 				try {
 					chnl.audDiscned(audName);
 				} catch (CumExcpIllegalChnlStatus e) {
-					mutiExcp.add(e);
+					multiExcp.add(e);
 				}
 			}
-			if (mutiExcp.size() != 0) {
-				throw mutiExcp;
+			if (multiExcp.size() != 0) {
+				throw multiExcp;
 			}
 		} else {
 			throw new CumExcpAudNotExist(seshName, "", audName);

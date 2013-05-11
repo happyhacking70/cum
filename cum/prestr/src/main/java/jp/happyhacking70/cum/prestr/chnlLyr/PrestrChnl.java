@@ -7,10 +7,11 @@ import java.util.HashMap;
 
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
-import jp.happyhacking70.cum.excp.prestr.CumExcpSeshDiscned;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
 import jp.happyhacking70.cum.prestr.seshLyr.PrestrSeshIntfForChnlView;
 
@@ -37,7 +38,7 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 		/** closed */
 		clsed,
 		/** session disconnected */
-		discned
+		dscned
 	}
 
 	/** Name of channel */
@@ -81,13 +82,11 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	@Override
 	public void clsChnl() throws CumExcpIllegalChnlStatus, CumExcpChnlNotExist,
-			CumExcpIllegalSeshStatus, CumExcpSeshDiscned {
-		if (chnlStatus == ChnlStatus.reged || chnlStatus == ChnlStatus.reging) {
-			chnlStatus = PrestrChnl.ChnlStatus.clsing;
-			sesh.clsChnl(chnlName);
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
-		}
+			CumExcpIllegalSeshStatus {
+
+		clsChnlCheckStates();
+		chnlStatus = PrestrChnl.ChnlStatus.clsing;
+		sesh.clsChnl(chnlName);
 	}
 
 	/*
@@ -100,13 +99,10 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	@Override
 	public void sendChnlCmd(String actionName, HashMap<String, String> params)
 			throws CumExcpIllegalChnlStatus, CumExcpChnlNotExist,
-			CumExcpIllegalSeshStatus, CumExcpSeshDiscned {
-		if (chnlStatus == ChnlStatus.reged && chnlStatus != ChnlStatus.discned) {
+			CumExcpIllegalSeshStatus {
 
-			sesh.sendChnlCmd(chnlName, actionName, params);
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
-		}
+		sendChnlCmdCheckStates();
+		sesh.sendChnlCmd(chnlName, actionName, params);
 	}
 
 	/*
@@ -117,19 +113,20 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * (java.lang.String)
 	 */
 	@Override
-	public void audJoinedChnl(String audName) throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+	public void audJoinedChnl(String audName) throws CumExcpIllegalChnlStatus,
+			CumExcpAudExists {
 
-		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
+		try {
+			audJoinedChnlCheckStates();
 			if (auds.containsKey(audName) == false) {
 				auds.put(audName, audName);
 				chnlView.audJoined(audName);
 			} else {
 				throw new CumExcpAudExists(chnlName, audName);
 			}
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
+
 	}
 
 	/*
@@ -142,14 +139,16 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	@Override
 	public void audRjctedChnl(String audName) throws CumExcpIllegalChnlStatus,
 			CumExcpAudExists {
-		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
+
+		try {
+			audRjctedChnlCheckStates();
 			if (auds.containsKey(audName)) {
 				throw new CumExcpAudExists(chnlName, audName);
 			}
 			chnlView.audRjcted(audName);
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
+
 	}
 
 	/*
@@ -160,15 +159,17 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * java.lang.String)
 	 */
 	@Override
-	public void audLftChnl(String audName) throws CumExcpIllegalChnlStatus {
-
-		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
-			if (auds.containsKey(audName)) {
-				chnlView.audLft(audName);
+	public void audLftChnl(String audName) throws CumExcpIllegalChnlStatus,
+			CumExcpAudNotExist {
+		try {
+			audLftChnlCheckStates();
+			if (!auds.containsKey(audName)) {
+				throw new CumExcpAudNotExist(chnlName, audName);
 			}
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+			chnlView.audLft(audName);
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
+
 	}
 
 	/*
@@ -179,31 +180,35 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * java.lang.String)
 	 */
 	@Override
-	public void audDiscned(String audName) throws CumExcpIllegalChnlStatus {
-		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
-			if (auds.containsKey(audName)) {
-				chnlView.audDiscned(audName);
+	public void audDiscned(String audName) throws CumExcpIllegalChnlStatus,
+			CumExcpAudNotExist {
+
+		try {
+			audDiscnedCheckStates();
+			if (!auds.containsKey(audName)) {
+				throw new CumExcpAudNotExist(chnlName, audName);
 			}
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+			chnlView.audDiscned(audName);
+		} catch (CumExcpIgnoreChnlStatus e) {
+
 		}
+
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnlNotfyIntf#chnlClsed()
+	 * @see jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnlNotfyIntf#chnlReged()
 	 */
 	@Override
 	public void chnlReged() throws CumExcpIllegalChnlStatus {
-
-		if (chnlStatus == ChnlStatus.reging) {
+		try {
+			chnlRegedCheckStates();
 			chnlStatus = ChnlStatus.reged;
 			chnlView.chnlReged();
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
+
 	}
 
 	/*
@@ -214,11 +219,11 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	@Override
 	public void chnlClsed() throws CumExcpIllegalChnlStatus {
-		if (chnlStatus == ChnlStatus.clsing) {
+		try {
+			chnlClsedCheckStates();
 			chnlStatus = ChnlStatus.clsed;
 			chnlView.chnlClsed();
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
 
 	}
@@ -230,7 +235,8 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	@Override
 	public void discnded() {
-		chnlStatus = ChnlStatus.discned;
+		discndedCheckStates();
+		chnlStatus = ChnlStatus.dscned;
 		chnlView.discned();
 	}
 
@@ -241,13 +247,14 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnlNotfyIntf#seshClosing()
 	 */
 	@Override
-	public void seshClsing() throws CumExcpIllegalChnlStatus {
-		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
+	public void seshClsing() {
+		try {
+			seshClsingCheckStates();
 			chnlStatus = ChnlStatus.clsed;
 			chnlView.seshClsing();
-		} else {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
+
 	}
 
 	/*
@@ -259,11 +266,152 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	@Override
 	public void clsChnlFailed(String rslt) throws CumExcpIllegalChnlStatus {
-		if (chnlStatus != ChnlStatus.clsing) {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		try {
+			clsChnlFailedCheckStates();
+			chnlStatus = ChnlStatus.clsed;
+			chnlView.clsChnlFailed(rslt);
+		} catch (CumExcpIgnoreChnlStatus e) {
 		}
-		chnlStatus = ChnlStatus.clsed;
-		chnlView.clsChnlFailed(rslt);
 
 	}
+
+	protected void clsChnlCheckStates() throws CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void sendChnlCmdCheckStates() throws CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void audJoinedChnlCheckStates() throws CumExcpIgnoreChnlStatus,
+			CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void audRjctedChnlCheckStates() throws CumExcpIgnoreChnlStatus,
+			CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void audLftChnlCheckStates() throws CumExcpIgnoreChnlStatus,
+			CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void audDiscnedCheckStates() throws CumExcpIgnoreChnlStatus,
+			CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void chnlClsedCheckStates() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.reged) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsing) {
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void chnlRegedCheckStates() throws CumExcpIgnoreChnlStatus,
+			CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void discndedCheckStates() {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+		} else if (chnlStatus == ChnlStatus.clsed) {
+		} else if (chnlStatus == ChnlStatus.dscned) {
+		}
+	}
+
+	protected void seshClsingCheckStates() throws CumExcpIgnoreChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+		} else if (chnlStatus == ChnlStatus.clsing) {
+		} else if (chnlStatus == ChnlStatus.clsed) {
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
+	protected void clsChnlFailedCheckStates() throws CumExcpIgnoreChnlStatus,
+			CumExcpIllegalChnlStatus {
+		if (chnlStatus == ChnlStatus.reging) {
+		} else if (chnlStatus == ChnlStatus.reged) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsing) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.clsed) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == ChnlStatus.dscned) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		}
+	}
+
 }

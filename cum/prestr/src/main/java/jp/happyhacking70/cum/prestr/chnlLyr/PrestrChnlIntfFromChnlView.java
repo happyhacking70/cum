@@ -8,7 +8,6 @@ import java.util.HashMap;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
-import jp.happyhacking70.cum.excp.prestr.CumExcpSeshDiscned;
 
 /**
  * @author happyhacking70@gmail.com
@@ -19,14 +18,14 @@ public interface PrestrChnlIntfFromChnlView {
 	/**
 	 * Close this channel
 	 * 
-	 * @throws CumExcpChnlNotExist
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpIllegalSeshStatus
-	 * @throws CumExcpSeshDiscned
+	 * @throws CumExcpChnlNotExist
+	 * 
 	 * 
 	 */
-	void clsChnl() throws CumExcpChnlNotExist, CumExcpIllegalChnlStatus,
-			CumExcpIllegalSeshStatus, CumExcpSeshDiscned;
+	void clsChnl() throws CumExcpIllegalChnlStatus, CumExcpChnlNotExist,
+			CumExcpIllegalSeshStatus;
 
 	/**
 	 * Send channel specific command to audience(s)
@@ -36,10 +35,9 @@ public interface PrestrChnlIntfFromChnlView {
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpIllegalSeshStatus
 	 * @throws CumExcpChnlNotExist
-	 * @throws CumExcpSeshDiscned
 	 */
 	void sendChnlCmd(String actionName, HashMap<String, String> params)
 			throws CumExcpIllegalChnlStatus, CumExcpChnlNotExist,
-			CumExcpIllegalSeshStatus, CumExcpSeshDiscned;
+			CumExcpIllegalSeshStatus;
 
 }

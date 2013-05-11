@@ -6,7 +6,6 @@ package jp.happyhacking70.cum.prestr.chnlLyr;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
-import jp.happyhacking70.cum.excp.prestr.CumExcpSeshDiscned;
 import jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnl.ChnlStatus;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
 
@@ -32,9 +31,6 @@ public interface PrestrChnlNotfyIntf {
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudExists
-	 * @throws CumExcpAudExistss
-	 * @throws CumExcpAudNotExist
-	 * @throws CumExcpSeshDiscned
 	 */
 	public abstract void audRjctedChnl(String audName)
 			throws CumExcpIllegalChnlStatus, CumExcpAudExists;
@@ -42,20 +38,23 @@ public interface PrestrChnlNotfyIntf {
 	/**
 	 * Notifies audience left channel.
 	 * 
+	 * 
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpAudNotExist
 	 */
 	public abstract void audLftChnl(String audName)
-			throws CumExcpIllegalChnlStatus;
+			throws CumExcpIllegalChnlStatus, CumExcpAudNotExist;
 
 	/**
 	 * Notifies audience is disconnected.
 	 * 
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpAudNotExist
 	 */
 	public abstract void audDiscned(String audName)
-			throws CumExcpIllegalChnlStatus;
+			throws CumExcpIllegalChnlStatus, CumExcpAudNotExist;
 
 	/**
 	 * This channel is closed.
@@ -66,8 +65,6 @@ public interface PrestrChnlNotfyIntf {
 	 * *
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
-	 * 
-	 * @throws CumExcpChnlCannotBeClsed
 	 */
 	public abstract void chnlClsed() throws CumExcpIllegalChnlStatus;
 
@@ -75,6 +72,7 @@ public interface PrestrChnlNotfyIntf {
 	 * This channel is registered.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * 
 	 */
 	void chnlReged() throws CumExcpIllegalChnlStatus;
 
@@ -91,10 +89,8 @@ public interface PrestrChnlNotfyIntf {
 	 * <UL>
 	 * <LI>notify channel view via {@link PrestrChnlViewIntf#seshClsing()}</LI>
 	 * </UL>
-	 * 
-	 * @throws CumExcpIllegalChnlStatus
 	 */
-	void seshClsing() throws CumExcpIllegalChnlStatus;
+	void seshClsing();
 
 	/**
 	 * channel was not closed successfully.

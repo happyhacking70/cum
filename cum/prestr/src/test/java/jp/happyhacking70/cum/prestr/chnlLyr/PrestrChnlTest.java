@@ -8,14 +8,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.util.HashMap;
-
-import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
-import jp.happyhacking70.cum.cmd.rsc.ChnlRscJustName;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpSeshDiscned;
@@ -26,28 +22,7 @@ import org.junit.Test;
  * @author happyhacking70@gmail.com
  * 
  */
-public class PrestrChnlTest {
-	static final String chnlName = "testChannel";
-	static final ChnlRscJustName rscA = new ChnlRscJustName("a");
-	static final ChnlRscJustName rscB = new ChnlRscJustName("b");
-	static final String audName = "testAudience";
-	protected DummyPrestrSeshIntfForChnlView sesh;
-	protected DummyPrestrChnlViewIntf chnlView;
-	static final String actionName = "testAction";
-	static final HashMap<String, String> params = new HashMap<String, String>();
-
-	protected PrestrChnl getChnl() {
-		HashMap<String, ChnlRscIntf> rsces = new HashMap<String, ChnlRscIntf>();
-
-		rsces.put(rscA.getName(), rscA);
-		rsces.put(rscB.getName(), rscB);
-		chnlView = new DummyPrestrChnlViewIntf();
-		sesh = new DummyPrestrSeshIntfForChnlView();
-		PrestrChnl chnl = new PrestrChnl(chnlName, rsces, chnlView, sesh);
-
-		return chnl;
-	}
-
+public class PrestrChnlTest extends PrestrChnlTestAbst {
 	/**
 	 * Test method for
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#clsChnl()}.
@@ -58,11 +33,12 @@ public class PrestrChnlTest {
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpSeshDiscned
 	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 */
 	@Test
 	public void testClsChnl() throws CumExcpChnlNotExist,
 			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
-			CumExcpSeshDiscned {
+			CumExcpSeshDiscned, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 
 		chnl.chnlReged();
@@ -149,10 +125,12 @@ public class PrestrChnlTest {
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCmdCannotBeSent
 	 * @throws CumExcpChnlNotExist
+	 * @throws CumExcpIgnoreChnlStatus
 	 */
 	@Test
 	public void testSendChnlCmd() throws CumExcpIllegalChnlStatus,
-			CumExcpChnlNotExist, CumExcpIllegalSeshStatus, CumExcpSeshDiscned {
+			CumExcpChnlNotExist, CumExcpIllegalSeshStatus, CumExcpSeshDiscned,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.chnlReged();
 		chnl.sendChnlCmd(actionName, params);
@@ -215,11 +193,12 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * @throws CumExcpAudExist
 	 */
 	@Test
 	public void testAudJoinedChnl() throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.audJoinedChnl(audName);
 
@@ -228,7 +207,7 @@ public class PrestrChnlTest {
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void testAudJoinedChnl_DISCNED() throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 
@@ -244,6 +223,7 @@ public class PrestrChnlTest {
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
@@ -251,7 +231,7 @@ public class PrestrChnlTest {
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void testAudJoinedChnl_CLOSING() throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -272,6 +252,7 @@ public class PrestrChnlTest {
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
@@ -279,7 +260,7 @@ public class PrestrChnlTest {
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void testAudJoinedChnl_CLOSED() throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -301,10 +282,11 @@ public class PrestrChnlTest {
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudNotExist
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
 	 */
 	@Test
 	public void testAudRjctedChnl() throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist, CumExcpAudExists {
+			CumExcpAudNotExist, CumExcpAudExists, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.audRjctedChnl(audName);
 
@@ -313,7 +295,7 @@ public class PrestrChnlTest {
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void testAudRjctedChnl_DISCNED() throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist, CumExcpAudExists {
+			CumExcpAudNotExist, CumExcpAudExists, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 
@@ -329,13 +311,14 @@ public class PrestrChnlTest {
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudNotExist
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void testAudRjctedChnl_CLOSING() throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist, CumExcpAudExists {
+			CumExcpAudNotExist, CumExcpAudExists, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 
 		try {
@@ -355,13 +338,14 @@ public class PrestrChnlTest {
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudNotExist
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void testAudRjctedChnl_CLOSED() throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist, CumExcpAudExists {
+			CumExcpAudNotExist, CumExcpAudExists, CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 
 		try {
@@ -381,10 +365,13 @@ public class PrestrChnlTest {
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudNotExist
 	 */
 	@Test
 	public void testAudLftChnl() throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus,
+			CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		chnl.audJoinedChnl(audName);
 
@@ -399,11 +386,15 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudExists
+	 * @throws CumExcpAudNotExist
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 */
 	@Test
-	public void testAudLftChnl_REGED() throws CumExcpIllegalChnlStatus {
+	public void testAudLftChnl_REGED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudExists, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -419,7 +410,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testAudLftChnl_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void testAudLftChnl_DISCNED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudExists, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.audJoinedChnl(audName);
@@ -438,13 +430,17 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudExists
+	 * @throws CumExcpAudNotExist
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testAudLftChnl_CLOSING() throws CumExcpIllegalChnlStatus {
+	public void testAudLftChnl_CLOSING() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudExists, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 
 		try {
@@ -464,13 +460,17 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudExists
+	 * @throws CumExcpAudNotExist
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testAudLftChnl_CLOSED() throws CumExcpIllegalChnlStatus {
+	public void testAudLftChnl_CLOSED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudExists, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -493,10 +493,13 @@ public class PrestrChnlTest {
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
 	 * @throws CumExcpAudExists
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudNotExist
 	 */
 	@Test
 	public void testAudDiscned() throws CumExcpAudExists,
-			CumExcpIllegalChnlStatus {
+			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus,
+			CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		chnl.audJoinedChnl(audName);
 		chnl.audDiscned(audName);
@@ -510,11 +513,14 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudNotExist
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 */
 	@Test
-	public void testAudDiscned_REGED() throws CumExcpIllegalChnlStatus {
+	public void testAudDiscned_REGED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -529,7 +535,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testAudDiscned_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void testAudDiscned_DISCNED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 		chnl.audDiscned(audName);
@@ -543,13 +550,16 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudNotExist
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testAudDiscned_CLOSING() throws CumExcpIllegalChnlStatus {
+	public void testAudDiscned_CLOSING() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -569,13 +579,16 @@ public class PrestrChnlTest {
 	 * .
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
+	 * @throws CumExcpAudNotExist
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testAudDiscned_CLOSED() throws CumExcpIllegalChnlStatus {
+	public void testAudDiscned_CLOSED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus, CumExcpAudNotExist {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -596,13 +609,15 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlClsed()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test
-	public void testChnlClsed() throws CumExcpIllegalChnlStatus {
+	public void testChnlClsed() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -617,7 +632,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlClsed_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void testChnlClsed_DISCNED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 		chnl.chnlClsed();
@@ -629,12 +645,14 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlClsed()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlClsed_REGING() throws CumExcpIllegalChnlStatus {
+	public void testChnlClsed_REGING() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.chnlClsed();
 	}
@@ -644,12 +662,14 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlClsed()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlClsed_REGED() throws CumExcpIllegalChnlStatus {
+	public void testChnlClsed_REGED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -665,13 +685,15 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlClsed()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlClsed_CLOSED() throws CumExcpIllegalChnlStatus {
+	public void testChnlClsed_CLOSED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 
 		try {
@@ -689,11 +711,13 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlReged()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 */
 	@Test
-	public void testChnlReged() throws CumExcpIllegalChnlStatus {
+	public void testChnlReged() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.chnlReged();
 
@@ -701,7 +725,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlReged_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void testChnlReged_DISCNED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 		chnl.chnlReged();
@@ -714,11 +739,13 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlReged()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlReged_REGED() throws CumExcpIllegalChnlStatus {
+	public void testChnlReged_REGED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -735,13 +762,15 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlReged()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlReged_CLOSING() throws CumExcpIllegalChnlStatus {
+	public void testChnlReged_CLOSING() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -760,13 +789,15 @@ public class PrestrChnlTest {
 	 * {@link jp.happyhacking70.cum3.prestr.chnlLyr.PrestrChnl#chnlReged()}.
 	 * 
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpIgnoreChnlStatus
 	 * 
 	 * @throws CumExcpChnlCannotBeReged
 	 * @throws CumExcpChnlCannotBeClsed
 	 * @throws CumExcpChnlNotExist
 	 */
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testChnlReged_CLOSED() throws CumExcpIllegalChnlStatus {
+	public void testChnlReged_CLOSED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -833,7 +864,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test
-	public void testSeshClsing() throws CumExcpIllegalChnlStatus {
+	public void testSeshClsing() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.seshClsing();
 
@@ -841,7 +873,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test
-	public void testSeshClsing_REGED() throws CumExcpIllegalChnlStatus {
+	public void testSeshClsing_REGED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -855,7 +888,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testSeshClsing_CLOSING() throws CumExcpIllegalChnlStatus {
+	public void testSeshClsing_CLOSING() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -871,7 +905,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testSeshClsing_CLOSED() throws CumExcpIllegalChnlStatus {
+	public void testSeshClsing_CLOSED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		try {
 			chnl.chnlReged();
@@ -888,7 +923,8 @@ public class PrestrChnlTest {
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
-	public void testSeshClsing_DISCNED() throws CumExcpIllegalChnlStatus {
+	public void testSeshClsing_DISCNED() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		PrestrChnl chnl = getChnl();
 		chnl.discnded();
 		chnl.seshClsing();
