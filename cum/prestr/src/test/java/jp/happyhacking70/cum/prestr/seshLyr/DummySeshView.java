@@ -18,6 +18,7 @@ public class DummySeshView implements PrestrSeshViewIntf {
 	protected String audJoinedName = null;
 	protected String audDscnedName = null;
 	protected String audLftName = null;
+	protected boolean dscned = false;
 
 	public boolean isReged() {
 		return isReged;
@@ -49,6 +50,10 @@ public class DummySeshView implements PrestrSeshViewIntf {
 
 	public String getAudLftName() {
 		return audLftName;
+	}
+
+	public boolean isDscned() {
+		return dscned;
 	}
 
 	/*
@@ -151,4 +156,7 @@ public class DummySeshView implements PrestrSeshViewIntf {
 
 	}
 
+	public void dscned() {
+		dscned = true;
+	}
 }

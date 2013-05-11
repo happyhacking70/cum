@@ -3,7 +3,8 @@
  */
 package jp.happyhacking70.cum.prestr.chnlLyr;
 
-import jp.happyhacking70.cum.excp.prestr.CumExcpAudExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpSeshDiscned;
 import jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnl.ChnlStatus;
@@ -19,22 +20,24 @@ public interface PrestrChnlNotfyIntf {
 	 * Notifies audience joined.
 	 * 
 	 * @param audName
-	 * @throws CumExcpAudExist
 	 * @throws CumExcpIllegalChnlStatus
-	 * @throws CumExcpSeshDiscned
+	 * @throws CumExcpAudExists
 	 */
-	public abstract void audJoinedChnl(String audName) throws CumExcpAudExist,
-			CumExcpIllegalChnlStatus;
+	public abstract void audJoinedChnl(String audName)
+			throws CumExcpIllegalChnlStatus, CumExcpAudExists;
 
 	/**
 	 * Notifies audience rejected the joining channel.
 	 * 
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
+	 * @throws CumExcpAudExists
+	 * @throws CumExcpAudExistss
+	 * @throws CumExcpAudNotExist
 	 * @throws CumExcpSeshDiscned
 	 */
 	public abstract void audRjctedChnl(String audName)
-			throws CumExcpIllegalChnlStatus;
+			throws CumExcpIllegalChnlStatus, CumExcpAudExists;
 
 	/**
 	 * Notifies audience left channel.

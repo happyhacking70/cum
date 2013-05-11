@@ -4,6 +4,7 @@
 package jp.happyhacking70.cum.prestr.seshLyr;
 
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreSeshStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrSeshViewIntf;
@@ -25,18 +26,21 @@ public interface PrestrSeshIntfForSvrRes {
 	 * </UL>
 	 * 
 	 * @param rslt
+	 * @throws CumExcpIgnoreSeshStatus
+	 * @throws CumExcpIllegalSeshStatus
 	 */
-	public abstract void regSeshRslt(String rslt);
+	public abstract void regSeshRslt(String rslt)
+			throws CumExcpIllegalSeshStatus, CumExcpIgnoreSeshStatus;
 
 	public abstract void clsSeshRslt(String rslt)
-			throws CumExcpIllegalSeshStatus;
+			throws CumExcpIllegalSeshStatus, CumExcpIgnoreSeshStatus;
 
 	public abstract void regChnlRslt(String chnlName, String rslt)
 			throws CumExcpIllegalSeshStatus, CumExcpIllegalChnlStatus,
-			CumExcpChnlNotExist;
+			CumExcpChnlNotExist, CumExcpIgnoreSeshStatus;
 
 	public abstract void clsChnlRslt(String chnlName, String rslt)
 			throws CumExcpChnlNotExist, CumExcpIllegalSeshStatus,
-			CumExcpIllegalChnlStatus;
+			CumExcpIllegalChnlStatus, CumExcpIgnoreSeshStatus;
 
 }

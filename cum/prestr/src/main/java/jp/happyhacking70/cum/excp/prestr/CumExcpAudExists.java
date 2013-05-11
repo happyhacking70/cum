@@ -1,9 +1,7 @@
 /**
  * 
  */
-package jp.happyhacking70.cum.excp;
-
-import jp.happyhacking70.cum.excp.prestr.CumExcpAbst;
+package jp.happyhacking70.cum.excp.prestr;
 
 /**
  * @author happyhacking70@gmail.com
@@ -23,6 +21,13 @@ public class CumExcpAudExists extends CumExcpAbst {
 	public CumExcpAudExists(String seshName, String chnlName, String audName) {
 		super(seshName + "/" + chnlName + "/" + audName);
 		this.seshName = seshName;
+		this.chnlName = chnlName;
+		this.audName = audName;
+
+	}
+
+	public CumExcpAudExists(String chnlName, String audName) {
+		super("" + "/" + chnlName + "/" + audName);
 		this.chnlName = chnlName;
 		this.audName = audName;
 

@@ -39,4 +39,13 @@ public interface PrestrSeshViewIntf {
 	 */
 	void regChnlFailed(String rslt);
 
+	/**
+	 * @param audName
+	 */
+	void audDscned(String audName);
+
+	void audLft(String audName);
+
+	void dscned();
+
 }

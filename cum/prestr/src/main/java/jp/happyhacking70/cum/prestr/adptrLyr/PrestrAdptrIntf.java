@@ -26,12 +26,12 @@ public interface PrestrAdptrIntf {
 	void clsSesh(String seshName);
 
 	/**
-	 * @param seshName
+	 * @param chnlName
 	 * @param chnl
 	 * @param rsces
 	 */
-	void regChnl(String seshName, PrestrChnlIntfFromChnlView chnl,
-			HashMap<String, ChnlRscIntf> rsces);
+	void regChnl(String seshName, String chnlName,
+			PrestrChnlIntfFromChnlView chnl, HashMap<String, ChnlRscIntf> rsces);
 
 	/**
 	 * @param seshName

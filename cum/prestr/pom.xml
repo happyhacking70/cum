@@ -45,6 +45,7 @@
           <encoding>utf-8</encoding>
           <charset>utf-8</charset>
           <decoding>utf-8</decoding>
+          <docfilessubdirs>true</docfilessubdirs>
         </configuration>
       </plugin>
      </plugins>

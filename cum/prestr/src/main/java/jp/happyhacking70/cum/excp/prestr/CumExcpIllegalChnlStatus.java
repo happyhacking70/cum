@@ -11,11 +11,25 @@ public class CumExcpIllegalChnlStatus extends CumExcpAbst {
 
 	private static final long serialVersionUID = 1L;
 
+	protected String chnlName;
+	protected String status;
+
 	/**
 	 * @param chnlName
 	 * @param name
 	 */
 	public CumExcpIllegalChnlStatus(String chnlName, String status) {
 		super(chnlName + "/" + status);
+		this.chnlName = chnlName;
+		this.status = status;
 	}
+
+	public String getChnlName() {
+		return chnlName;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
 }

@@ -10,33 +10,35 @@ import jp.happyhacking70.cum.cmd.res.impl.ResCmdClsSesh;
 import jp.happyhacking70.cum.cmd.res.impl.ResCmdRegChnl;
 import jp.happyhacking70.cum.cmd.res.impl.ResCmdRegSesh;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
-import jp.happyhacking70.cum.excp.CumExcpAudExists;
-import jp.happyhacking70.cum.excp.prestr.CumExcpAudExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreSeshStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatuMulti;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
 import jp.happyhacking70.cum.prestr.adptrLyr.PrestrAdptrIntf;
 import jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnl;
-import jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnlIntfFromChnlView;
 import jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnlNotfyIntf;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrSeshViewIntf;
 
 /**
+ * Presenter Session<BR>
+ * <BR>
+ * State Transition Diagram of Presenter Session <BR>
+ * <img src="doc-files/PrestrSeshStateTransitionDiagram.jpg"
+ * alt="State Transition Diagram of Presenter Session"/> <BR>
+ * Session Status and Methods<BR>
+ * <iframe src="doc-files/PrestrSeshStateAndMethods.html" width="1300"
+ * height="350"></iframe>
+ * 
  * @author happyhacking70@gmail.com
  * 
  */
-public class PrestrSesh implements PrestrSeshIntfForSeshView,
-		PrestrSeshIntfForChnlView, PrestrSeshIntfFromSvrNtfy,
-		PrestrSeshIntfForSvrRes
-/*
- * , , PrestrSeshIntfFromSvrRes
- */
+public class PrestrSesh implements PrestrSeshIntf
 
-// extends
 {
 	/** channles */
 	protected HashMap<String, PrestrChnlNotfyIntf> chnls = new HashMap<String, PrestrChnlNotfyIntf>();
@@ -72,6 +74,22 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 		discned
 	}
 
+	/**
+	 * @param seshName
+	 *            name of session
+	 * @param seshView
+	 *            session view
+	 * @param adptr
+	 *            adapter bridging session and communicator
+	 */
+	public PrestrSesh(String seshName, PrestrSeshViewIntf seshView,
+			PrestrAdptrIntf adptr) {
+		super();
+		this.seshName = seshName;
+		this.seshView = seshView;
+		this.adptr = adptr;
+	}
+
 	// PrestrSeshIntfForSeshView ----------------------------
 
 	/*
@@ -82,39 +100,44 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	 * (java.lang.String)
 	 */
 	@Override
-	synchronized public void regSesh(String seshName)
-			throws CumExcpIllegalSeshStatus {
+	synchronized public void regSesh() throws CumExcpIllegalSeshStatus {
+		regSeshCheckStates();
+		seshStatus = SeshStatus.reging;
+		adptr.regSesh(seshName);
 
-		if (seshStatus == SeshStatus.init) {
-			seshStatus = SeshStatus.reging;
-			adptr.regSesh(seshName);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
-		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking70.cum.prestr.seshLyr.PrestrSeshIntfForSeshView#clsSesh()
+	 */
 	@Override
 	synchronized public void clsSesh() throws CumExcpIllegalSeshStatus,
 			CumExcpIllegalChnlStatuMulti {
-		if (seshStatus == SeshStatus.reged || seshStatus == SeshStatus.reging) {
-			adptr.clsSesh(seshName);
-			seshStatus = SeshStatus.clsing;
 
-			CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
+		clsSeshCheckStates();
 
-			for (PrestrChnlNotfyIntf chnl : chnls.values()) {
-				try {
-					chnl.seshClsing();
-				} catch (CumExcpIllegalChnlStatus e) {
-					mutiExcp.add(e);
+		seshStatus = SeshStatus.clsing;
+		adptr.clsSesh(seshName);
 
-				}
+		CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
+
+		for (PrestrChnlNotfyIntf chnl : chnls.values()) {
+
+			// this session know if disconnected or not.
+			// channel should not raise, channel is disconnected.
+			try {
+				chnl.seshClsing();
+			} catch (CumExcpIllegalChnlStatus e) {
+
+				mutiExcp.add(e);
+
 			}
-			if (mutiExcp.size() != 0) {
-				throw mutiExcp;
-			}
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
+		if (mutiExcp.size() != 0) {
+			throw mutiExcp;
 		}
 
 	}
@@ -131,17 +154,15 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	synchronized public void regChnl(String chnlName,
 			HashMap<String, ChnlRscIntf> rsces, PrestrChnlViewIntf chnlView)
 			throws CumExcpChnlExists, CumExcpIllegalSeshStatus {
-		if (seshStatus == SeshStatus.reged) {
-			if (chnls.containsKey(chnlName)) {
-				throw new CumExcpChnlExists(seshName, chnlName);
-			}
 
-			PrestrChnlIntfFromChnlView chnl = new PrestrChnl(chnlName, rsces,
-					chnlView, this);
-			adptr.regChnl(seshName, chnl, rsces);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		regChnlCheckStates();
+		if (chnls.containsKey(chnlName)) {
+			throw new CumExcpChnlExists(seshName, chnlName);
 		}
+
+		PrestrChnl chnl = new PrestrChnl(chnlName, rsces, chnlView, this);
+		chnls.put(chnlName, chnl);
+		adptr.regChnl(seshName, chnlName, chnl, rsces);
 	}
 
 	// PrestrSeshIntfForChnlView ----------------------------
@@ -155,16 +176,13 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	synchronized public void clsChnl(String chnlName)
 			throws CumExcpChnlNotExist, CumExcpIllegalSeshStatus {
+		clsChnlCheckStates();
 
-		if (seshStatus == SeshStatus.reged) {
-			if (chnls.containsKey(chnlName)) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
-
-			adptr.clsChnl(seshName, chnlName);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		if (!chnls.containsKey(chnlName)) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
 		}
+
+		adptr.clsChnl(seshName, chnlName);
 	}
 
 	/*
@@ -178,14 +196,11 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	synchronized public void sendChnlCmd(String chnlName, String actionName,
 			HashMap<String, String> params) throws CumExcpChnlNotExist,
 			CumExcpIllegalSeshStatus {
-		if (seshStatus == SeshStatus.reged) {
-			if (chnls.containsKey(chnlName)) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
-			adptr.sendChnlCmd(seshName, chnlName, params);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		sendChnlCmdCheckStates();
+		if (chnls.containsKey(chnlName)) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
 		}
+		adptr.sendChnlCmd(seshName, chnlName, params);
 	}
 
 	// PrestrSeshIntfFromSvrNtfy ----------------------------
@@ -199,16 +214,14 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	 */
 	@Override
 	synchronized public void audJoinedSesh(String audName)
-			throws CumExcpAudExists, CumExcpIllegalSeshStatus {
-		if (seshStatus == SeshStatus.reging || seshStatus == SeshStatus.reged) {
-			if (auds.containsKey(audName)) {
-				throw new CumExcpAudExists(seshName, "", audName);
-			}
-			auds.put(audName, audName);
-			seshView.audJoined(audName);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+			throws CumExcpAudExists, CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		audJoinedSeshCheckStates();
+		if (auds.containsKey(audName)) {
+			throw new CumExcpAudExists(seshName, "", audName);
 		}
+		auds.put(audName, audName);
+		seshView.audJoined(audName);
 
 	}
 
@@ -221,22 +234,19 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	 */
 	@Override
 	synchronized public void audJoinedChnl(String chnlName, String audName)
-			throws CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExist,
-			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus {
-
-		if (seshStatus == SeshStatus.reging || seshStatus == SeshStatus.reged) {
-			if (auds.containsKey(audName) == false) {
-				throw new CumExcpAudNotExist(seshName, chnlName, audName);
-			}
-			PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
-			if (chnl == null) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
-
-			chnl.audJoinedChnl(audName);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+			throws CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExists,
+			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		audJoinedChnlCheckStates();
+		if (auds.containsKey(audName) == false) {
+			throw new CumExcpAudNotExist(seshName, chnlName, audName);
 		}
+		PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
+		if (chnl == null) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
+		}
+
+		chnl.audJoinedChnl(audName);
 
 	}
 
@@ -250,21 +260,19 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	synchronized public void audRjctedChnl(String chnlName, String audName)
 			throws CumExcpAudNotExist, CumExcpChnlNotExist,
-			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus {
-		if (seshStatus == SeshStatus.reging || seshStatus == SeshStatus.reged) {
-			if (auds.containsKey(audName) == false) {
-				throw new CumExcpAudNotExist(seshName, chnlName, audName);
-			}
-			PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
-			if (chnl == null) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
+			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus, CumExcpAudExists {
 
-			chnl.audRjctedChnl(audName);
-
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		audRjctedChnlCheckStates();
+		if (auds.containsKey(audName) == false) {
+			throw new CumExcpAudNotExist(seshName, chnlName, audName);
 		}
+		PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
+		if (chnl == null) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
+		}
+
+		chnl.audRjctedChnl(audName);
 
 	}
 
@@ -278,20 +286,19 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	synchronized public void audLftChnl(String chnlName, String audName)
 			throws CumExcpAudNotExist, CumExcpIllegalChnlStatus,
-			CumExcpChnlNotExist, CumExcpIllegalSeshStatus {
-		if (seshStatus == SeshStatus.reging || seshStatus == SeshStatus.reged) {
-			if (auds.containsKey(audName) == false) {
-				throw new CumExcpAudNotExist(seshName, chnlName, audName);
-			}
-			PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
-			if (chnl == null) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
+			CumExcpChnlNotExist, CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
 
-			chnl.audLftChnl(audName);
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		audLftChnlCheckStates();
+		if (auds.containsKey(audName) == false) {
+			throw new CumExcpAudNotExist(seshName, chnlName, audName);
 		}
+		PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
+		if (chnl == null) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
+		}
+
+		chnl.audLftChnl(audName);
 
 	}
 
@@ -305,28 +312,27 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	synchronized public void audLftSesh(String audName)
 			throws CumExcpAudNotExist, CumExcpIllegalSeshStatus,
-			CumExcpIllegalChnlStatuMulti {
-		if (seshStatus == SeshStatus.reging || seshStatus == SeshStatus.reged) {
-			if (auds.containsKey(audName)) {
-				CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
-				for (PrestrChnlNotfyIntf chnl : chnls.values()) {
+			CumExcpIllegalChnlStatuMulti, CumExcpIgnoreSeshStatus {
 
-					try {
-						chnl.audLftChnl(audName);
-					} catch (CumExcpIllegalChnlStatus e) {
-						mutiExcp.add(e);
-					}
+		audLftSeshCheckStates();
+		if (auds.containsKey(audName)) {
+			seshView.audLft(audName);
+			CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
+			for (PrestrChnlNotfyIntf chnl : chnls.values()) {
 
+				try {
+					chnl.audLftChnl(audName);
+				} catch (CumExcpIllegalChnlStatus e) {
+					mutiExcp.add(e);
 				}
-				if (mutiExcp.size() != 0) {
-					throw mutiExcp;
-				}
-				auds.remove(audName);
-			} else {
-				throw new CumExcpAudNotExist(seshName, "", audName);
+
 			}
+			if (mutiExcp.size() != 0) {
+				throw mutiExcp;
+			}
+			auds.remove(audName);
 		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+			throw new CumExcpAudNotExist(seshName, "", audName);
 		}
 	}
 
@@ -337,8 +343,10 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	 * jp.happyhacking70.cum3.prestr.seshLyr.PrestrSeshIntfFromSvrNtfy#discned()
 	 */
 	@Override
-	synchronized public void discned() {
+	synchronized public void discned() throws CumExcpIllegalSeshStatus {
+		discnedCheckStates();
 		seshStatus = SeshStatus.discned;
+		seshView.dscned();
 		for (PrestrChnlNotfyIntf chnl : chnls.values()) {
 			chnl.discnded();
 		}
@@ -355,25 +363,26 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	synchronized public void audDiscned(String audName)
 			throws CumExcpIllegalSeshStatus, CumExcpAudNotExist,
-			CumExcpIllegalChnlStatuMulti {
-		if (seshStatus == SeshStatus.reging || seshStatus == SeshStatus.reged) {
-			if (auds.containsKey(audName)) {
-				CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
-				for (PrestrChnlNotfyIntf chnl : chnls.values()) {
-					try {
-						chnl.audDiscned(audName);
-					} catch (CumExcpIllegalChnlStatus e) {
-						mutiExcp.add(e);
-					}
+			CumExcpIllegalChnlStatuMulti, CumExcpIgnoreSeshStatus {
+
+		audDiscnedCheckStates();
+
+		if (auds.containsKey(audName)) {
+			seshView.audDscned(audName);
+			auds.remove(audName);
+			CumExcpIllegalChnlStatuMulti mutiExcp = new CumExcpIllegalChnlStatuMulti();
+			for (PrestrChnlNotfyIntf chnl : chnls.values()) {
+				try {
+					chnl.audDiscned(audName);
+				} catch (CumExcpIllegalChnlStatus e) {
+					mutiExcp.add(e);
 				}
-				if (mutiExcp.size() != 0) {
-					throw mutiExcp;
-				}
-			} else {
-				throw new CumExcpAudNotExist(seshName, "", audName);
+			}
+			if (mutiExcp.size() != 0) {
+				throw mutiExcp;
 			}
 		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+			throw new CumExcpAudNotExist(seshName, "", audName);
 		}
 	}
 
@@ -385,14 +394,15 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	 * (java.lang.String)
 	 */
 	@Override
-	public void regSeshRslt(String rslt) {
-		if (seshStatus == SeshStatus.reging) {
-			if (rslt == ResCmdRegSesh.RsltTypes.Reged.name()) {
-				seshStatus = SeshStatus.reged;
-			} else {
-				seshView.regSeshFailed(rslt);
-				seshStatus = SeshStatus.init;
-			}
+	public void regSeshRslt(String rslt) throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		regSeshRsltCheckStates();
+
+		if (rslt == ResCmdRegSesh.RsltTypes.Reged.name()) {
+			seshStatus = SeshStatus.reged;
+		} else {
+			seshView.regSeshFailed(rslt);
+			seshStatus = SeshStatus.init;
 		}
 
 	}
@@ -405,16 +415,15 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	 * (java.lang.String)
 	 */
 	@Override
-	public void clsSeshRslt(String rslt) throws CumExcpIllegalSeshStatus {
-		if (seshStatus == SeshStatus.reged) {
-			if (rslt == ResCmdClsSesh.RsltTypes.Clsed.name()) {
-				seshStatus = SeshStatus.clsed;
+	public void clsSeshRslt(String rslt) throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		clsSeshRsltCheckStates();
+		if (rslt == ResCmdClsSesh.RsltTypes.Clsed.name()) {
+			seshStatus = SeshStatus.clsed;
 
-			} else {
-				seshView.clsSeshFailed(rslt);
-			}
 		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+			seshStatus = SeshStatus.init;
+			seshView.clsSeshFailed(rslt);
 		}
 
 	}
@@ -429,20 +438,16 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	public void regChnlRslt(String chnlName, String rslt)
 			throws CumExcpIllegalSeshStatus, CumExcpIllegalChnlStatus,
-			CumExcpChnlNotExist {
-		if (seshStatus == SeshStatus.reged) {
-			PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
-			if (chnl == null) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
-			if (rslt == ResCmdRegChnl.RsltTypes.Reged.name()) {
-				chnl.chnlReged();
-			} else {
-				seshView.regChnlFailed(rslt);
-			}
-
+			CumExcpChnlNotExist, CumExcpIgnoreSeshStatus {
+		regChnlRsltCheckStates();
+		PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
+		if (chnl == null) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
+		}
+		if (rslt == ResCmdRegChnl.RsltTypes.Reged.name()) {
+			chnl.chnlReged();
 		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+			seshView.regChnlFailed(rslt);
 		}
 
 	}
@@ -457,22 +462,264 @@ public class PrestrSesh implements PrestrSeshIntfForSeshView,
 	@Override
 	public void clsChnlRslt(String chnlName, String rslt)
 			throws CumExcpChnlNotExist, CumExcpIllegalSeshStatus,
-			CumExcpIllegalChnlStatus {
-		if (seshStatus == SeshStatus.reged) {
-			PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
-			if (chnl == null) {
-				throw new CumExcpChnlNotExist(seshName, chnlName);
-			}
+			CumExcpIllegalChnlStatus, CumExcpIgnoreSeshStatus {
 
-			if (rslt == ResCmdClsChnl.RsltTypes.Clsed.name()) {
-				chnl.chnlClsed();
-			} else {
-				chnl.clsChnlFailed(rslt);
-			}
-		} else {
-			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		clsChnlRsltCheckStates();
+		PrestrChnlNotfyIntf chnl = chnls.get(chnlName);
+		if (chnl == null) {
+			throw new CumExcpChnlNotExist(seshName, chnlName);
 		}
 
+		if (rslt == ResCmdClsChnl.RsltTypes.Clsed.name()) {
+			chnl.chnlClsed();
+		} else {
+			chnl.clsChnlFailed(rslt);
+		}
+
+	}
+
+	protected void clsSeshCheckStates() throws CumExcpIllegalSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void regChnlCheckStates() throws CumExcpIllegalSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void regSeshCheckStates() throws CumExcpIllegalSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void clsChnlCheckStates() throws CumExcpIllegalSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void sendChnlCmdCheckStates() throws CumExcpIllegalSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void clsChnlRsltCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void clsSeshRsltCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsing) {
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void regChnlRsltCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void regSeshRsltCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+		} else if (seshStatus == SeshStatus.reged) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void audDiscnedCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void audJoinedChnlCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void audJoinedSeshCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void audLftChnlCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void audLftSeshCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void audRjctedChnlCheckStates() throws CumExcpIllegalSeshStatus,
+			CumExcpIgnoreSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.clsed) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+		}
+	}
+
+	protected void discnedCheckStates() throws CumExcpIllegalSeshStatus {
+		if (seshStatus == SeshStatus.init) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		} else if (seshStatus == SeshStatus.reging) {
+		} else if (seshStatus == SeshStatus.reged) {
+		} else if (seshStatus == SeshStatus.clsing) {
+		} else if (seshStatus == SeshStatus.clsed) {
+		} else if (seshStatus == SeshStatus.discned) {
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
+		}
 	}
 
 }

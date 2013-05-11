@@ -11,6 +11,9 @@ public class CumExcpIllegalSeshStatus extends CumExcpAbst {
 
 	private static final long serialVersionUID = 1L;
 
+	protected String seshName;
+	protected String status;
+
 	/**
 	 * @param seshName
 	 * @param status
@@ -18,4 +21,13 @@ public class CumExcpIllegalSeshStatus extends CumExcpAbst {
 	public CumExcpIllegalSeshStatus(String seshName, String status) {
 		super(seshName + "/" + status);
 	}
+
+	public String getSeshName() {
+		return seshName;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
 }

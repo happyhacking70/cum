@@ -6,7 +6,7 @@ package jp.happyhacking70.cum.prestr.chnlLyr;
 import java.util.HashMap;
 
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
-import jp.happyhacking70.cum.excp.prestr.CumExcpAudExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
@@ -117,7 +117,7 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * (java.lang.String)
 	 */
 	@Override
-	public void audJoinedChnl(String audName) throws CumExcpAudExist,
+	public void audJoinedChnl(String audName) throws CumExcpAudExists,
 			CumExcpIllegalChnlStatus {
 
 		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
@@ -125,7 +125,7 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 				auds.put(audName, audName);
 				chnlView.audJoined(audName);
 			} else {
-				throw new CumExcpAudExist(chnlName, audName);
+				throw new CumExcpAudExists(chnlName, audName);
 			}
 		} else {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
@@ -140,8 +140,12 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * (java.lang.String)
 	 */
 	@Override
-	public void audRjctedChnl(String audName) throws CumExcpIllegalChnlStatus {
+	public void audRjctedChnl(String audName) throws CumExcpIllegalChnlStatus,
+			CumExcpAudExists {
 		if (chnlStatus == ChnlStatus.reging || chnlStatus == ChnlStatus.reged) {
+			if (auds.containsKey(audName)) {
+				throw new CumExcpAudExists(chnlName, audName);
+			}
 			chnlView.audRjcted(audName);
 		} else {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
