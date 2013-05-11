@@ -197,7 +197,7 @@ public class PrestrSesh implements PrestrSeshIntf
 			HashMap<String, String> params) throws CumExcpChnlNotExist,
 			CumExcpIllegalSeshStatus {
 		sendChnlCmdCheckStates();
-		if (chnls.containsKey(chnlName)) {
+		if (!chnls.containsKey(chnlName)) {
 			throw new CumExcpChnlNotExist(seshName, chnlName);
 		}
 		adptr.sendChnlCmd(seshName, chnlName, params);
