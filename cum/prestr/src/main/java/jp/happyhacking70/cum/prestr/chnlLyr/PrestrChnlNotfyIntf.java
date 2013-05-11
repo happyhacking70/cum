@@ -30,10 +30,10 @@ public interface PrestrChnlNotfyIntf {
 	 * 
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
-	 * @throws CumExcpAudExists
+	 * @throws CumExcpAudNotExist
 	 */
 	public abstract void audRjctedChnl(String audName)
-			throws CumExcpIllegalChnlStatus, CumExcpAudExists;
+			throws CumExcpIllegalChnlStatus, CumExcpAudNotExist;
 
 	/**
 	 * Notifies audience left channel.

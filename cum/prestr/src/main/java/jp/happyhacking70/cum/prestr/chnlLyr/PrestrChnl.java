@@ -138,12 +138,12 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	@Override
 	public void audRjctedChnl(String audName) throws CumExcpIllegalChnlStatus,
-			CumExcpAudExists {
+			CumExcpAudNotExist {
 
 		try {
 			audRjctedChnlCheckStates();
-			if (auds.containsKey(audName)) {
-				throw new CumExcpAudExists(chnlName, audName);
+			if (!auds.containsKey(audName)) {
+				throw new CumExcpAudNotExist(chnlName, audName);
 			}
 			chnlView.audRjcted(audName);
 		} catch (CumExcpIgnoreChnlStatus e) {
