@@ -13,7 +13,7 @@ public class CumExcpSeshCannotBeReged extends CumExcpAbst {
 	String status;
 
 	/**
-	 * @param name
+	 * @param status
 	 */
 	public CumExcpSeshCannotBeReged(String status) {
 		this.status = status;

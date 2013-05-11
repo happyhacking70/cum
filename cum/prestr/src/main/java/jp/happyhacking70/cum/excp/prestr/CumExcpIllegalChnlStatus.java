@@ -16,7 +16,7 @@ public class CumExcpIllegalChnlStatus extends CumExcpAbst {
 
 	/**
 	 * @param chnlName
-	 * @param name
+	 * @param status
 	 */
 	public CumExcpIllegalChnlStatus(String chnlName, String status) {
 		super(chnlName + "/" + status);

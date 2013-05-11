@@ -15,7 +15,7 @@ public interface PrestrSeshViewIntf {
 	void seshReged();
 
 	/**
-	 * @param name
+	 * @param reason
 	 */
 	void regSeshFailed(String reason);
 

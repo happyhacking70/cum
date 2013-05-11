@@ -9,13 +9,15 @@ package jp.happyhacking70.cum.excp.prestr;
  */
 public class CumExcpAudExists extends CumExcpAbst {
 
+	private static final long serialVersionUID = 1L;
+
 	protected String seshName;
 	protected String chnlName;
 	protected String audName;
 
 	/**
 	 * @param seshName
-	 * @param string
+	 * @param chnlName
 	 * @param audName
 	 */
 	public CumExcpAudExists(String seshName, String chnlName, String audName) {
@@ -26,6 +28,10 @@ public class CumExcpAudExists extends CumExcpAbst {
 
 	}
 
+	/**
+	 * @param chnlName
+	 * @param audName
+	 */
 	public CumExcpAudExists(String chnlName, String audName) {
 		super("" + "/" + chnlName + "/" + audName);
 		this.chnlName = chnlName;
@@ -33,6 +39,16 @@ public class CumExcpAudExists extends CumExcpAbst {
 
 	}
 
-	private static final long serialVersionUID = 1L;
+	public String getSeshName() {
+		return seshName;
+	}
+
+	public String getChnlName() {
+		return chnlName;
+	}
+
+	public String getAudName() {
+		return audName;
+	}
 
 }

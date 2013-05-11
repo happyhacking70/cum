@@ -65,7 +65,7 @@ public interface PrestrSeshIntfForSeshView {
 	 * <LI>instantiate channel</LI>
 	 * <LI>put channel into channels
 	 * <LI>invoke
-	 * {@link PrestrAdptrIntf#regChnl(String, jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnlIntfFromChnlView, HashMap)}
+	 * {@link PrestrAdptrIntf#regChnl(String, String, jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnlIntfFromChnlView, HashMap)}
 	 * </LI>
 	 * </UL>
 	 * 

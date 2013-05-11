@@ -13,7 +13,7 @@ public class CumExcpSeshCannotBeClsed extends CumExcpAbst {
 	String status;
 
 	/**
-	 * @param name
+	 * @param status
 	 */
 	public CumExcpSeshCannotBeClsed(String status) {
 		this.status = status;
