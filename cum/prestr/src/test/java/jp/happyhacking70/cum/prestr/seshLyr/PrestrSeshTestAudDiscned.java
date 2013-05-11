@@ -5,8 +5,7 @@ package jp.happyhacking70.cum.prestr.seshLyr;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import jp.happyhacking70.cum.excp.CumExcpAudExists;
-import jp.happyhacking70.cum.excp.prestr.CumExcpAudExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreSeshStatus;
@@ -34,7 +33,7 @@ public class PrestrSeshTestAudDiscned extends PrestrSeshTestAbst {
 	public void TEST_audDiscned_REGING_OK() throws TestExcp,
 			CumExcpIllegalSeshStatus, CumExcpAudNotExist,
 			CumExcpIllegalChnlStatuMulti, CumExcpIgnoreSeshStatus,
-			CumExcpAudExists, CumExcpChnlNotExist, CumExcpAudExist,
+			CumExcpAudExists, CumExcpChnlNotExist, CumExcpAudExists,
 			CumExcpIllegalChnlStatus {
 		PrestrSesh sesh = gotoReging();
 
@@ -49,8 +48,7 @@ public class PrestrSeshTestAudDiscned extends PrestrSeshTestAbst {
 	public void TEST_audDiscned_REGING_NOAUD() throws TestExcp,
 			CumExcpIllegalSeshStatus, CumExcpAudNotExist,
 			CumExcpIllegalChnlStatuMulti, CumExcpIgnoreSeshStatus,
-			CumExcpAudExists, CumExcpChnlNotExist, CumExcpAudExist,
-			CumExcpIllegalChnlStatus {
+			CumExcpAudExists, CumExcpChnlNotExist, CumExcpIllegalChnlStatus {
 		PrestrSesh sesh = gotoReging();
 
 		sesh.audJoinedSesh(audNameA);

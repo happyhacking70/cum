@@ -16,7 +16,8 @@ public class DummySeshView implements PrestrSeshViewIntf {
 	protected String regChnlFailedReason = null;
 	protected String clsSeshFailedReason = null;
 	protected String audJoinedName = null;
-	protected String audDscnedName;
+	protected String audDscnedName = null;
+	protected String audLftName = null;
 
 	public boolean isReged() {
 		return isReged;
@@ -44,6 +45,10 @@ public class DummySeshView implements PrestrSeshViewIntf {
 
 	public String getAudDscnedName() {
 		return audDscnedName;
+	}
+
+	public String getAudLftName() {
+		return audLftName;
 	}
 
 	/*
@@ -131,6 +136,19 @@ public class DummySeshView implements PrestrSeshViewIntf {
 	@Override
 	public void audDscned(String audName) {
 		audDscnedName = audName;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking70.cum.prestr.prestrLyr.PrestrSeshViewIntf#audLft(java
+	 * .lang.String)
+	 */
+	@Override
+	public void audLft(String audName) {
+		audLftName = audName;
+
 	}
 
 }

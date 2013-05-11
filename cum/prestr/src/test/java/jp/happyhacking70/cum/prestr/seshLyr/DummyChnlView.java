@@ -3,6 +3,10 @@
  */
 package jp.happyhacking70.cum.prestr.seshLyr;
 
+import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
+import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
+import jp.happyhacking70.cum.excp.prestr.CumExcpSeshDiscned;
 import jp.happyhacking70.cum.prestr.chnlLyr.PrestrChnl;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
 
@@ -193,6 +197,11 @@ public class DummyChnlView implements PrestrChnlViewIntf {
 	public void clsChnlFailed(String rslt) {
 		this.rslt = rslt;
 
+	}
+
+	public void clsChnl() throws CumExcpIllegalChnlStatus, CumExcpChnlNotExist,
+			CumExcpIllegalSeshStatus, CumExcpSeshDiscned {
+		getChnl().clsChnl();
 	}
 
 }

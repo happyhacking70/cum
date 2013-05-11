@@ -4,7 +4,7 @@
 package jp.happyhacking70.cum.prestr.seshLyr;
 
 import static org.junit.Assert.assertEquals;
-import jp.happyhacking70.cum.excp.CumExcpAudExists;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreSeshStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatuMulti;

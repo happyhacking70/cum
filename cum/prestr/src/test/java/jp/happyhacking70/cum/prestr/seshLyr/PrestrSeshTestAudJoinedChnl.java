@@ -3,8 +3,7 @@
  */
 package jp.happyhacking70.cum.prestr.seshLyr;
 
-import jp.happyhacking70.cum.excp.CumExcpAudExists;
-import jp.happyhacking70.cum.excp.prestr.CumExcpAudExist;
+import jp.happyhacking70.cum.excp.prestr.CumExcpAudExists;
 import jp.happyhacking70.cum.excp.prestr.CumExcpAudNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpChnlNotExist;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreSeshStatus;
@@ -21,7 +20,7 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpIllegalSeshStatus.class)
 	public void TEST_audJoinedChnl_INIT() throws CumExcpAudNotExist,
-			CumExcpChnlNotExist, CumExcpAudExist, CumExcpIllegalChnlStatus,
+			CumExcpChnlNotExist, CumExcpAudExists, CumExcpIllegalChnlStatus,
 			CumExcpIllegalSeshStatus, CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = getSesh();
 		sesh.audJoinedChnl(chnlNameA, audNameA);
@@ -29,7 +28,7 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpIllegalSeshStatus.class)
 	public void TEST_audJoinedChnl_REGING() throws TestExcp,
-			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExist,
+			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExists,
 			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoReging();
@@ -39,8 +38,8 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test
 	public void TEST_audJoinedChnl_REGED() throws TestExcp, CumExcpAudNotExist,
-			CumExcpChnlNotExist, CumExcpAudExist, CumExcpIllegalChnlStatus,
-			CumExcpIllegalSeshStatus, CumExcpIgnoreSeshStatus, CumExcpAudExists {
+			CumExcpChnlNotExist, CumExcpAudExists, CumExcpIllegalChnlStatus,
+			CumExcpIllegalSeshStatus, CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoReged();
 
 		sesh.audJoinedSesh(audNameC);
@@ -50,9 +49,9 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpChnlNotExist.class)
 	public void TEST_audJoinedChnl_REGED_NOCHNL() throws TestExcp,
-			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExist,
+			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExists,
 			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
-			CumExcpIgnoreSeshStatus, CumExcpAudExists {
+			CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoReged();
 
 		sesh.audJoinedSesh(audNameC);
@@ -62,9 +61,9 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpAudNotExist.class)
 	public void TEST_audJoinedChnl_REGED_NOAUD() throws TestExcp,
-			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExist,
+			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExists,
 			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
-			CumExcpIgnoreSeshStatus, CumExcpAudExists {
+			CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoReged();
 
 		sesh.audJoinedChnl(chnlNameA, audNameC);
@@ -73,7 +72,7 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpIgnoreSeshStatus.class)
 	public void TEST_audJoinedChnl_CLSING() throws TestExcp,
-			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExist,
+			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExists,
 			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoClsing();
@@ -82,7 +81,7 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpIgnoreSeshStatus.class)
 	public void TEST_audJoinedChnl_CLSED() throws TestExcp, CumExcpAudNotExist,
-			CumExcpChnlNotExist, CumExcpAudExist, CumExcpIllegalChnlStatus,
+			CumExcpChnlNotExist, CumExcpAudExists, CumExcpIllegalChnlStatus,
 			CumExcpIllegalSeshStatus, CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoClsed();
 		sesh.audJoinedChnl(chnlNameA, audNameA);
@@ -90,7 +89,7 @@ public class PrestrSeshTestAudJoinedChnl extends PrestrSeshTestAbst {
 
 	@Test(expected = CumExcpIgnoreSeshStatus.class)
 	public void TEST_audJoinedChnl_DISCNED() throws TestExcp,
-			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExist,
+			CumExcpAudNotExist, CumExcpChnlNotExist, CumExcpAudExists,
 			CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		PrestrSesh sesh = gotoDiscned();
