@@ -28,7 +28,7 @@ import jp.happyhacking70.cum.prestr.prestrLyr.PrestrSeshViewIntf;
  * Presenter Session<BR>
  * <BR>
  * State Transition Diagram of Presenter Session <BR>
- * <img src="doc-files/PrestrSeshStateTransitionDiagram.jpg"
+ * <img src="doc-files/PrestrSeshStateTransitionDiagram.bmp"
  * alt="State Transition Diagram of Presenter Session"/> <BR>
  * Session Status and Methods<BR>
  * <iframe src="doc-files/PrestrSeshStateAndMethods.html" width="1300"
@@ -364,8 +364,8 @@ public class PrestrSesh implements PrestrSeshIntf
 	 */
 	@Override
 	synchronized public void audDiscned(String audName)
-			throws CumExcpIllegalSeshStatus, CumExcpAudNotExist,
-			CumExcpIllegalChnlStatuMulti, CumExcpIgnoreSeshStatus {
+			throws CumExcpIllegalSeshStatus, CumExcpIllegalChnlStatuMulti,
+			CumExcpIgnoreSeshStatus, CumExcpAudNotExist {
 
 		audDiscnedCheckStates();
 
@@ -378,6 +378,8 @@ public class PrestrSesh implements PrestrSeshIntf
 					chnl.audDiscned(audName);
 				} catch (CumExcpIllegalChnlStatus e) {
 					multiExcp.add(e);
+				} catch (CumExcpAudNotExist e) {
+					// aud may have rejected. just ignore
 				}
 			}
 			if (multiExcp.size() != 0) {

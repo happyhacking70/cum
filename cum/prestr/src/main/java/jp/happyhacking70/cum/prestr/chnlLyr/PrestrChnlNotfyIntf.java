@@ -30,10 +30,10 @@ public interface PrestrChnlNotfyIntf {
 	 * 
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
-	 * @throws CumExcpAudNotExist
+	 * @throws CumExcpAudExists
 	 */
 	public abstract void audRjctedChnl(String audName)
-			throws CumExcpIllegalChnlStatus, CumExcpAudNotExist;
+			throws CumExcpIllegalChnlStatus, CumExcpAudExists;
 
 	/**
 	 * Notifies audience left channel.
@@ -41,10 +41,9 @@ public interface PrestrChnlNotfyIntf {
 	 * 
 	 * @param audName
 	 * @throws CumExcpIllegalChnlStatus
-	 * @throws CumExcpAudNotExist
 	 */
 	public abstract void audLftChnl(String audName)
-			throws CumExcpIllegalChnlStatus, CumExcpAudNotExist;
+			throws CumExcpIllegalChnlStatus;
 
 	/**
 	 * Notifies audience is disconnected.

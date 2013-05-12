@@ -16,6 +16,16 @@ import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
 import jp.happyhacking70.cum.prestr.seshLyr.PrestrSeshIntfForChnlView;
 
 /**
+ * Presenter Channel<BR>
+ * <BR>
+ * State Transition Diagram of Presenter Channel <BR>
+ * <img src="doc-files/PrestrChnlStateTransitionDiagram.bmp"
+ * alt="State Transition Diagram of Presenter Channel"/> <BR>
+ * Channel Status and Methods<BR>
+ * <iframe src="doc-files/PrestrChnlStateAndMethods.html" width="1300"
+ * height="240"></iframe>
+ * 
+ * 
  * @author happyhacking70@gmail.com
  * 
  */
@@ -138,12 +148,12 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	@Override
 	public void audRjctedChnl(String audName) throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist {
+			CumExcpAudExists {
 
 		try {
 			audRjctedChnlCheckStates();
-			if (!auds.containsKey(audName)) {
-				throw new CumExcpAudNotExist(chnlName, audName);
+			if (auds.containsKey(audName)) {
+				throw new CumExcpAudExists(chnlName, audName);
 			}
 			chnlView.audRjcted(audName);
 		} catch (CumExcpIgnoreChnlStatus e) {
@@ -159,14 +169,13 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * java.lang.String)
 	 */
 	@Override
-	public void audLftChnl(String audName) throws CumExcpIllegalChnlStatus,
-			CumExcpAudNotExist {
+	public void audLftChnl(String audName) throws CumExcpIllegalChnlStatus {
 		try {
 			audLftChnlCheckStates();
-			if (!auds.containsKey(audName)) {
-				throw new CumExcpAudNotExist(chnlName, audName);
+			// aud may have rejected the chnl. Just ignore
+			if (auds.containsKey(audName)) {
+				chnlView.audLft(audName);
 			}
-			chnlView.audLft(audName);
 		} catch (CumExcpIgnoreChnlStatus e) {
 		}
 
