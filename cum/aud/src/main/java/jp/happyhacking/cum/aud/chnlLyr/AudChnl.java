@@ -13,6 +13,15 @@ import jp.happyhacking.cum.aud.seshLyr.AudSeshIntf;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 
 /**
+ * Audience Channel<BR>
+ * <BR>
+ * State Transition Diagram of Aud Channel <BR>
+ * <img src="doc-files/AudChnlStateTransitionDiagram.bmp"
+ * alt="State Transition Diagram of Aud Channel"/> <BR>
+ * Channel Status and Methods<BR>
+ * <iframe src="doc-files/AudChnlStateAndMethods.html" width="1700"
+ * height="300"></iframe>
+ * 
  * @author happyhacking70@gmail.com
  * 
  */
