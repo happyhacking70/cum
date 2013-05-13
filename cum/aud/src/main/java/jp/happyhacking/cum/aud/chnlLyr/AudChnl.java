@@ -149,6 +149,8 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 */
 	@Override
 	public void chnlJoinedFailed(String rslt) throws CumExcpIllegalChnlStatus {
+		// since join channel is session level, channel just change status
+		// without notifying channel view.
 		checkStatuschnlJoinedFailed();
 		chnlStatus = Status.init;
 	}
