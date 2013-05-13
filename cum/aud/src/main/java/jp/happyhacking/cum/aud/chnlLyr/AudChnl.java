@@ -225,10 +225,9 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlRjected()
 	 */
 	@Override
-	public void chnlRjected() throws CumExcpIllegalChnlStatus {
+	public void chnlRjcted() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlRjected();
 		chnlStatus = Status.init;
-
 	}
 
 	/*
@@ -361,6 +360,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		if (chnlStatus == Status.init) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.joining) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.joined) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.lving) {
@@ -370,7 +370,6 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		} else if (chnlStatus == Status.dscned) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.rjcting) {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		}
 	}
 
@@ -378,6 +377,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		if (chnlStatus == Status.init) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.joining) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.joined) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.lving) {
@@ -387,7 +387,6 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		} else if (chnlStatus == Status.dscned) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.rjcting) {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		}
 	}
 

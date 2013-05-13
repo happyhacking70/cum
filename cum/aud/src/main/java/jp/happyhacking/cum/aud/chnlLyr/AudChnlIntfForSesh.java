@@ -27,7 +27,7 @@ public interface AudChnlIntfForSesh {
 
 	void chnlRjcting() throws CumExcpIllegalChnlStatus;
 
-	void chnlRjected() throws CumExcpIllegalChnlStatus;
+	void chnlRjcted() throws CumExcpIllegalChnlStatus;
 
 	void chnlRjctFailed(String rslt) throws CumExcpIllegalChnlStatus;
 
