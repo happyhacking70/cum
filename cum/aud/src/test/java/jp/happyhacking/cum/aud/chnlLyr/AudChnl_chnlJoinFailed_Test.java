@@ -13,7 +13,7 @@ import org.junit.Test;
  * @author happyhacking70@gmail.com
  * 
  */
-public class AudChnl_chnlJoinedFailed_Test extends AudChnlTestAbst {
+public class AudChnl_chnlJoinFailed_Test extends AudChnlTestAbst {
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)
 	public void test_init() throws CumExcpIllegalChnlStatus {
