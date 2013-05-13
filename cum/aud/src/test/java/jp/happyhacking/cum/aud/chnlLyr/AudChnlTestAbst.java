@@ -91,7 +91,12 @@ abstract class AudChnlTestAbst {
 
 	protected AudChnl goto_dscned() throws TestExcp {
 		AudChnl chnl = goto_joined();
-		chnl.chnlDsconed();
+		try {
+			chnl.chnlDsconed();
+		} catch (CumExcpIllegalChnlStatus e) {
+			e.printStackTrace();
+			throw new TestExcp("chnlDsconed");
+		}
 		return chnl;
 
 	}

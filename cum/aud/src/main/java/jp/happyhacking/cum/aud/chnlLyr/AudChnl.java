@@ -446,6 +446,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		} else if (chnlStatus == Status.joined) {
 		} else if (chnlStatus == Status.lving) {
 		} else if (chnlStatus == Status.clsed) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.dscned) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.rjcting) {
@@ -458,7 +459,8 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlDscned()
 	 */
 	@Override
-	public void chnlDsconed() {
+	public void chnlDsconed() throws CumExcpIllegalChnlStatus {
+		checkStatuschnlDscned();
 		chnlStatus = Status.dscned;
 		chnlView.chnlDscned();
 	}

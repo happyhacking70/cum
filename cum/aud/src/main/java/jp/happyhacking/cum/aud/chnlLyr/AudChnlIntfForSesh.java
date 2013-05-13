@@ -38,5 +38,5 @@ public interface AudChnlIntfForSesh {
 	void chnlCmdRcved(String actionName, HashMap<String, String> params)
 			throws CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus;
 
-	void chnlDsconed();
+	void chnlDsconed() throws CumExcpIllegalChnlStatus;
 }
