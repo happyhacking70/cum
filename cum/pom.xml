@@ -22,6 +22,7 @@
     <module>cmd</module>
     <module>prestr</module>
     <module>presSvr</module>
+    <module>aud</module>
   </modules>
   
   <dependencies>
