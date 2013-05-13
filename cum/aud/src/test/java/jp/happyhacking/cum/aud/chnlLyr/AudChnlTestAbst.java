@@ -15,8 +15,10 @@ import jp.happyhacking70.cum.cmd.rsc.ChnlRscJustName;
  */
 abstract class AudChnlTestAbst {
 	static final String chnlName = "testChnl";
+	static final String actionName = "testAction";
 	static final ChnlRscJustName rscA = new ChnlRscJustName("rscA");
 	static final ChnlRscJustName rscB = new ChnlRscJustName("rscB");
+	static final HashMap<String, String> params = new HashMap<String, String>();
 	protected HashMap<String, ChnlRscIntf> rsces = new HashMap<String, ChnlRscIntf>();
 	protected DummyAudSesh sesh;
 	protected DummyChniView chnlView;

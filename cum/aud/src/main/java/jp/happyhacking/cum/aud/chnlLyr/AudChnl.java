@@ -162,7 +162,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 */
 	@Override
 	public void chnlCmdRcved(String actionName, HashMap<String, String> params)
-			throws CumExcpIllegalChnlStatus {
+			throws CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
 		checkStatuschnlCmdRcved();
 		chnlView.chnlCmdRcved(actionName, params);
 
@@ -423,14 +423,16 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		}
 	}
 
-	void checkStatuschnlCmdRcved() throws CumExcpIllegalChnlStatus {
+	void checkStatuschnlCmdRcved() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
 		if (chnlStatus == Status.init) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.joining) {
 		} else if (chnlStatus == Status.joined) {
 		} else if (chnlStatus == Status.lving) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.clsed) {
-			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.dscned) {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.rjcting) {
