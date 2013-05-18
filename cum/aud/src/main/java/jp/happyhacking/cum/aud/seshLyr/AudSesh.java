@@ -231,10 +231,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 	 */
 	@Override
 	public void joinChnl(String chnlName) throws CumExcpIllegalSeshStatus,
-			CumExcpChnlNotExist {
+			CumExcpChnlNotExist, CumExcpIllegalChnlStatus {
 		joinChnlCheckStatus();
-		getChnl(chnlName);
-
+		AudChnlIntfForSesh chnl = getChnl(chnlName);
+		chnl.chnlJoining();
 		adptr.joinChnl(seshName, chnlName, audName);
 	}
 

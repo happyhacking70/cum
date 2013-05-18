@@ -14,7 +14,8 @@ import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
 public interface AudSeshChnlIntf {
 
 	public abstract void joinChnl(String chnlName)
-			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist;
+			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist,
+			CumExcpIllegalChnlStatus;
 
 	public abstract void rjctChnl(String chnlName)
 			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist,
