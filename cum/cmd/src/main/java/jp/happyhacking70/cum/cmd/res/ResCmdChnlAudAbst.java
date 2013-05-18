@@ -31,9 +31,9 @@ public abstract class ResCmdChnlAudAbst extends CmdChnlAudAbst implements
 	 * @param chnlName
 	 * @param audName
 	 */
-	public ResCmdChnlAudAbst(String seshName, String chnlName, String audName,
-			String rslt) {
-		super(seshName, chnlName, audName);
+	public ResCmdChnlAudAbst(String seshName, String chnlType, String chnlName,
+			String audName, String rslt) {
+		super(seshName, chnlType, chnlName, audName);
 		this.rslt = rslt;
 	}
 

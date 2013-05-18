@@ -15,8 +15,15 @@ import org.w3c.dom.Document;
  */
 public class NtfyCmdLvChnl extends NtfyCmdChnlAudAbst {
 
-	public NtfyCmdLvChnl(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	/**
+	 * @param seshName
+	 * @param chnlType
+	 * @param chnlName
+	 * @param audName
+	 */
+	public NtfyCmdLvChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	public NtfyCmdLvChnl(Document doc) throws CumExcpIllegalCmdDoc {

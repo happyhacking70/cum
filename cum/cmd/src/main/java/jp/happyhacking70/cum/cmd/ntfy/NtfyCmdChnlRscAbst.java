@@ -24,17 +24,17 @@ abstract public class NtfyCmdChnlRscAbst extends CmdChnlRscAbst implements
 	 * @param chnlName
 	 * @param rsces
 	 */
-	public NtfyCmdChnlRscAbst(String seshName, String chnlName,
-			ArrayList<ChnlRscIntf> rsces) {
-		super(seshName, chnlName, rsces);
+	public NtfyCmdChnlRscAbst(String seshName, String chnlType,
+			String chnlName, ArrayList<ChnlRscIntf> rsces) {
+		super(seshName, chnlType, chnlName, rsces);
 	}
 
 	/**
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public NtfyCmdChnlRscAbst(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public NtfyCmdChnlRscAbst(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	/**

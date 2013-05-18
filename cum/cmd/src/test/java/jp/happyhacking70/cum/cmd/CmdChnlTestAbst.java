@@ -22,6 +22,7 @@ public abstract class CmdChnlTestAbst extends CmdSeshTestAbst {
 	}
 
 	static final protected String chnlName = "testChannel";
+	static final protected String chnlType = "testChannelType";
 
 	/**
 	 * Test method for

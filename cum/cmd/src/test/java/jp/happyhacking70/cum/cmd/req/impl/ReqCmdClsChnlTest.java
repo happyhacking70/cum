@@ -28,7 +28,7 @@ public class ReqCmdClsChnlTest extends ReqCmdChnlTestAbst {
 		super();
 	}
 
-	static String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+	static String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 
 	/**
 	 * @throws java.lang.Exception
@@ -40,7 +40,7 @@ public class ReqCmdClsChnlTest extends ReqCmdChnlTestAbst {
 
 	@Override
 	protected CmdAbst getCmdNormal() {
-		return new ReqCmdClsChnl(seshName, chnlName);
+		return new ReqCmdClsChnl(seshName, chnlType, chnlName);
 	}
 
 	@Override

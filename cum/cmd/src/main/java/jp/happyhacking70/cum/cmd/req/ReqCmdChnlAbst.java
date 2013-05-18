@@ -16,10 +16,11 @@ abstract public class ReqCmdChnlAbst extends CmdChnlAbst implements ReqCmdIntf {
 
 	/**
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 */
-	public ReqCmdChnlAbst(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public ReqCmdChnlAbst(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	/**

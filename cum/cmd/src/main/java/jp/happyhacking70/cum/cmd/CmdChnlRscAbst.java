@@ -26,16 +26,16 @@ abstract public class CmdChnlRscAbst extends CmdChnlAbst implements
 		CmdWithRscIntf {
 	final protected CopyOnWriteArrayList<ChnlRscIntf> rscData = new CopyOnWriteArrayList<ChnlRscIntf>();
 
-	public CmdChnlRscAbst(String seshName, String chnlName,
+	public CmdChnlRscAbst(String seshName, String chnlType, String chnlName,
 			List<ChnlRscIntf> rsces) {
-		super(seshName, chnlName);
+		super(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rsces) {
 			addRscData(rsc);
 		}
 	}
 
-	public CmdChnlRscAbst(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public CmdChnlRscAbst(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	/**

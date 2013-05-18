@@ -24,7 +24,7 @@ public class ResCmdJoinChnlTest extends ResCmdChnlAudTestAbst {
 		super();
 	}
 
-	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" RSLT=\"Joined\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
+	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Joined\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
 	static final ResCmdJoinChnl.RsltTypes rslt = ResCmdJoinChnl.RsltTypes.Joined;
 
 	/**
@@ -37,7 +37,8 @@ public class ResCmdJoinChnlTest extends ResCmdChnlAudTestAbst {
 
 	@Override
 	protected CmdAbst getCmdNormal() {
-		return new ResCmdJoinChnl(seshName, chnlName, audName, rslt.name());
+		return new ResCmdJoinChnl(seshName, chnlType, chnlName, audName,
+				rslt.name());
 	}
 
 	@Override

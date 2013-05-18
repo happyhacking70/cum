@@ -21,8 +21,8 @@ public class ReqCmdRegChnl extends ReqCmdChnlRscAbst implements
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public ReqCmdRegChnl(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public ReqCmdRegChnl(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	/**

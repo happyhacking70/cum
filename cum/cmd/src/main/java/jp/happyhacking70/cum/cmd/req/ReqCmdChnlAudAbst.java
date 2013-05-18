@@ -25,11 +25,13 @@ abstract public class ReqCmdChnlAudAbst extends CmdChnlAudAbst implements
 
 	/**
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 * @param audName
 	 */
-	public ReqCmdChnlAudAbst(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	public ReqCmdChnlAudAbst(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	/*

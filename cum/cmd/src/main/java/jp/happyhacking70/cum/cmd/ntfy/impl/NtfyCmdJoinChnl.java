@@ -17,11 +17,13 @@ public class NtfyCmdJoinChnl extends NtfyCmdChnlAudAbst {
 
 	/**
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 * @param audName
 	 */
-	public NtfyCmdJoinChnl(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	public NtfyCmdJoinChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	/**

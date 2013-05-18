@@ -22,8 +22,8 @@ abstract public class ReqCmdChnlRscAbst extends CmdChnlRscAbst implements
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public ReqCmdChnlRscAbst(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public ReqCmdChnlRscAbst(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	/**

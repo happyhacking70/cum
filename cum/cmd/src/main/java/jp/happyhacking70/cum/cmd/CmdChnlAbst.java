@@ -16,9 +16,11 @@ import org.w3c.dom.Element;
  */
 abstract public class CmdChnlAbst extends CmdSeshAbst {
 	protected String chnlName;
+	protected String chnlType;
 
-	public CmdChnlAbst(String seshName, String chnlName) {
+	public CmdChnlAbst(String seshName, String chnlType, String chnlName) {
 		super(seshName);
+		this.chnlType = chnlType;
 		this.chnlName = chnlName;
 	}
 
@@ -28,15 +30,25 @@ abstract public class CmdChnlAbst extends CmdSeshAbst {
 	 */
 	public CmdChnlAbst(Document doc) throws CumExcpIllegalCmdDoc {
 		super(doc);
+
 		setChnlNameFromDoc(doc);
+		setChnlTypeFromDoc(doc);
 	}
 
 	protected final void setChnlNameFromDoc(Document doc) {
 		this.chnlName = getChnlNameFromDoc(doc);
 	}
 
+	protected final void setChnlTypeFromDoc(Document doc) {
+		this.chnlType = getChnlTypeFromDoc(doc);
+	}
+
 	public final String getChnlName() {
 		return chnlName;
+	}
+
+	public final String getChnlType() {
+		return chnlType;
 	}
 
 	@Override
@@ -44,6 +56,7 @@ abstract public class CmdChnlAbst extends CmdSeshAbst {
 			throws CumExcpXMLGenFailed {
 		super.configureDomCocument(cmdElem);
 		cmdElem.setAttribute("CHNL", getChnlName());
+		cmdElem.setAttribute("CHNLTYPE", getChnlType());
 	}
 
 	protected static final String getChnlNameFromDoc(Document doc) {
@@ -51,4 +64,8 @@ abstract public class CmdChnlAbst extends CmdSeshAbst {
 				.getNamedItem("CHNL").getNodeValue();
 	}
 
+	protected static final String getChnlTypeFromDoc(Document doc) {
+		return doc.getDocumentElement().getChildNodes().item(0).getAttributes()
+				.getNamedItem("CHNLTYPE").getNodeValue();
+	}
 }

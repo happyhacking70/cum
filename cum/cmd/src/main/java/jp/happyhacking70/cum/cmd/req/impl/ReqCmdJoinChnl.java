@@ -21,8 +21,9 @@ public class ReqCmdJoinChnl extends ReqCmdChnlAudAbst implements
 		super(doc);
 	}
 
-	public ReqCmdJoinChnl(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	public ReqCmdJoinChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	/*

@@ -28,7 +28,7 @@ public class ReqCmdJoinChnlTest extends ReqCmdChnlAudTestAbst {
 		super();
 	}
 
-	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 
 	/**
 	 * @throws java.lang.Exception
@@ -45,7 +45,7 @@ public class ReqCmdJoinChnlTest extends ReqCmdChnlAudTestAbst {
 	 */
 	@Override
 	protected CmdAbst getCmdNormal() {
-		return new ReqCmdJoinChnl(seshName, chnlName, audName);
+		return new ReqCmdJoinChnl(seshName, chnlType, chnlName, audName);
 	}
 
 	/*

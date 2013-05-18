@@ -33,14 +33,14 @@ public class ReqCmdRegChnlTest extends ReqCmdChnlTestAbst {
 		super();
 	}
 
-	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
+	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
 
 	static protected ChnlRscImg rscA = new ChnlRscImg("a", null);
 	static protected ChnlRscImg rscB = new ChnlRscImg("b", null);
 
 	@Override
 	protected CmdAbst getCmdNormal() {
-		ReqCmdRegChnl cmd = new ReqCmdRegChnl(seshName, chnlName);
+		ReqCmdRegChnl cmd = new ReqCmdRegChnl(seshName, chnlType, chnlName);
 		cmd.addRscData(rscA);
 		cmd.addRscData(rscB);
 		return cmd;

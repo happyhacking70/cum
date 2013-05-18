@@ -17,8 +17,9 @@ import org.w3c.dom.Element;
 abstract public class CmdChnlAudAbst extends CmdChnlAbst {
 	protected String audName;
 
-	public CmdChnlAudAbst(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName);
+	public CmdChnlAudAbst(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName);
 		this.audName = audName;
 	}
 

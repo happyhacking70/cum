@@ -24,7 +24,7 @@ public class NtfyCmdClsChnlTest extends NtfyCmdChnlTestAbst {
 		super();
 	}
 
-	static String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
+	static String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
 
 	/**
 	 * @throws java.lang.Exception
@@ -36,7 +36,7 @@ public class NtfyCmdClsChnlTest extends NtfyCmdChnlTestAbst {
 
 	@Override
 	protected CmdAbst getCmdNormal() {
-		return new NtfyCmdClsChnl(seshName, chnlName);
+		return new NtfyCmdClsChnl(seshName, chnlType, chnlName);
 	}
 
 	@Override

@@ -16,10 +16,11 @@ public class NtfyCmdClsChnl extends NtfyCmdChnlAbst {
 
 	/**
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 */
-	public NtfyCmdClsChnl(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public NtfyCmdClsChnl(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	/**

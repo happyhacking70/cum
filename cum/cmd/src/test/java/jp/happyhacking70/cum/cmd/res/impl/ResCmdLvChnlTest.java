@@ -24,7 +24,7 @@ public class ResCmdLvChnlTest extends ResCmdChnlAudTestAbst {
 		super();
 	}
 
-	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" RSLT=\"Left\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
+	static final public String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Left\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
 	static final ResCmdLvChnl.RsltTypes rslt = ResCmdLvChnl.RsltTypes.Left;
 
 	/**
@@ -37,7 +37,8 @@ public class ResCmdLvChnlTest extends ResCmdChnlAudTestAbst {
 
 	@Override
 	protected CmdAbst getCmdNormal() {
-		return new ResCmdLvChnl(seshName, chnlName, audName, rslt.name());
+		return new ResCmdLvChnl(seshName, chnlType, chnlName, audName,
+				rslt.name());
 	}
 
 	@Override

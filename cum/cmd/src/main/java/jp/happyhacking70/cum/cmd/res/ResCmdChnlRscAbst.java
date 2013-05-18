@@ -26,8 +26,9 @@ abstract public class ResCmdChnlRscAbst extends CmdChnlRscAbst implements
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public ResCmdChnlRscAbst(String seshName, String chnlName, String rslt) {
-		super(seshName, chnlName);
+	public ResCmdChnlRscAbst(String seshName, String chnlType, String chnlName,
+			String rslt) {
+		super(seshName, chnlType, chnlName);
 		this.rslt = rslt;
 	}
 
@@ -40,9 +41,9 @@ abstract public class ResCmdChnlRscAbst extends CmdChnlRscAbst implements
 	 * @param chnlName
 	 * @param rsces
 	 */
-	public ResCmdChnlRscAbst(String seshName, String chnlName,
+	public ResCmdChnlRscAbst(String seshName, String chnlType, String chnlName,
 			List<ChnlRscIntf> rsces, String rslt) {
-		super(seshName, chnlName, rsces);
+		super(seshName, chnlType, chnlName, rsces);
 		this.rslt = rslt;
 	}
 

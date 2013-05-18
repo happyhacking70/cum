@@ -25,7 +25,7 @@ public class NtfyCmdRegChnlTest extends NtfyCmdChnlTestAbst {
 		super();
 	}
 
-	static String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
+	static String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
 
 	/**
 	 * @throws java.lang.Exception
@@ -38,7 +38,7 @@ public class NtfyCmdRegChnlTest extends NtfyCmdChnlTestAbst {
 	@Override
 	protected CmdAbst getCmdNormal() {
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 		cmd.addRscData(new ChnlRscImg("a", null));
 		cmd.addRscData(new ChnlRscImg("b", null));
 		return cmd;

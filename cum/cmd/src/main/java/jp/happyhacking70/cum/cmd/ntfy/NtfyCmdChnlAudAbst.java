@@ -20,8 +20,9 @@ abstract public class NtfyCmdChnlAudAbst extends CmdChnlAudAbst implements
 	 * @param chnlName
 	 * @param audName
 	 */
-	public NtfyCmdChnlAudAbst(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	public NtfyCmdChnlAudAbst(String seshName, String chnlType,
+			String chnlName, String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	/**

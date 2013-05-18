@@ -18,8 +18,9 @@ public abstract class ResCmdChnlAbst extends CmdChnlAbst implements ResCmdIntf {
 
 	protected String rslt;
 
-	public ResCmdChnlAbst(String seshName, String chnlName, String rslt) {
-		super(seshName, chnlName);
+	public ResCmdChnlAbst(String seshName, String chnlType, String chnlName,
+			String rslt) {
+		super(seshName, chnlType, chnlName);
 		this.rslt = rslt;
 	}
 

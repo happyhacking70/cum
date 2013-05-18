@@ -44,9 +44,9 @@ public class ResCmdRjctChnl extends ResCmdChnlAudAbst {
 	 * @param audName
 	 * @param rslt
 	 */
-	public ResCmdRjctChnl(String seshName, String chnlName, String audName,
-			String rslt) {
-		super(seshName, chnlName, audName, rslt);
+	public ResCmdRjctChnl(String seshName, String chnlType, String chnlName,
+			String audName, String rslt) {
+		super(seshName, chnlType, chnlName, audName, rslt);
 	}
 
 	/*

@@ -45,9 +45,9 @@ public class ResCmdRegChnl extends ResCmdChnlRscAbst {
 	 * @param rsces
 	 * @param clsed
 	 */
-	public ResCmdRegChnl(String seshName, String chnlName,
+	public ResCmdRegChnl(String seshName, String chnlType, String chnlName,
 			List<ChnlRscIntf> rsces, RsltTypes rslt) {
-		super(seshName, chnlName, rsces, rslt.name());
+		super(seshName, chnlType, chnlName, rsces, rslt.name());
 
 	}
 

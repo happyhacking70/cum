@@ -30,8 +30,9 @@ public class ReqCmdRjctChnl extends ReqCmdChnlAudAbst implements
 	 * @param chnlName
 	 * @param audName
 	 */
-	public ReqCmdRjctChnl(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	public ReqCmdRjctChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	/*

@@ -42,9 +42,9 @@ public class ResCmdJoinChnl extends ResCmdChnlAudAbst {
 		super(doc);
 	}
 
-	public ResCmdJoinChnl(String seshName, String chnlName, String audName,
-			String rslt) {
-		super(seshName, chnlName, audName, rslt);
+	public ResCmdJoinChnl(String seshName, String chnlType, String chnlName,
+			String audName, String rslt) {
+		super(seshName, chnlType, chnlName, audName, rslt);
 	}
 
 	/*

@@ -21,8 +21,8 @@ public class ReqCmdClsChnl extends ReqCmdChnlAbst implements
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public ReqCmdClsChnl(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public ReqCmdClsChnl(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	public ReqCmdClsChnl(Document doc) throws CumExcpIllegalCmdDoc {

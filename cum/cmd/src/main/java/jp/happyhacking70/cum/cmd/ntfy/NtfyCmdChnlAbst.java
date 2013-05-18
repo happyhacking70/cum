@@ -19,8 +19,8 @@ public abstract class NtfyCmdChnlAbst extends CmdChnlAbst implements
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public NtfyCmdChnlAbst(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public NtfyCmdChnlAbst(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
 	}
 
 	public NtfyCmdChnlAbst(Document doc) throws CumExcpIllegalCmdDoc {

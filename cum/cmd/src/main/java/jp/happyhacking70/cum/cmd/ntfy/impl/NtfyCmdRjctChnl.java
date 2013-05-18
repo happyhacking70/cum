@@ -17,11 +17,13 @@ public class NtfyCmdRjctChnl extends NtfyCmdChnlAudAbst {
 
 	/**
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 * @param audName
 	 */
-	public NtfyCmdRjctChnl(String seshName, String chnlName, String audName) {
-		super(seshName, chnlName, audName);
+	public NtfyCmdRjctChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
+		super(seshName, chnlType, chnlName, audName);
 	}
 
 	/**

@@ -17,18 +17,21 @@ import org.w3c.dom.Document;
  * 
  */
 public class NtfyCmdRegChnl extends NtfyCmdChnlRscAbst {
+	protected String chnlType;
 
-	public NtfyCmdRegChnl(String seshName, String chnlName,
+	public NtfyCmdRegChnl(String seshName, String chnlType, String chnlName,
 			ArrayList<ChnlRscIntf> rsces) {
-		super(seshName, chnlName, rsces);
+		super(seshName, chnlType, chnlName, rsces);
+		this.chnlType = chnlType;
 	}
 
 	/**
 	 * @param seshName
 	 * @param chnlName
 	 */
-	public NtfyCmdRegChnl(String seshName, String chnlName) {
-		super(seshName, chnlName);
+	public NtfyCmdRegChnl(String seshName, String chnlType, String chnlName) {
+		super(seshName, chnlType, chnlName);
+		this.chnlType = chnlType;
 	}
 
 	/**

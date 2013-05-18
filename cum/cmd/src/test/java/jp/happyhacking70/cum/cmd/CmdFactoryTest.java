@@ -49,6 +49,7 @@ public class CmdFactoryTest {
 	static final String seshName = "testSession";
 	static final String channelName = "testChannel";
 	static final String audienceName = "testAudience";
+	static final String ChnlType = "testChannelType";
 
 	@Test
 	public void testReqCmdRegSesh() throws CumExcpIllegalCmdXML,
@@ -105,12 +106,13 @@ public class CmdFactoryTest {
 	@Test
 	public void testReqCmdRegChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
 		ReqCmdRegChnl cmd = (ReqCmdRegChnl) cf.getCmdInstance(xml);
 		assertEquals(ReqCmdRegChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 
 		assertEquals(channelName, cmd.getChnlName());
+		assertEquals(ChnlType, cmd.getChnlType());
 
 	}
 
@@ -134,56 +136,61 @@ public class CmdFactoryTest {
 	@Test
 	public void testResCmdRegChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" RSLT=\"Reged\" SESH=\"testSession\" TYPE=\"RES\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Reged\" SESH=\"testSession\" TYPE=\"RES\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
 		ResCmdRegChnl cmd = (ResCmdRegChnl) cf.getCmdInstance(xml);
 		assertEquals(ResCmdRegChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		checkRsces(cmd.getRscData());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testNtfyCmdRegChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
 		NtfyCmdRegChnl cmd = (NtfyCmdRegChnl) cf.getCmdInstance(xml);
 
 		assertEquals(NtfyCmdRegChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		checkRsces(cmd.getRscData());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testReqCmdClsChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 		ReqCmdClsChnl cmd = (ReqCmdClsChnl) cf.getCmdInstance(xml);
 		assertEquals(ReqCmdClsChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
+		assertEquals(ChnlType, cmd.getChnlType());
 
 	}
 
 	@Test
 	public void testResCmdClsChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" RSLT=\"Clsed\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Clsed\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
 		ResCmdClsChnl cmd = (ResCmdClsChnl) cf.getCmdInstance(xml);
 		assertEquals(ResCmdClsChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
+		assertEquals(ChnlType, cmd.getChnlType());
 
 	}
 
 	@Test
 	public void testNtfyCmdClsChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
 		NtfyCmdClsChnl cmd = (NtfyCmdClsChnl) cf.getCmdInstance(xml);
 		assertEquals(NtfyCmdClsChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
+		assertEquals(ChnlType, cmd.getChnlType());
 
 	}
 
@@ -220,67 +227,73 @@ public class CmdFactoryTest {
 	@Test
 	public void testReqCmdJoinChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 		ReqCmdJoinChnl cmd = (ReqCmdJoinChnl) cf.getCmdInstance(xml);
 		assertEquals(ReqCmdJoinChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
+		assertEquals(ChnlType, cmd.getChnlType());
 
 	}
 
 	@Test
 	public void testResCmdJoinChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" RSLT=\"Joined\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Joined\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
 		ResCmdJoinChnl cmd = (ResCmdJoinChnl) cf.getCmdInstance(xml);
 		assertEquals(ResCmdJoinChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
+		assertEquals(ChnlType, cmd.getChnlType());
 
 	}
 
 	@Test
 	public void testNtfyCmdJoinChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
 		NtfyCmdJoinChnl cmd = (NtfyCmdJoinChnl) cf.getCmdInstance(xml);
 		assertEquals(NtfyCmdJoinChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testReqCmdLvChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 		ReqCmdLvChnl cmd = (ReqCmdLvChnl) cf.getCmdInstance(xml);
 		assertEquals(ReqCmdLvChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testResCmdLvChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" RSLT=\"Left\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Left\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
 		ResCmdLvChnl cmd = (ResCmdLvChnl) cf.getCmdInstance(xml);
 		assertEquals(ResCmdLvChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testNtfyCmdLvChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"LvChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
 		NtfyCmdLvChnl cmd = (NtfyCmdLvChnl) cf.getCmdInstance(xml);
 		assertEquals(NtfyCmdLvChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
@@ -316,34 +329,37 @@ public class CmdFactoryTest {
 	@Test
 	public void testReqCmdRjctChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RjctChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RjctChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 		ReqCmdRjctChnl cmd = (ReqCmdRjctChnl) cf.getCmdInstance(xml);
 		assertEquals(ReqCmdRjctChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testResCmdRjctChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RjctChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" RSLT=\"Rjcted\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RjctChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" RSLT=\"Rjcted\" SESH=\"testSession\" TYPE=\"RES\"/></CUM>";
 		ResCmdRjctChnl cmd = (ResCmdRjctChnl) cf.getCmdInstance(xml);
 		assertEquals(ResCmdRjctChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 	@Test
 	public void testNtfyCmdRjctChnl() throws CumExcpIllegalCmdXML,
 			CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RjctChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RjctChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>";
 		NtfyCmdRjctChnl cmd = (NtfyCmdRjctChnl) cf.getCmdInstance(xml);
 		assertEquals(NtfyCmdRjctChnl.class, cmd.getClass());
 		assertEquals(seshName, cmd.getSeshName());
 		assertEquals(channelName, cmd.getChnlName());
 		assertEquals(audienceName, cmd.getAudName());
+		assertEquals(ChnlType, cmd.getChnlType());
 	}
 
 }
