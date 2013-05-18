@@ -52,18 +52,22 @@ public class AudChnl_chnlCmdRcved_Test extends AudChnlTestAbst {
 		chnl.chnlCmdRcved(actionName, params);
 	}
 
-	@Test(expected = CumExcpIgnoreChnlStatus.class)
+	@Test
 	public void test_lving() throws TestExcp, CumExcpIllegalChnlStatus,
 			CumExcpIgnoreChnlStatus {
 		AudChnl chnl = goto_lving();
 		chnl.chnlCmdRcved(actionName, params);
+		assertNull(chnlView.getActionName());
+		assertNull(chnlView.getParams());
 	}
 
-	@Test(expected = CumExcpIgnoreChnlStatus.class)
+	@Test
 	public void test_clsed() throws TestExcp, CumExcpIllegalChnlStatus,
 			CumExcpIgnoreChnlStatus {
 		AudChnl chnl = goto_clsed();
 		chnl.chnlCmdRcved(actionName, params);
+		assertNull(chnlView.getActionName());
+		assertNull(chnlView.getParams());
 	}
 
 	@Test(expected = CumExcpIllegalChnlStatus.class)

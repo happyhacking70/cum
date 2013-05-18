@@ -45,4 +45,27 @@ public interface AudSeshViewIntf {
 	 */
 	AudChnlViewIntf getChnlView(String chnlType);
 
+	/**
+	 * @param chnlName
+	 */
+	void chnlRged(String chnlName);
+
+	/**
+	 * @param chnlName
+	 * @param rslt
+	 */
+	void chnlJoinFailed(String chnlName, String rslt);
+
+	/**
+	 * @param chnlName
+	 * 
+	 */
+	void chnlRjcted(String chnlName);
+
+	/**
+	 * @param chnlName
+	 * @param rslt
+	 */
+	void chnlRjctFailed(String chnlName, String rslt);
+
 }

@@ -36,4 +36,9 @@ public interface AudChnlViewIntf {
 	 * 
 	 */
 	void chnlDscned();
+
+	/**
+	 * 
+	 */
+	void seshLving();
 }

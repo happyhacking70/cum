@@ -20,6 +20,11 @@ public class DummyChniView implements AudChnlViewIntf {
 	protected boolean chnlLft;
 	protected String rslt;
 	protected boolean dscned;
+	protected boolean seshLving = false;
+
+	public boolean isSeshLving() {
+		return seshLving;
+	}
 
 	public boolean isJoined() {
 		return joined;
@@ -129,4 +134,13 @@ public class DummyChniView implements AudChnlViewIntf {
 		dscned = true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.audLyr.AudChnlViewIntf#seshLving()
+	 */
+	@Override
+	public void seshLving() {
+		seshLving = true;
+	}
 }

@@ -5,7 +5,9 @@ package jp.happyhacking.cum.aud.chnlLyr;
 
 import java.util.HashMap;
 
+import jp.happyhacking.cum.aud.excp.CumExcpChnlNotExist;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
+import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscJustName;
 
@@ -15,6 +17,7 @@ import jp.happyhacking70.cum.cmd.rsc.ChnlRscJustName;
  */
 abstract class AudChnlTestAbst {
 	static final String chnlName = "testChnl";
+	static final String chnlType = "testChnlType";
 	static final String actionName = "testAction";
 	static final ChnlRscJustName rscA = new ChnlRscJustName("rscA");
 	static final ChnlRscJustName rscB = new ChnlRscJustName("rscB");
@@ -28,7 +31,7 @@ abstract class AudChnlTestAbst {
 		rsces.put(rscB.getName(), rscB);
 		sesh = new DummyAudSesh();
 		chnlView = new DummyChniView();
-		AudChnl chnl = new AudChnl(chnlName, rsces, sesh, chnlView);
+		AudChnl chnl = new AudChnl(chnlType, chnlName, rsces, sesh, chnlView);
 
 		return chnl;
 	}
@@ -73,6 +76,12 @@ abstract class AudChnlTestAbst {
 		} catch (CumExcpIllegalChnlStatus e) {
 			e.printStackTrace();
 			throw new TestExcp("chnlJoining");
+		} catch (CumExcpIllegalSeshStatus e) {
+			e.printStackTrace();
+			throw new TestExcp("chnlJoining");
+		} catch (CumExcpChnlNotExist e) {
+			e.printStackTrace();
+			throw new TestExcp("chnlJoining");
 		}
 		return chnl;
 
@@ -92,7 +101,7 @@ abstract class AudChnlTestAbst {
 	protected AudChnl goto_dscned() throws TestExcp {
 		AudChnl chnl = goto_joined();
 		try {
-			chnl.chnlDsconed();
+			chnl.chnlDscned();
 		} catch (CumExcpIllegalChnlStatus e) {
 			e.printStackTrace();
 			throw new TestExcp("chnlDsconed");

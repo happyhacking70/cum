@@ -63,11 +63,16 @@ public class AudChnl_seshClsed_Test extends AudChnlTestAbst {
 
 	}
 
-	@Test(expected = CumExcpIgnoreChnlStatus.class)
+	@Test
 	public void test_clsed() throws TestExcp, CumExcpIgnoreChnlStatus,
 			CumExcpIllegalChnlStatus {
 		AudChnl chnl = goto_clsed();
+
+		AudChnl.Status status = chnl.chnlStatus;
+
 		chnl.seshClsed();
+
+		assertEquals(status, chnl.chnlStatus);
 
 	}
 

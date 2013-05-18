@@ -3,7 +3,9 @@
  */
 package jp.happyhacking.cum.aud.chnlLyr;
 
+import jp.happyhacking.cum.aud.excp.CumExcpChnlNotExist;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
+import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
 
 /**
  * @author happyhacking70@gmail.com
@@ -11,6 +13,7 @@ import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
  */
 public interface AudChnlIntfForView {
 
-	void lvChnl() throws CumExcpIllegalChnlStatus;
+	void lvChnl() throws CumExcpIllegalChnlStatus, CumExcpIllegalSeshStatus,
+			CumExcpChnlNotExist;
 
 }

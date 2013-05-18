@@ -6,10 +6,12 @@ package jp.happyhacking.cum.aud.chnlLyr;
 import java.util.HashMap;
 
 import jp.happyhacking.cum.aud.audLyr.AudChnlViewIntf;
+import jp.happyhacking.cum.aud.excp.CumExcpChnlNotExist;
 import jp.happyhacking.cum.aud.excp.CumExcpIgnoreChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
+import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
 import jp.happyhacking.cum.aud.seshLyr.AudSesh;
-import jp.happyhacking.cum.aud.seshLyr.AudSeshIntf;
+import jp.happyhacking.cum.aud.seshLyr.AudSeshChnlIntf;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 
 /**
@@ -35,7 +37,9 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	/** channel view */
 	protected AudChnlViewIntf chnlView;
 	/** Audience Session */
-	protected AudSeshIntf sesh;
+	protected AudSeshChnlIntf sesh;
+	/** Type Name of Channel */
+	protected String chnlType;
 
 	/**
 	 * 
@@ -70,13 +74,15 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @param rsces
 	 *            channel resources
 	 */
-	public AudChnl(String chnlName, HashMap<String, ChnlRscIntf> rsces,
-			AudSeshIntf sesh, AudChnlViewIntf chnlView) {
+	public AudChnl(String chnlType, String chnlName,
+			HashMap<String, ChnlRscIntf> rsces, AudSeshChnlIntf sesh,
+			AudChnlViewIntf chnlView) {
 		super();
 		this.chnlName = chnlName;
 		this.rsces = rsces;
 		this.sesh = sesh;
 		this.chnlView = chnlView;
+		this.chnlType = chnlType;
 	}
 
 	public Status getStatus() {
@@ -91,10 +97,9 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * .cum.aud.audLyr.AudChnlViewIntf)
 	 */
 	@Override
-	public void chnlJoined(AudChnlViewIntf chnlView)
-			throws CumExcpIllegalChnlStatus {
+	public void chnlJoined() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlJoined();
-		this.chnlView = chnlView;
+		chnlStatus = Status.joined;
 		chnlView.chnlJoined();
 	}
 
@@ -104,7 +109,8 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForView#lvChnl()
 	 */
 	@Override
-	public void lvChnl() throws CumExcpIllegalChnlStatus {
+	public void lvChnl() throws CumExcpIllegalChnlStatus,
+			CumExcpIllegalSeshStatus, CumExcpChnlNotExist {
 		checkStatuslvChnl();
 		chnlStatus = Status.lving;
 		sesh.lvChnl(chnlName);
@@ -129,23 +135,13 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#seshClsed()
 	 */
 	@Override
-	public void seshClsed() throws CumExcpIgnoreChnlStatus,
-			CumExcpIllegalChnlStatus {
-		checkStatusseshClsed();
-		chnlStatus = Status.clsed;
-		chnlView.seshClsed();
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlJoined()
-	 */
-	public void chnlJoined() throws CumExcpIllegalChnlStatus {
-		checkStatuschnlJoined();
-		chnlStatus = Status.joined;
-		chnlView.chnlJoined();
+	public void seshClsed() throws CumExcpIllegalChnlStatus {
+		try {
+			checkStatusseshClsed();
+			chnlStatus = Status.clsed;
+			chnlView.seshClsed();
+		} catch (CumExcpIgnoreChnlStatus e) {
+		}
 
 	}
 
@@ -173,9 +169,12 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 */
 	@Override
 	public void chnlCmdRcved(String actionName, HashMap<String, String> params)
-			throws CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
-		checkStatuschnlCmdRcved();
-		chnlView.chnlCmdRcved(actionName, params);
+			throws CumExcpIllegalChnlStatus {
+		try {
+			checkStatuschnlCmdRcved();
+			chnlView.chnlCmdRcved(actionName, params);
+		} catch (CumExcpIgnoreChnlStatus e) {
+		}
 
 	}
 
@@ -469,10 +468,51 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlDscned()
 	 */
 	@Override
-	public void chnlDsconed() throws CumExcpIllegalChnlStatus {
+	public void chnlDscned() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlDscned();
 		chnlStatus = Status.dscned;
 		chnlView.chnlDscned();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#seshLving()
+	 */
+	@Override
+	public void seshLving() throws CumExcpIllegalChnlStatus {
+		try {
+			checkStatusSeshLving();
+			chnlView.seshLving();
+			chnlStatus = Status.init;
+		} catch (CumExcpIgnoreChnlStatus e) {
+		}
+
+	}
+
+	void checkStatusSeshLving() throws CumExcpIllegalChnlStatus,
+			CumExcpIgnoreChnlStatus {
+		if (chnlStatus == Status.init) {
+		} else if (chnlStatus == Status.joining) {
+		} else if (chnlStatus == Status.joined) {
+		} else if (chnlStatus == Status.lving) {
+		} else if (chnlStatus == Status.clsed) {
+			throw new CumExcpIgnoreChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == Status.dscned) {
+			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
+		} else if (chnlStatus == Status.rjcting) {
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#getChnlType()
+	 */
+	@Override
+	public String getChnlType() {
+		return chnlType;
 	}
 
 }
