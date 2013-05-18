@@ -13,7 +13,6 @@ import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
-import jp.happyhacking70.cum.prestr.seshLyr.PrestrSesh;
 import jp.happyhacking70.cum.prestr.seshLyr.PrestrSeshIntfForChnlView;
 
 /**
@@ -79,7 +78,7 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 */
 	public PrestrChnl(String chnlType, String chnlName,
 			HashMap<String, ChnlRscIntf> rsces, PrestrChnlViewIntf chnlView,
-			PrestrSesh sesh) {
+			PrestrSeshIntfForChnlView sesh) {
 		super();
 		this.chnlName = chnlName;
 		this.rsces = rsces;

@@ -20,7 +20,7 @@ public class PrestrSeshRegChnlTest extends PrestrSeshAbstTest {
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = getSesh();
 		try {
-			sesh.regChnl(chnlNameA, rsces, chnlViewA);
+			sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
 		} catch (CumExcpIllegalSeshStatus e) {
 			assertNull(adptr.getSeshNameToRegChnl());
 			throw e;
@@ -32,7 +32,7 @@ public class PrestrSeshRegChnlTest extends PrestrSeshAbstTest {
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = gotoReging();
 		try {
-			sesh.regChnl(chnlNameA, rsces, chnlViewA);
+			sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
 		} catch (CumExcpIllegalSeshStatus e) {
 			assertNull(adptr.getSeshNameToRegChnl());
 			throw e;
@@ -44,10 +44,11 @@ public class PrestrSeshRegChnlTest extends PrestrSeshAbstTest {
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = gotoReged();
 
-		sesh.regChnl(chnlNameC, rsces, chnlViewC);
+		sesh.regChnl(chnlType, chnlNameC, rsces, chnlViewC);
 
 		assertEquals(chnlNameC, adptr.getChnlNameToReg());
 		assertEquals(seshName, adptr.getSeshNameToRegChnl());
+		assertEquals(chnlType, adptr.getChnlType());
 
 	}
 
@@ -56,7 +57,7 @@ public class PrestrSeshRegChnlTest extends PrestrSeshAbstTest {
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = gotoReged();
 
-		sesh.regChnl(chnlNameA, rsces, chnlViewA);
+		sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
 
 	}
 
@@ -65,14 +66,14 @@ public class PrestrSeshRegChnlTest extends PrestrSeshAbstTest {
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = gotoClsing();
 
-		sesh.regChnl(chnlNameA, rsces, chnlViewA);
+		sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
 	}
 
 	@Test(expected = CumExcpIllegalSeshStatus.class)
 	public void TEST_regChnl_CLSED() throws TestExcp, CumExcpChnlExists,
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = gotoClsed();
-		sesh.regChnl(chnlNameA, rsces, chnlViewA);
+		sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
 
 	}
 
@@ -81,7 +82,7 @@ public class PrestrSeshRegChnlTest extends PrestrSeshAbstTest {
 			CumExcpIllegalSeshStatus {
 		PrestrSesh sesh = gotoDiscned();
 		try {
-			sesh.regChnl(chnlNameA, rsces, chnlViewA);
+			sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
 		} catch (CumExcpIllegalSeshStatus e) {
 			assertNull(adptr.getSeshNameToRegChnl());
 			throw e;

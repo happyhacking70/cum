@@ -20,6 +20,7 @@ import jp.happyhacking70.cum.prestr.seshLyr.TestExcp;
 public class PrestrChnlTestAbst {
 
 	protected static final String chnlName = "testChannel";
+	protected static final String chnlType = "testChannelType";
 	static final ChnlRscJustName rscA = new ChnlRscJustName("a");
 	static final ChnlRscJustName rscB = new ChnlRscJustName("b");
 	protected static final String audName = "testAudience";
@@ -43,7 +44,8 @@ public class PrestrChnlTestAbst {
 		rsces.put(rscB.getName(), rscB);
 		chnlView = new DummyPrestrChnlViewIntf();
 		sesh = new DummyPrestrSeshIntfForChnlView();
-		PrestrChnl chnl = new PrestrChnl(chnlName, rsces, chnlView, sesh);
+		PrestrChnl chnl = new PrestrChnl(chnlType, chnlName, rsces, chnlView,
+				sesh);
 
 		return chnl;
 	}

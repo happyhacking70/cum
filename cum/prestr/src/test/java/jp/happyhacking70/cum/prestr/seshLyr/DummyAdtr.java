@@ -26,6 +26,7 @@ public class DummyAdtr implements PrestrAdptrIntf {
 	protected String chnlNameToSendCmd = null;
 	protected HashMap<String, String> params = null;
 	protected String chnlNameToReg = null;
+	protected String chnlType;
 
 	public String getSeshNameToReg() {
 		return seshNameToReg;
@@ -71,6 +72,10 @@ public class DummyAdtr implements PrestrAdptrIntf {
 		return chnlNameToReg;
 	}
 
+	public String getChnlType() {
+		return chnlType;
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -104,12 +109,13 @@ public class DummyAdtr implements PrestrAdptrIntf {
 	 * java.util.HashMap)
 	 */
 	@Override
-	public void regChnl(String seshName, String chnlName,
+	public void regChnl(String seshName, String chnlType, String chnlName,
 			PrestrChnlIntfFromChnlView chnl, HashMap<String, ChnlRscIntf> rsces) {
 		seshNameToRegChnl = seshName;
 		chnlNameToReg = chnlName;
 		this.chnl = chnl;
 		this.rsces = rsces;
+		this.chnlType = chnlType;
 	}
 
 	/*

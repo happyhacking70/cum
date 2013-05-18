@@ -43,6 +43,8 @@ public class PrestrSeshAbstTest {
 	protected DummyChnlView chnlViewB;
 	protected DummyChnlView chnlViewC;
 
+	protected static final String chnlType = "testChannelType";
+
 	/**
 	 * 
 	 */
@@ -85,8 +87,8 @@ public class PrestrSeshAbstTest {
 
 		try {
 			sesh.regSeshRslt(ResCmdRegSesh.RsltTypes.Reged.name());
-			sesh.regChnl(chnlNameA, rsces, chnlViewA);
-			sesh.regChnl(chnlNameB, rsces, chnlViewB);
+			sesh.regChnl(chnlType, chnlNameA, rsces, chnlViewA);
+			sesh.regChnl(chnlType, chnlNameB, rsces, chnlViewB);
 			sesh.regChnlRslt(chnlNameA, ResCmdRegChnl.RsltTypes.Reged.name());
 			sesh.audJoinedSesh(audNameA);
 			sesh.audJoinedSesh(audNameB);
