@@ -65,5 +65,6 @@ public interface AudSeshAdptrIntf {
 			CumExcpIllegalChnlStatus;
 
 	public abstract void chnlCmdRcved(String chnlName, String actioName,
-			HashMap<String, String> params) throws CumExcpIllegalSeshStatus;
+			HashMap<String, String> params) throws CumExcpIllegalSeshStatus,
+			CumExcpChnlNotExist, CumExcpIllegalChnlStatus;
 }
