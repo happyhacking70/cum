@@ -210,7 +210,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			HashMap<String, ChnlRscIntf> rsces) throws CumExcpChnlExists,
 			CumExcpIllegalSeshStatus {
 		try {
-			chnlRjctedCheckStatus();
+			chnlRegedCheckStatus();
 			if (chnls.containsKey(chnlName)) {
 				throw new CumExcpChnlExists(seshName, chnlName);
 			}
