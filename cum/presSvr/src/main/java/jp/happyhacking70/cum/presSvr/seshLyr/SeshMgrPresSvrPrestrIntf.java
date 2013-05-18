@@ -48,6 +48,7 @@ public interface SeshMgrPresSvrPrestrIntf {
 	 * 
 	 * 
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 * @param lrscesist
 	 * @throws CumExcpSeshNotExist
@@ -57,7 +58,7 @@ public interface SeshMgrPresSvrPrestrIntf {
 	 * @throws CumExcpRscNull
 	 * @throws CumExcpXMLGenFailed
 	 */
-	public void regChnl(String seshName, String chnlName,
+	public void regChnl(String seshName, String chnlType, String chnlName,
 			List<ChnlRscIntf> lrscesist) throws CumExcpSeshNotExist,
 			CumExcpChnlExists, CumExcpRscExists, CumExcpRscNull,
 			CumExcpXMLGenFailed;

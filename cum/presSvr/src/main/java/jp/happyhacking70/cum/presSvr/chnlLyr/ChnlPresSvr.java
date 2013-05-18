@@ -36,22 +36,25 @@ import jp.happyhacking70.cum.presSvr.audLyr.AudIntf;
 public class ChnlPresSvr implements ChnlPresSvrAudIntf, ChnlPresSvrPrestrIntf {
 	protected String seshName;
 	protected String chnlName;
+	protected String chnlType;
 	protected ConcurrentHashMap<String, ChnlRscIntf> rsces = new ConcurrentHashMap<String, ChnlRscIntf>();
 	protected ConcurrentHashMap<String, AudIntf> auds = new ConcurrentHashMap<String, AudIntf>();
 
 	/**
 	 * @param seshName
+	 * @param chnlType
 	 * @param chnlName
 	 * @param rsces
 	 * @throws CumExcpRscExists
 	 * @throws CumExcptNullRsces
 	 * @throws CumExcpRscNull
 	 */
-	public ChnlPresSvr(String seshName, String chnlName, List<ChnlRscIntf> rsces)
-			throws CumExcpRscExists, CumExcpRscNull {
+	public ChnlPresSvr(String seshName, String chnlType, String chnlName,
+			List<ChnlRscIntf> rsces) throws CumExcpRscExists, CumExcpRscNull {
 		super();
 		this.seshName = seshName;
 		this.chnlName = chnlName;
+		this.chnlType = chnlType;
 		addRsces(rsces);
 	}
 
@@ -161,7 +164,8 @@ public class ChnlPresSvr implements ChnlPresSvrAudIntf, ChnlPresSvrPrestrIntf {
 
 		auds.put(aud.getAudName(), aud);
 
-		return new NtfyCmdJoinChnl(seshName, chnlName, aud.getAudName());
+		return new NtfyCmdJoinChnl(seshName, chnlType, chnlName,
+				aud.getAudName());
 
 	}
 
@@ -180,7 +184,7 @@ public class ChnlPresSvr implements ChnlPresSvrAudIntf, ChnlPresSvrPrestrIntf {
 		}
 
 		auds.remove(aud.getAudName());
-		return new NtfyCmdLvChnl(seshName, chnlName, aud.getAudName());
+		return new NtfyCmdLvChnl(seshName, chnlType, chnlName, aud.getAudName());
 
 	}
 
@@ -192,7 +196,7 @@ public class ChnlPresSvr implements ChnlPresSvrAudIntf, ChnlPresSvrPrestrIntf {
 	 */
 	@Override
 	public NtfyCmdRegChnl getNtfyCmdRegChnl() {
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rsces.values()) {
 			cmd.addRscData(rsc);
 		}
@@ -219,7 +223,7 @@ public class ChnlPresSvr implements ChnlPresSvrAudIntf, ChnlPresSvrPrestrIntf {
 	 */
 	@Override
 	public NtfyCmdClsChnl getNtfyCmdClsChnl() {
-		return new NtfyCmdClsChnl(seshName, chnlName);
+		return new NtfyCmdClsChnl(seshName, chnlType, chnlName);
 	}
 
 	/**
@@ -230,6 +234,10 @@ public class ChnlPresSvr implements ChnlPresSvrAudIntf, ChnlPresSvrPrestrIntf {
 		if (auds.containsKey(audName)) {
 			auds.remove(audName);
 		}
+	}
+
+	public String getChnlType() {
+		return chnlType;
 	}
 
 }

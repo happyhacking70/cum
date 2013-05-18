@@ -13,10 +13,10 @@ import jp.happyhacking70.cum.cmd.res.impl.ResCmdJoinChnl;
 import jp.happyhacking70.cum.cmd.res.impl.ResCmdRegChnl;
 import jp.happyhacking70.cum.cmd.res.impl.ResCmdRegSesh;
 import jp.happyhacking70.cum.cmd.res.impl.ResCmdUnknowCmd;
-import jp.happyhacking70.cum.presSvr.CumTestAbst;
 import jp.happyhacking70.cum.excp.cmd.CumExcpIllegalCmdDoc;
 import jp.happyhacking70.cum.excp.cmd.CumExcpIllegalCmdXML;
 import jp.happyhacking70.cum.excp.cmd.CumExcpXMLGenFailed;
+import jp.happyhacking70.cum.presSvr.CumTestAbst;
 import jp.happyhacking70.cum.presSvr.adptrLyr.discnHdlr.DiscnHdlrAbst;
 import jp.happyhacking70.cum.presSvr.adptrLyr.discnHdlr.DiscnHdlrAud;
 import jp.happyhacking70.cum.presSvr.adptrLyr.discnHdlr.DiscnHdlrPrestr;
@@ -80,11 +80,11 @@ public class PresSvrAdptrTest extends CumTestAbst {
 			CumExcpXMLGenFailed, CumExcpRscExists, CumExcpChnlExists,
 			CumExcpRscNull, CumExcpSeshNotExist, CumExcpAudExists,
 			CumExcpIllegalCmdXML, CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"JoinChnl\" AUD=\"testAudience\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"/></CUM>";
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 
 		seshMgr.regSesh(seshName, senderForPrestr);
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 		seshMgr.joinSesh(seshName, audName, senderForAudA);
 
 		PresSvrAdptr adptr = new PresSvrAdptr(seshMgr);
@@ -92,7 +92,7 @@ public class PresSvrAdptrTest extends CumTestAbst {
 		Pair<String, DiscnHdlrAbst> p = adptr.hndlCmd(xml);
 
 		assertEquals(DiscnHdlrAud.class, p.getValue1().getClass());
-		assertEquals(new ResCmdJoinChnl(seshName, chnlName, audName,
+		assertEquals(new ResCmdJoinChnl(seshName, chnlType, chnlName, audName,
 				ResCmdJoinChnl.RsltTypes.Joined.name()).toXmlStr(),
 				p.getValue0());
 	}
@@ -165,15 +165,16 @@ public class PresSvrAdptrTest extends CumTestAbst {
 	public void testHndlCmdStringArrayListOfChnlRscIntf()
 			throws CumExcpXMLGenFailed, CumExcpSeshExists,
 			CumExcpIllegalCmdXML, CumExcpIllegalCmdDoc {
-		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"REQ\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
+		String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"REQ\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>";
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, senderForPrestr);
 
 		PresSvrAdptr adptr = new PresSvrAdptr(seshMgr);
 		Pair<String, DiscnHdlrAbst> p = adptr.hndlCmd(xml, rscesArray);
 
-		assertEquals(new ResCmdRegChnl(seshName, chnlName, rscesArray,
-				ResCmdRegChnl.RsltTypes.Reged).toXmlStr(), p.getValue0());
+		assertEquals(new ResCmdRegChnl(seshName, chnlType, chnlName,
+				rscesArray, ResCmdRegChnl.RsltTypes.Reged).toXmlStr(),
+				p.getValue0());
 		assertEquals(DiscnHdlrPrestr.class, p.getValue1().getClass());
 	}
 }

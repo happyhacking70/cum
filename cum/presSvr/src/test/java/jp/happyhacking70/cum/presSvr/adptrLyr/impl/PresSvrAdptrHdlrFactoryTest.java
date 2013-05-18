@@ -57,28 +57,30 @@ public class PresSvrAdptrHdlrFactoryTest extends CumTestAbst {
 
 	@Test
 	public void testReqCmdRegChnl() throws CumExcptAdptrHdlrNotFound {
-		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlName);
+		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlType, chnlName);
 		PresSvrAdptrHdlrIntfBase hdlr = f.getHdlr(reqCmd);
 		assertEquals(PresSvrAdptrHdlrRegChnl.class, hdlr.getClass());
 	}
 
 	@Test
 	public void testReqCmdClsChnl() throws CumExcptAdptrHdlrNotFound {
-		ReqCmdClsChnl reqCmd = new ReqCmdClsChnl(seshName, chnlName);
+		ReqCmdClsChnl reqCmd = new ReqCmdClsChnl(seshName, chnlType, chnlName);
 		PresSvrAdptrHdlrIntfBase hdlr = f.getHdlr(reqCmd);
 		assertEquals(PresSvrAdptrHdlrClsChnl.class, hdlr.getClass());
 	}
 
 	@Test
 	public void testReqCmdJoinChnl() throws CumExcptAdptrHdlrNotFound {
-		ReqCmdJoinChnl reqCmd = new ReqCmdJoinChnl(seshName, chnlName, audName);
+		ReqCmdJoinChnl reqCmd = new ReqCmdJoinChnl(seshName, chnlType,
+				chnlName, audName);
 		PresSvrAdptrHdlrIntfBase hdlr = f.getHdlr(reqCmd);
 		assertEquals(PresSvrAdptrHdlrJoinChnl.class, hdlr.getClass());
 	}
 
 	@Test
 	public void testReqCmdLvChnl() throws CumExcptAdptrHdlrNotFound {
-		ReqCmdLvChnl reqCmd = new ReqCmdLvChnl(seshName, chnlName, audName);
+		ReqCmdLvChnl reqCmd = new ReqCmdLvChnl(seshName, chnlType, chnlName,
+				audName);
 		PresSvrAdptrHdlrIntfBase hdlr = f.getHdlr(reqCmd);
 		assertEquals(PresSvrAdptrHdlrLvChnl.class, hdlr.getClass());
 	}
@@ -92,7 +94,8 @@ public class PresSvrAdptrHdlrFactoryTest extends CumTestAbst {
 
 	@Test
 	public void testReqCmdRjctChnl() throws CumExcptAdptrHdlrNotFound {
-		ReqCmdRjctChnl reqCmd = new ReqCmdRjctChnl(seshName, chnlName, audName);
+		ReqCmdRjctChnl reqCmd = new ReqCmdRjctChnl(seshName, chnlType,
+				chnlName, audName);
 		PresSvrAdptrHdlrIntfBase hdlr = f.getHdlr(reqCmd);
 		assertEquals(PresSvrAdptrHdlrRjctChnl.class, hdlr.getClass());
 	}

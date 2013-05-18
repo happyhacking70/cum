@@ -44,6 +44,7 @@ public interface SeshPresSvrPrestrIntf {
 	 * <LI>Send {@link NtfyCmdRegChnl} to <U>session</U> audiences</LI>
 	 * </UL>
 	 * 
+	 * @param chnlType
 	 * @param chnlName
 	 * @param chnlRsces
 	 * @throws CumExcpChnlExists
@@ -52,9 +53,10 @@ public interface SeshPresSvrPrestrIntf {
 	 * @throws CumExcpRscNull
 	 * @throws CumExcpXMLGenFailed
 	 */
-	public void regChnl(String chnlName, List<ChnlRscIntf> chnlRsces)
-			throws CumExcpChnlExists, CumExcpRscExists, CumExcpRscNull,
-			CumExcpXMLGenFailed;
+
+	public void regChnl(String chnlType, String chnlName,
+			List<ChnlRscIntf> chnlRsces) throws CumExcpChnlExists,
+			CumExcpRscExists, CumExcpRscNull, CumExcpXMLGenFailed;
 
 	/**
 	 * <UL>

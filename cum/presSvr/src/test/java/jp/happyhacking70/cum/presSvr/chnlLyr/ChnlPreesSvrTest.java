@@ -41,6 +41,7 @@ import org.junit.Test;
 public class ChnlPreesSvrTest {
 	protected static final String seshName = "testSession";
 	protected static final String chnlName = "testChannel";
+	protected static final String chnlType = "testChannelType";
 	protected static final String audName = "testAudience";
 
 	protected DummySender sender = new DummySender();
@@ -70,7 +71,7 @@ public class ChnlPreesSvrTest {
 		rsces.add(null);
 		rsces.add(new ChnlRscImg("rscB", null));
 
-		new ChnlPresSvr(seshName, chnlName, rsces);
+		new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 	}
 
 	/**
@@ -89,7 +90,7 @@ public class ChnlPreesSvrTest {
 		rsces.add(new ChnlRscImg("rscA", null));
 		rsces.add(new ChnlRscImg("rscA", null));
 
-		new ChnlPresSvr(seshName, chnlName, rsces);
+		new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 	}
 
 	/**
@@ -107,7 +108,7 @@ public class ChnlPreesSvrTest {
 		rsces.add(new ChnlRscImg("rscA", null));
 		rsces.add(new ChnlRscImg("rscB", null));
 
-		new ChnlPresSvr(seshName, chnlName, rsces);
+		new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 	}
 
 	/**
@@ -124,7 +125,7 @@ public class ChnlPreesSvrTest {
 			CumExcpRscNull {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		new ChnlPresSvr(seshName, chnlName, rsces);
+		new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 	}
 
 	/**
@@ -145,9 +146,9 @@ public class ChnlPreesSvrTest {
 			CumExcpRscNull, CumExcpAudExists, CumExcpAudNotExist,
 			CumExcpComError, CumExcpXMLGenFailed {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 
-		ReqCmdClsChnl cmd = new ReqCmdClsChnl("testSession", chnlName);
+		ReqCmdClsChnl cmd = new ReqCmdClsChnl("testSession", chnlType, chnlName);
 		chnl.sendChnlCmd(cmd, aud.getAudName());
 
 	}
@@ -170,10 +171,10 @@ public class ChnlPreesSvrTest {
 			CumExcpRscNull, CumExcpAudExists, CumExcpAudNotExist,
 			CumExcpComError, CumExcpXMLGenFailed {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 		chnl.joinChnl(aud);
 
-		ReqCmdClsChnl cmd = new ReqCmdClsChnl("testSession", chnlName);
+		ReqCmdClsChnl cmd = new ReqCmdClsChnl("testSession", chnlType, chnlName);
 		chnl.sendChnlCmd(cmd, aud.getAudName());
 
 		assertEquals(cmd.toXmlStr(), sender.pollCmd());
@@ -197,13 +198,14 @@ public class ChnlPreesSvrTest {
 			CumExcpRscNull, CumExcpAudExists, CumExcpAudNotExist,
 			CumExcpComError, CumExcpXMLGenFailed {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 		chnl.joinChnl(aud);
 
 		DummySender senderFor2 = new DummySender();
 		chnl.joinChnl(new Aud("testAudience2", senderFor2));
 
-		ReqCmdRegChnl cmd = new ReqCmdRegChnl("testSession", "testChannel");
+		ReqCmdRegChnl cmd = new ReqCmdRegChnl("testSession", chnlType,
+				"testChannel");
 		chnl.sendChnlCmd(cmd);
 
 		assertEquals(cmd.toXmlStr(), sender.pollCmd());
@@ -230,7 +232,7 @@ public class ChnlPreesSvrTest {
 
 		ChnlRscIntf r = new ChnlRscImg("rscA", bImg);
 		rsces.add(r);
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 
 		assertEquals(chnl.getRsc("rscA"), r);
 	}
@@ -255,7 +257,7 @@ public class ChnlPreesSvrTest {
 
 		ChnlRscIntf r = new ChnlRscImg("rscA", bImg);
 		rsces.add(r);
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 
 		chnl.getRsc("rscB");
 	}
@@ -275,7 +277,7 @@ public class ChnlPreesSvrTest {
 			CumExcpAudExists {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 		NtfyCmdJoinChnl cmd = chnl.joinChnl(aud);
 		assertEquals(cmd.getAudName(), audName);
 		assertEquals(cmd.getChnlName(), chnlName);
@@ -299,7 +301,7 @@ public class ChnlPreesSvrTest {
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 		chnl.joinChnl(aud);
 		chnl.joinChnl(aud);
 	}
@@ -320,7 +322,7 @@ public class ChnlPreesSvrTest {
 			CumExcpAudExists, CumExcpAudNotExist {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 		chnl.joinChnl(aud);
 		NtfyCmdLvChnl cmd = chnl.lvChnl(aud);
 		assertEquals(cmd.getAudName(), audName);
@@ -345,7 +347,7 @@ public class ChnlPreesSvrTest {
 			CumExcpAudExists, CumExcpAudNotExist {
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 
 		chnl.lvChnl(aud);
 	}
@@ -371,14 +373,14 @@ public class ChnlPreesSvrTest {
 		rsces.add(r);
 		r = new ChnlRscImg("b", bImg);
 		rsces.add(r);
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 
 		NtfyCmdRegChnl cmd = chnl.getNtfyCmdRegChnl();
 		assertEquals(cmd.getChnlName(), chnlName);
 		assertEquals(cmd.getSeshName(), seshName);
 		assertEquals(
 				cmd.toXmlStr(),
-				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>");
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"RegChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"><RSC NAME=\"a\"/><RSC NAME=\"b\"/></CMD></CUM>");
 
 	}
 
@@ -403,14 +405,14 @@ public class ChnlPreesSvrTest {
 		rsces.add(r);
 		r = new ChnlRscImg("b", bImg);
 		rsces.add(r);
-		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlName, rsces);
+		ChnlPresSvr chnl = new ChnlPresSvr(seshName, chnlType, chnlName, rsces);
 
 		NtfyCmdClsChnl cmd = chnl.getNtfyCmdClsChnl();
 		assertEquals(cmd.getChnlName(), chnlName);
 		assertEquals(cmd.getSeshName(), seshName);
 		assertEquals(
 				cmd.toXmlStr(),
-				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>");
+				"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><CUM><CMD ACTION=\"ClsChnl\" CHNL=\"testChannel\" CHNLTYPE=\"testChannelType\" SESH=\"testSession\" TYPE=\"NTFY\"/></CUM>");
 
 	}
 }

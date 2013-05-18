@@ -52,7 +52,8 @@ public class AudTest {
 		DummySender sender = new DummySender();
 		Aud aud = new Aud(audName, sender);
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl("testSession", "testChnl");
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl("testSession", "testChnlType",
+				"testChnl");
 		aud.sendCmd(cmd);
 		assertEquals(cmd.toXmlStr(), sender.pollCmd());
 		assertNull(sender.pollCmd());

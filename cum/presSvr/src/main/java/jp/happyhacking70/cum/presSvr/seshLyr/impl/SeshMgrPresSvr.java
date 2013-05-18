@@ -81,13 +81,13 @@ public class SeshMgrPresSvr implements SeshMgrPresSvrAudIntf,
 	 * (java.lang.String, java.lang.String, java.util.List)
 	 */
 	@Override
-	public void regChnl(String seshName, String chnlName,
+	public void regChnl(String seshName, String chnlType, String chnlName,
 			List<ChnlRscIntf> chnlRsces) throws CumExcpSeshNotExist,
 			CumExcpRscExists, CumExcpChnlExists, CumExcpRscNull,
 			CumExcpXMLGenFailed {
 
 		SeshPresSvr sesh = getSesh(seshName);
-		sesh.regChnl(chnlName, chnlRsces);
+		sesh.regChnl(chnlType, chnlName, chnlRsces);
 	}
 
 	/*

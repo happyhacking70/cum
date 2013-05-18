@@ -13,6 +13,7 @@ import jp.happyhacking70.cum.excp.prestr.CumExcpIgnoreChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalChnlStatus;
 import jp.happyhacking70.cum.excp.prestr.CumExcpIllegalSeshStatus;
 import jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf;
+import jp.happyhacking70.cum.prestr.seshLyr.PrestrSesh;
 import jp.happyhacking70.cum.prestr.seshLyr.PrestrSeshIntfForChnlView;
 
 /**
@@ -63,6 +64,8 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	protected PrestrSeshIntfForChnlView sesh;
 	/** audiences */
 	protected HashMap<String, String> auds = new HashMap<String, String>();
+	/** Type Name of Channel */
+	protected String chnlType;
 
 	/**
 	 * @param chnlName
@@ -74,13 +77,15 @@ public class PrestrChnl implements PrestrChnlIntfFromChnlView,
 	 * @param sesh
 	 *            Session this channel belongs to
 	 */
-	public PrestrChnl(String chnlName, HashMap<String, ChnlRscIntf> rsces,
-			PrestrChnlViewIntf chnlView, PrestrSeshIntfForChnlView sesh) {
+	public PrestrChnl(String chnlType, String chnlName,
+			HashMap<String, ChnlRscIntf> rsces, PrestrChnlViewIntf chnlView,
+			PrestrSesh sesh) {
 		super();
 		this.chnlName = chnlName;
 		this.rsces = rsces;
 		this.chnlView = chnlView;
 		this.sesh = sesh;
+		this.chnlType = chnlType;
 		chnlView.setChnl(this);
 	}
 

@@ -69,7 +69,8 @@ public interface PrestrSeshIntfForSeshView {
 	 * </LI>
 	 * </UL>
 	 * 
-	 * 
+	 * @param chnlType
+	 *            Type Name of Channel
 	 * @param chnlName
 	 *            name of channel
 	 * @param rsces
@@ -81,8 +82,9 @@ public interface PrestrSeshIntfForSeshView {
 	 * @throws CumExcpIllegalSeshStatus
 	 *             when status is not {@link PrestrSesh.SeshStatus#reged}
 	 */
-	void regChnl(String chnlName, HashMap<String, ChnlRscIntf> rsces,
-			PrestrChnlViewIntf chnlView) throws CumExcpChnlExists,
-			CumExcpIllegalSeshStatus;
+
+	void regChnl(String chnlType, String chnlName,
+			HashMap<String, ChnlRscIntf> rsces, PrestrChnlViewIntf chnlView)
+			throws CumExcpChnlExists, CumExcpIllegalSeshStatus;
 
 }

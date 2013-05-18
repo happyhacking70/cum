@@ -36,6 +36,8 @@ public abstract class CumTestAbst {
 	protected static final DummySender senderForAudA = new DummySender();
 	protected static final DummySender senderForAudB = new DummySender();
 
+	protected static final String chnlType = "testChannelType";
+
 	public CumTestAbst() throws IOException {
 		super();
 		bImgA = ImageIO.read(new File("src/test/resources/1.jpg"));

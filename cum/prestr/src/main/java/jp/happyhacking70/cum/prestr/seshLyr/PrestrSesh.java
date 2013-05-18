@@ -143,7 +143,7 @@ public class PrestrSesh implements PrestrSeshIntf
 	 * jp.happyhacking70.cum.prestr.prestrLyr.PrestrChnlViewIntf)
 	 */
 	@Override
-	synchronized public void regChnl(String chnlName,
+	synchronized public void regChnl(String chnlType, String chnlName,
 			HashMap<String, ChnlRscIntf> rsces, PrestrChnlViewIntf chnlView)
 			throws CumExcpChnlExists, CumExcpIllegalSeshStatus {
 
@@ -152,9 +152,10 @@ public class PrestrSesh implements PrestrSeshIntf
 			throw new CumExcpChnlExists(seshName, chnlName);
 		}
 
-		PrestrChnl chnl = new PrestrChnl(chnlName, rsces, chnlView, this);
+		PrestrChnl chnl = new PrestrChnl(chnlType, chnlName, rsces, chnlView,
+				this);
 		chnls.put(chnlName, chnl);
-		adptr.regChnl(seshName, chnlName, chnl, rsces);
+		adptr.regChnl(seshName, chnlType, chnlName, chnl, rsces);
 	}
 
 	// PrestrSeshIntfForChnlView ----------------------------

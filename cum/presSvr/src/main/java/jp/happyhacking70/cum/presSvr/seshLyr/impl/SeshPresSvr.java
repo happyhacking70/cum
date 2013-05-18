@@ -100,7 +100,7 @@ public class SeshPresSvr implements SeshPresSvrAudIntf, SeshPresSvrPrestrIntf,
 	 * .String, java.util.ArrayList)
 	 */
 	@Override
-	synchronized public void regChnl(String chnlName,
+	synchronized public void regChnl(String chnlType, String chnlName,
 			List<ChnlRscIntf> chnlRsces) throws CumExcpChnlExists,
 			CumExcpRscExists, CumExcpRscNull, CumExcpXMLGenFailed {
 
@@ -111,7 +111,7 @@ public class SeshPresSvr implements SeshPresSvrAudIntf, SeshPresSvrPrestrIntf,
 		// Create new channel
 		ChnlPresSvr newChnl = null;
 		try {
-			newChnl = new ChnlPresSvr(seshName, chnlName, chnlRsces);
+			newChnl = new ChnlPresSvr(seshName, chnlType, chnlName, chnlRsces);
 		} catch (CumExcpRscExists e) {
 			throw new CumExcpRscExists(seshName, e);
 		} catch (CumExcpRscNull e) {
@@ -119,7 +119,7 @@ public class SeshPresSvr implements SeshPresSvrAudIntf, SeshPresSvrPrestrIntf,
 		}
 		chnls.put(chnlName, newChnl);
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : chnlRsces) {
 			cmd.addRscData(rsc);
 		}
@@ -390,7 +390,8 @@ public class SeshPresSvr implements SeshPresSvrAudIntf, SeshPresSvrPrestrIntf,
 			throw new CumExcpAudExists(seshName, e);
 		}
 
-		NtfyCmdRjctChnl cmd = new NtfyCmdRjctChnl(seshName, chnlName, audName);
+		NtfyCmdRjctChnl cmd = new NtfyCmdRjctChnl(seshName, chnl.getChnlType(),
+				chnlName, audName);
 
 		sendCmdToPrestr(cmd);
 	}

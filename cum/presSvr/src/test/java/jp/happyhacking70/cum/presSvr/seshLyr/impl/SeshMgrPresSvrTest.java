@@ -34,6 +34,7 @@ import org.junit.Test;
 public class SeshMgrPresSvrTest {
 	protected static String seshName = "testSession";
 	protected static String chnlName = "testChannel";
+	protected static String chnlType = "testChannelType";
 	protected static String audName = "testAudience";
 	protected static ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
@@ -102,7 +103,7 @@ public class SeshMgrPresSvrTest {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
 
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 
 	}
 
@@ -129,7 +130,7 @@ public class SeshMgrPresSvrTest {
 
 		boolean ok = false;
 		try {
-			seshMgr.regChnl("NOSESH", chnlName, rsces);
+			seshMgr.regChnl("NOSESH", chnlType, chnlName, rsces);
 		} catch (CumExcpSeshNotExist e) {
 			assertEquals("NOSESH", e.getSeshName());
 
@@ -213,10 +214,11 @@ public class SeshMgrPresSvrTest {
 
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 		seshMgr.joinChnl(seshName, chnlName, audName);
-		seshMgr.sendChnlCmd(new NtfyCmdClsChnl(seshName, chnlName), audName);
+		seshMgr.sendChnlCmd(new NtfyCmdClsChnl(seshName, chnlType, chnlName),
+				audName);
 
 	}
 
@@ -244,12 +246,13 @@ public class SeshMgrPresSvrTest {
 
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 
 		boolean ok = false;
 		try {
 
-			seshMgr.sendChnlCmd(new NtfyCmdClsChnl("NOSESH", chnlName), audName);
+			seshMgr.sendChnlCmd(
+					new NtfyCmdClsChnl("NOSESH", chnlType, chnlName), audName);
 		} catch (CumExcpSeshNotExist e) {
 			assertEquals("NOSESH", e.getSeshName());
 
@@ -283,8 +286,8 @@ public class SeshMgrPresSvrTest {
 			CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
-		seshMgr.sendChnlCmd(new NtfyCmdClsChnl(seshName, chnlName));
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
+		seshMgr.sendChnlCmd(new NtfyCmdClsChnl(seshName, chnlType, chnlName));
 
 	}
 
@@ -311,12 +314,12 @@ public class SeshMgrPresSvrTest {
 			CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 
 		boolean ok = false;
 		try {
 
-			seshMgr.sendChnlCmd(new NtfyCmdClsChnl("NOSESH", chnlName));
+			seshMgr.sendChnlCmd(new NtfyCmdClsChnl("NOSESH", chnlType, chnlName));
 		} catch (CumExcpSeshNotExist e) {
 			assertEquals("NOSESH", e.getSeshName());
 
@@ -348,7 +351,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpChnlNotExist, CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.clsChnl(seshName, chnlName);
 	}
 
@@ -374,7 +377,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 
 		boolean ok = false;
 		try {
@@ -463,7 +466,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 		seshMgr.joinChnl(seshName, chnlName, audName);
 	}
@@ -525,7 +528,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 		seshMgr.rjctChnl(seshName, chnlName, audName);
 	}
@@ -553,7 +556,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 
 		boolean ok = false;
@@ -593,7 +596,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 		seshMgr.joinChnl(seshName, chnlName, audName);
 
@@ -624,7 +627,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpComError, CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 		seshMgr.joinChnl(seshName, chnlName, audName);
 
@@ -664,7 +667,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 		seshMgr.lvSesh(seshName, audName);
 
@@ -693,7 +696,7 @@ public class SeshMgrPresSvrTest {
 			CumExcpXMLGenFailed {
 		SeshMgrPresSvr seshMgr = new SeshMgrPresSvr();
 		seshMgr.regSesh(seshName, new DummySender());
-		seshMgr.regChnl(seshName, chnlName, rsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rsces);
 		seshMgr.joinSesh(seshName, audName, new DummySender());
 
 		boolean ok = false;
@@ -735,7 +738,7 @@ public class SeshMgrPresSvrTest {
 		ArrayList<ChnlRscIntf> chnlRsces = new ArrayList<ChnlRscIntf>();
 		chnlRsces.add(new ChnlRscImg("testRsc", null));
 
-		seshMgr.regChnl(seshName, chnlName, chnlRsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, chnlRsces);
 
 		seshMgr.getRsc(seshName, chnlName, "testRsc");
 
@@ -767,7 +770,7 @@ public class SeshMgrPresSvrTest {
 		ArrayList<ChnlRscIntf> chnlRsces = new ArrayList<ChnlRscIntf>();
 		chnlRsces.add(new ChnlRscImg("testRsc", null));
 
-		seshMgr.regChnl(seshName, chnlName, chnlRsces);
+		seshMgr.regChnl(seshName, chnlType, chnlName, chnlRsces);
 
 		boolean ok = false;
 		try {

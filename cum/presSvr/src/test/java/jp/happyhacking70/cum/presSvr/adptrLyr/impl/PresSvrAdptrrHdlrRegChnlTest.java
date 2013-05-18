@@ -68,7 +68,7 @@ public class PresSvrAdptrrHdlrRegChnlTest extends CumTestAbst {
 		seshMgr.regSesh(seshName, senderForPrestr);
 
 		PresSvrAdptrHdlrRegChnl hdlr = new PresSvrAdptrHdlrRegChnl();
-		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlName);
+		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rscesArray) {
 			reqCmd.addRscData(rsc);
 		}
@@ -93,11 +93,11 @@ public class PresSvrAdptrrHdlrRegChnlTest extends CumTestAbst {
 
 		seshMgr.regSesh(seshName, senderForPrestr);
 		senderForPrestr.pollCmd();
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 		senderForPrestr.pollCmd();
 
 		PresSvrAdptrHdlrRegChnl hdlr = new PresSvrAdptrHdlrRegChnl();
-		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlName);
+		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rscesArray) {
 			reqCmd.addRscData(rsc);
 		}
@@ -125,7 +125,7 @@ public class PresSvrAdptrrHdlrRegChnlTest extends CumTestAbst {
 		senderForPrestr.pollCmd();
 
 		PresSvrAdptrHdlrRegChnl hdlr = new PresSvrAdptrHdlrRegChnl();
-		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlName);
+		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rscesArray) {
 			reqCmd.addRscData(rsc);
 		}
@@ -155,7 +155,7 @@ public class PresSvrAdptrrHdlrRegChnlTest extends CumTestAbst {
 		senderForPrestr.pollCmd();
 
 		PresSvrAdptrHdlrRegChnl hdlr = new PresSvrAdptrHdlrRegChnl();
-		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlName);
+		ReqCmdRegChnl reqCmd = new ReqCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rscesArray) {
 			reqCmd.addRscData(rsc);
 		}

@@ -39,13 +39,16 @@ public class PresSvrAdptrHdlrClsChnl implements PresSvrAdptrHdlrIntf {
 		try {
 			seshMgr.clsChnl(reqCmd.getSeshName(), reqCmd.getChnlName());
 			resCmd = new ResCmdClsChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), ResCmdClsChnl.RsltTypes.Clsed);
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					ResCmdClsChnl.RsltTypes.Clsed);
 		} catch (CumExcpSeshNotExist e) {
 			resCmd = new ResCmdClsChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), ResCmdClsChnl.RsltTypes.SeshNotExist);
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					ResCmdClsChnl.RsltTypes.SeshNotExist);
 		} catch (CumExcpChnlNotExist e) {
 			resCmd = new ResCmdClsChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), ResCmdClsChnl.RsltTypes.NotExist);
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					ResCmdClsChnl.RsltTypes.NotExist);
 		}
 
 		return resCmd;

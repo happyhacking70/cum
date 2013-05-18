@@ -40,6 +40,7 @@ import org.junit.Test;
 public class SeshPresSvrTest {
 	public static final String seshName = "testSession";
 	public static final String chnlName = "testChannel";
+	public static final String chnlType = "testChannelType";
 
 	/**
 	 * @throws java.lang.Exception
@@ -88,9 +89,9 @@ public class SeshPresSvrTest {
 		sesh.joinSesh("audA", senderForAudA);
 		sesh.joinSesh("audB", senderForAudB);
 
-		sesh.regChnl(chnlName, new ArrayList<ChnlRscIntf>());
+		sesh.regChnl(chnlType, chnlName, new ArrayList<ChnlRscIntf>());
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 
 		assertEquals(cmd.toXmlStr(), senderForAudA.pollCmd());
 		assertEquals(cmd.toXmlStr(), senderForAudB.pollCmd());
@@ -127,8 +128,8 @@ public class SeshPresSvrTest {
 			CumExcpRscExists, CumExcpRscNull, CumExcpChnlNotExist,
 			CumExcpAudNotExist, CumExcpComError, CumExcpXMLGenFailed {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, new DummySender());
-		sesh.regChnl(chnlName, new ArrayList<ChnlRscIntf>());
-		sesh.regChnl(chnlName, new ArrayList<ChnlRscIntf>());
+		sesh.regChnl(chnlType, chnlName, new ArrayList<ChnlRscIntf>());
+		sesh.regChnl(chnlType, chnlName, new ArrayList<ChnlRscIntf>());
 	}
 
 	/**
@@ -155,7 +156,7 @@ public class SeshPresSvrTest {
 		rsces.add(null);
 		rsces.add(new ChnlRscImg("rscB", null));
 
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 	}
 
 	/**
@@ -181,7 +182,7 @@ public class SeshPresSvrTest {
 		rsces.add(new ChnlRscImg("rscA", null));
 		rsces.add(new ChnlRscImg("rscA", null));
 
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 	}
 
 	/**
@@ -210,7 +211,7 @@ public class SeshPresSvrTest {
 		rsces.add(a);
 		rsces.add(b);
 
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		ChnlRscIntf rsc = sesh.getRsc(chnlName, "rscA");
 		assertEquals(a, rsc);
@@ -244,7 +245,7 @@ public class SeshPresSvrTest {
 		rsces.add(a);
 		rsces.add(b);
 
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		boolean ok = false;
 		try {
@@ -305,13 +306,13 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAud = new DummySender();
 		sesh.joinSesh("audA", senderForAud);
 		sesh.joinChnl(chnlName, "audA");
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rsces) {
 			cmd.addRscData(rsc);
 		}
@@ -348,7 +349,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, "NOCHNL");
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, "NOCHNL");
 
 		for (ChnlRscIntf rsc : rsces) {
 			cmd.addRscData(rsc);
@@ -392,13 +393,13 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		// DummySender senderForAud = new DummySender( );
 		// sesh.joinSesh("audA", senderForAud);
 
 		boolean ok = false;
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rsces) {
 			cmd.addRscData(rsc);
 		}
@@ -439,7 +440,7 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -451,7 +452,7 @@ public class SeshPresSvrTest {
 		senderForAudB.pollCmd();
 		sesh.joinChnl(chnlName, "audB");
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 		for (ChnlRscIntf rsc : rsces) {
 			cmd.addRscData(rsc);
 		}
@@ -486,7 +487,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, "NOCHNL");
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, "NOCHNL");
 		for (ChnlRscIntf rsc : rsces) {
 			cmd.addRscData(rsc);
 		}
@@ -531,7 +532,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 		DummySender senderForAud = new DummySender();
 		DummySender senderForAudB = new DummySender();
 
@@ -545,7 +546,7 @@ public class SeshPresSvrTest {
 
 		sesh.clsChnl(chnlName);
 
-		NtfyCmdClsChnl cmd = new NtfyCmdClsChnl(seshName, chnlName);
+		NtfyCmdClsChnl cmd = new NtfyCmdClsChnl(seshName, chnlType, chnlName);
 		assertEquals(cmd.toXmlStr(), senderForAud.pollCmd());
 		assertNull(senderForAud.pollCmd());
 		assertEquals(cmd.toXmlStr(), senderForAudB.pollCmd());
@@ -574,7 +575,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
 
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 		DummySender senderForAud = new DummySender();
 
 		sesh.joinSesh("audA", senderForAud);
@@ -615,12 +616,12 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
 
-		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlName);
+		NtfyCmdRegChnl cmd = new NtfyCmdRegChnl(seshName, chnlType, chnlName);
 
 		assertEquals(cmd.toXmlStr(), senderForAudA.pollCmd());
 		assertNull(senderForAudA.pollCmd());
@@ -651,7 +652,7 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -693,7 +694,7 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -702,7 +703,8 @@ public class SeshPresSvrTest {
 
 		sesh.joinChnl(chnlName, "audA");
 
-		NtfyCmdJoinChnl cmd = new NtfyCmdJoinChnl(seshName, chnlName, "audA");
+		NtfyCmdJoinChnl cmd = new NtfyCmdJoinChnl(seshName, chnlType, chnlName,
+				"audA");
 		assertEquals(cmd.toXmlStr(), senderForPrestr.pollCmd());
 		assertNull(senderForPrestr.pollCmd());
 
@@ -731,7 +733,7 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -774,7 +776,7 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -819,7 +821,7 @@ public class SeshPresSvrTest {
 		DummySender senderForPrestr = new DummySender();
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPrestr);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -866,7 +868,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -877,7 +879,8 @@ public class SeshPresSvrTest {
 		senderForPresenter.pollCmd();
 
 		sesh.lvChnl(chnlName, "audA");
-		NtfyCmdLvChnl cmd = new NtfyCmdLvChnl(seshName, chnlName, "audA");
+		NtfyCmdLvChnl cmd = new NtfyCmdLvChnl(seshName, chnlType, chnlName,
+				"audA");
 		assertEquals(cmd.toXmlStr(), senderForPresenter.pollCmd());
 		assertNull(senderForPresenter.pollCmd());
 
@@ -908,7 +911,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -959,7 +962,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -1010,7 +1013,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -1051,7 +1054,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		// sesh.joinSesh("audA", senderForAudA, sesh);
@@ -1099,7 +1102,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -1146,7 +1149,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -1154,7 +1157,8 @@ public class SeshPresSvrTest {
 		senderForPresenter.pollCmd();
 
 		sesh.rjctChnl(chnlName, "audA");
-		NtfyCmdRjctChnl cmd = new NtfyCmdRjctChnl(seshName, chnlName, "audA");
+		NtfyCmdRjctChnl cmd = new NtfyCmdRjctChnl(seshName, chnlType, chnlName,
+				"audA");
 		assertEquals(cmd.toXmlStr(), senderForPresenter.pollCmd());
 
 		assertNull(senderForPresenter.pollCmd());
@@ -1184,7 +1188,7 @@ public class SeshPresSvrTest {
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);
@@ -1229,7 +1233,7 @@ public class SeshPresSvrTest {
 
 		SeshPresSvr sesh = new SeshPresSvr(seshName, senderForPresenter);
 		ArrayList<ChnlRscIntf> rsces = new ArrayList<ChnlRscIntf>();
-		sesh.regChnl(chnlName, rsces);
+		sesh.regChnl(chnlType, chnlName, rsces);
 
 		DummySender senderForAudA = new DummySender();
 		sesh.joinSesh("audA", senderForAudA);

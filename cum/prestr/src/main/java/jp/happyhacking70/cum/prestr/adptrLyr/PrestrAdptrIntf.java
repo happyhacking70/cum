@@ -27,10 +27,11 @@ public interface PrestrAdptrIntf {
 
 	/**
 	 * @param chnlName
+	 * @param chnlName2
 	 * @param chnl
 	 * @param rsces
 	 */
-	void regChnl(String seshName, String chnlName,
+	void regChnl(String seshName, String chnlType, String chnlName,
 			PrestrChnlIntfFromChnlView chnl, HashMap<String, ChnlRscIntf> rsces);
 
 	/**

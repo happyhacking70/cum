@@ -41,22 +41,24 @@ public class PresSvrAdptrHdlrRjctChnl implements PresSvrAdptrHdlrIntf {
 			seshMgr.rjctChnl(reqCmd.getSeshName(), reqCmd.getChnlName(),
 					reqCmd.getAudName());
 			resCmd = new ResCmdRjctChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), reqCmd.getAudName(),
-					ResCmdRjctChnl.RsltTypes.Rjcted.name());
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					reqCmd.getAudName(), ResCmdRjctChnl.RsltTypes.Rjcted.name());
 
 		} catch (CumExcpAudExists e) {
 			resCmd = new ResCmdRjctChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), reqCmd.getAudName(),
-					ResCmdRjctChnl.RsltTypes.Exists.name());
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					reqCmd.getAudName(), ResCmdRjctChnl.RsltTypes.Exists.name());
 
 		} catch (CumExcpChnlNotExist e) {
 			resCmd = new ResCmdRjctChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), reqCmd.getAudName(),
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					reqCmd.getAudName(),
 					ResCmdRjctChnl.RsltTypes.ChnlNotExist.name());
 
 		} catch (CumExcpSeshNotExist e) {
 			resCmd = new ResCmdRjctChnl(reqCmd.getSeshName(),
-					reqCmd.getChnlName(), reqCmd.getAudName(),
+					reqCmd.getChnlType(), reqCmd.getChnlName(),
+					reqCmd.getAudName(),
 					ResCmdRjctChnl.RsltTypes.SeshNotExist.name());
 
 		}

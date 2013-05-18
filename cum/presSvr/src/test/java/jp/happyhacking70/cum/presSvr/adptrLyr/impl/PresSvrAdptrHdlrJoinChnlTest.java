@@ -9,10 +9,10 @@ import java.io.IOException;
 
 import jp.happyhacking70.cum.cmd.req.impl.ReqCmdJoinChnl;
 import jp.happyhacking70.cum.cmd.res.impl.ResCmdJoinChnl;
-import jp.happyhacking70.cum.presSvr.CumTestAbst;
 import jp.happyhacking70.cum.excp.cmd.CumExcpIllegalCmdDoc;
 import jp.happyhacking70.cum.excp.cmd.CumExcpIllegalCmdXML;
 import jp.happyhacking70.cum.excp.cmd.CumExcpXMLGenFailed;
+import jp.happyhacking70.cum.presSvr.CumTestAbst;
 import jp.happyhacking70.cum.presSvr.adptrLyr.excp.CumExcpAudExists;
 import jp.happyhacking70.cum.presSvr.adptrLyr.excp.CumExcpAudNotExist;
 import jp.happyhacking70.cum.presSvr.adptrLyr.excp.CumExcpChnlExists;
@@ -76,14 +76,15 @@ public class PresSvrAdptrHdlrJoinChnlTest extends CumTestAbst {
 		SeshMgrPresSvrAllIntf seshMgr = new SeshMgrPresSvr();
 
 		seshMgr.regSesh(seshName, senderForPrestr);
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 		seshMgr.joinSesh(seshName, audName, senderForAudA);
 		senderForAudA.pollCmd();
 
 		PresSvrAdptrHdlrJoinChnl hdlr = new PresSvrAdptrHdlrJoinChnl();
 
 		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr.hndlCmd(
-				new ReqCmdJoinChnl(seshName, chnlName, audName), seshMgr);
+				new ReqCmdJoinChnl(seshName, chnlType, chnlName, audName),
+				seshMgr);
 
 		assertEquals(ResCmdJoinChnl.class, resCmd.getClass());
 		assertEquals(seshName, resCmd.getSeshName());
@@ -102,14 +103,16 @@ public class PresSvrAdptrHdlrJoinChnlTest extends CumTestAbst {
 		SeshMgrPresSvrAllIntf seshMgr = new SeshMgrPresSvr();
 
 		seshMgr.regSesh(seshName, senderForPrestr);
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 		seshMgr.joinSesh(seshName, audName, senderForAudA);
 		senderForAudA.pollCmd();
 
 		PresSvrAdptrHdlrJoinChnl hdlr = new PresSvrAdptrHdlrJoinChnl();
 
-		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr.hndlCmd(
-				new ReqCmdJoinChnl("XXX", chnlName, audName), seshMgr);
+		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr
+				.hndlCmd(
+						new ReqCmdJoinChnl("XXX", chnlType, chnlName, audName),
+						seshMgr);
 
 		assertEquals(ResCmdJoinChnl.class, resCmd.getClass());
 		assertEquals("XXX", resCmd.getSeshName());
@@ -129,14 +132,16 @@ public class PresSvrAdptrHdlrJoinChnlTest extends CumTestAbst {
 		SeshMgrPresSvrAllIntf seshMgr = new SeshMgrPresSvr();
 
 		seshMgr.regSesh(seshName, senderForPrestr);
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 		seshMgr.joinSesh(seshName, audName, senderForAudA);
 		senderForAudA.pollCmd();
 
 		PresSvrAdptrHdlrJoinChnl hdlr = new PresSvrAdptrHdlrJoinChnl();
 
-		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr.hndlCmd(
-				new ReqCmdJoinChnl(seshName, "XXX", audName), seshMgr);
+		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr
+				.hndlCmd(
+						new ReqCmdJoinChnl(seshName, chnlType, "XXX", audName),
+						seshMgr);
 
 		assertEquals(ResCmdJoinChnl.class, resCmd.getClass());
 		assertEquals(seshName, resCmd.getSeshName());
@@ -157,7 +162,7 @@ public class PresSvrAdptrHdlrJoinChnlTest extends CumTestAbst {
 		SeshMgrPresSvrAllIntf seshMgr = new SeshMgrPresSvr();
 
 		seshMgr.regSesh(seshName, senderForPrestr);
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 		seshMgr.joinSesh(seshName, audName, senderForAudA);
 		senderForAudA.pollCmd();
 		seshMgr.joinChnl(seshName, chnlName, audName);
@@ -165,7 +170,8 @@ public class PresSvrAdptrHdlrJoinChnlTest extends CumTestAbst {
 		PresSvrAdptrHdlrJoinChnl hdlr = new PresSvrAdptrHdlrJoinChnl();
 
 		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr.hndlCmd(
-				new ReqCmdJoinChnl(seshName, chnlName, audName), seshMgr);
+				new ReqCmdJoinChnl(seshName, chnlType, chnlName, audName),
+				seshMgr);
 
 		assertEquals(ResCmdJoinChnl.class, resCmd.getClass());
 		assertEquals(seshName, resCmd.getSeshName());
@@ -184,12 +190,13 @@ public class PresSvrAdptrHdlrJoinChnlTest extends CumTestAbst {
 		SeshMgrPresSvrAllIntf seshMgr = new SeshMgrPresSvr();
 
 		seshMgr.regSesh(seshName, senderForPrestr);
-		seshMgr.regChnl(seshName, chnlName, rscesArray);
+		seshMgr.regChnl(seshName, chnlType, chnlName, rscesArray);
 
 		PresSvrAdptrHdlrJoinChnl hdlr = new PresSvrAdptrHdlrJoinChnl();
 
 		ResCmdJoinChnl resCmd = (ResCmdJoinChnl) hdlr.hndlCmd(
-				new ReqCmdJoinChnl(seshName, chnlName, audName), seshMgr);
+				new ReqCmdJoinChnl(seshName, chnlType, chnlName, audName),
+				seshMgr);
 
 		assertEquals(ResCmdJoinChnl.class, resCmd.getClass());
 		assertEquals(seshName, resCmd.getSeshName());
