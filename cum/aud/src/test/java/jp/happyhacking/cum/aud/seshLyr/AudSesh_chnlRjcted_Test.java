@@ -41,6 +41,14 @@ public class AudSesh_chnlRjcted_Test extends AudSeshTestAbst {
 		assertEquals(chnlNameA, seshView.getChnlNameRjcted());
 	}
 
+	@Test(expected = CumExcpChnlNotExist.class)
+	public void TestJoined_NOCHNL() throws TestExcp, CumExcpIllegalSeshStatus,
+			CumExcpChnlNotExist, CumExcpIllegalChnlStatus {
+
+		AudSesh sesh = gotoJoined();
+		sesh.chnlRjcted("XXX");
+	}
+
 	@Test
 	public void TestLving() throws TestExcp, CumExcpIllegalSeshStatus,
 			CumExcpChnlNotExist, CumExcpIllegalChnlStatus {
