@@ -17,6 +17,11 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected String rslt;
 	protected String chnlNameReged;
 	protected String chnlTypeReged;
+	protected String chnlNameRjcted;
+
+	public String getChnlNameRjcted() {
+		return chnlNameRjcted;
+	}
 
 	public String getChnlTypeReged() {
 		return chnlTypeReged;
@@ -141,7 +146,7 @@ public class DummySeshView implements AudSeshViewIntf {
 	 */
 	@Override
 	public void chnlRjcted(String chnlName) {
-		// TODO Auto-generated method stub
+		this.chnlNameRjcted = chnlName;
 
 	}
 
