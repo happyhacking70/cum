@@ -24,6 +24,7 @@ public class AudSeshTestAbst {
 	static final String seshName = "testSession";
 	static final String audNameA = "testAudienceA";
 	static final String chnlNameA = "testChannelA";
+	static final String chnlNameB = "testChannelB";
 	static final String chnlType = "testChannelType";
 	static final String actionName = "testAction";
 	static final String rslt = ResCmdJoinChnl.RsltTypes.ChnlNotExist.name();

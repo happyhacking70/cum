@@ -24,7 +24,7 @@ import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
  * 
  */
 public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
-		AudSeshIntfForSeshView {
+		AudSeshIntfForSeshView, AudSeshIntfInternal {
 	/** Audience Session Status */
 	public enum Status {
 		/** initial state */
@@ -217,7 +217,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			AudChnlIntfForSesh chnl = new AudChnl(chnlType, chnlName, rsces,
 					this, seshView.getChnlView(chnlType));
 			chnls.put(chnlName, chnl);
-			seshView.chnlRged(chnlName);
+			seshView.chnlReged(chnlType, chnlName);
 		} catch (CumExcpIgnoreSeshStatus e) {
 		}
 
@@ -235,6 +235,13 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		joinChnlCheckStatus();
 		AudChnlIntfForSesh chnl = getChnl(chnlName);
 		chnl.chnlJoining();
+
+		HashMap<String, ChnlRscIntf> rsces = chnl.getRsces();
+		for (String rscName : rsces.keySet()) {
+			rsces.put(rscName, adptr.fetchRsc(seshName, chnl.getChnlType(),
+					chnlName, rsces.get(rscName).getName()));
+		}
+
 		adptr.joinChnl(seshName, chnlName, audName);
 	}
 
@@ -250,6 +257,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		try {
 			chnlJoinedCheckStatus();
 			AudChnlIntfForSesh chnl = getChnl(chnlName);
+
 			chnl.chnlJoined();
 		} catch (CumExcpIgnoreSeshStatus e) {
 		}
@@ -736,5 +744,18 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			throw new CumExcpChnlNotExist(seshName, chnlName);
 		}
 		return chnl;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking.cum.aud.seshLyr.AudSeshIntfInternal#fetchRsc(java.lang
+	 * .String, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ChnlRscIntf fetchRsc(String seshName, String chnlType,
+			String chnlName, String rscName) {
+		return adptr.fetchRsc(seshName, chnlType, chnlName, rscName);
 	}
 }

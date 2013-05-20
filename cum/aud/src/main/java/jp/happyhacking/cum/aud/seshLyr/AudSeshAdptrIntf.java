@@ -34,6 +34,18 @@ public interface AudSeshAdptrIntf {
 	public abstract void seshDscned() throws CumExcpIllegalChnlStatuMulti,
 			CumExcpIllegalSeshStatus;
 
+	/**
+	 * Notification of Channel Registered Received. Channel Resources are just
+	 * names. Actual instance of channel resources should be fetched when
+	 * {@link AudSeshIntfForSeshView#joinChnl(String)} is invoked. Because
+	 * audience may reject channel, rsces does not have to be fetched here.
+	 * 
+	 * @param chnlType
+	 * @param chnlName
+	 * @param rsces
+	 * @throws CumExcpChnlExists
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	public abstract void chnlReged(String chnlType, String chnlName,
 			HashMap<String, ChnlRscIntf> rsces) throws CumExcpChnlExists,
 			CumExcpIllegalSeshStatus;

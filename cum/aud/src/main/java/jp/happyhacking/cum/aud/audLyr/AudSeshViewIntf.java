@@ -48,7 +48,7 @@ public interface AudSeshViewIntf {
 	/**
 	 * @param chnlName
 	 */
-	void chnlRged(String chnlName);
+	void chnlReged(String chnlType, String chnlName);
 
 	/**
 	 * @param chnlName

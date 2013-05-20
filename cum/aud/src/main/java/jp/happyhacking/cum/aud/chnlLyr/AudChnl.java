@@ -515,4 +515,14 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		return chnlType;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#getRsces()
+	 */
+	@Override
+	public HashMap<String, ChnlRscIntf> getRsces() {
+		return rsces;
+	}
+
 }

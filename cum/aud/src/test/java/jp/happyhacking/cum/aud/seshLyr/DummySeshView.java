@@ -15,6 +15,16 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected DummyChniView chnlView = null;
 	protected String chnlNameFailed;
 	protected String rslt;
+	protected String chnlNameReged;
+	protected String chnlTypeReged;
+
+	public String getChnlTypeReged() {
+		return chnlTypeReged;
+	}
+
+	public String getChnlNameReged() {
+		return chnlNameReged;
+	}
 
 	public String getChnlNameFailed() {
 		return chnlNameFailed;
@@ -112,18 +122,6 @@ public class DummySeshView implements AudSeshViewIntf {
 	 * (non-Javadoc)
 	 * 
 	 * @see
-	 * jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#chnlRged(java.lang.String)
-	 */
-	@Override
-	public void chnlRged(String chnlName) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
 	 * jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#chnlJoinFailed(java.lang
 	 * .String, java.lang.String)
 	 */
@@ -162,6 +160,20 @@ public class DummySeshView implements AudSeshViewIntf {
 
 	public DummyChniView getChnlView() {
 		return chnlView;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#chnlRged(java.lang.String,
+	 * java.lang.String)
+	 */
+	@Override
+	public void chnlReged(String chnlType, String chnlName) {
+		this.chnlTypeReged = chnlType;
+		this.chnlNameReged = chnlName;
+
 	}
 
 }

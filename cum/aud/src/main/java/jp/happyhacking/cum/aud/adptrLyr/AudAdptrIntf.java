@@ -3,6 +3,8 @@
  */
 package jp.happyhacking.cum.aud.adptrLyr;
 
+import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
+
 /**
  * @author happyhacking70@gmail.com
  * 
@@ -42,4 +44,13 @@ public interface AudAdptrIntf {
 	 */
 	void rjctChnl(String seshName, String chnlType, String chnlName);
 
+	/**
+	 * @param seshName
+	 * @param chnlType
+	 * @param chnlName
+	 * @param rscName
+	 * @return
+	 */
+	ChnlRscIntf fetchRsc(String seshName, String chnlType, String chnlName,
+			String rscName);
 }

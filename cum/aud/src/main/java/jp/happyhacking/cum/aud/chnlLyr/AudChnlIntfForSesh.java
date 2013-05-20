@@ -6,6 +6,7 @@ package jp.happyhacking.cum.aud.chnlLyr;
 import java.util.HashMap;
 
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
+import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 
 /**
  * @author happyhacking70@gmail.com
@@ -41,5 +42,7 @@ public interface AudChnlIntfForSesh {
 	void seshLving() throws CumExcpIllegalChnlStatus;
 
 	String getChnlType();
+
+	HashMap<String, ChnlRscIntf> getRsces();
 
 }
