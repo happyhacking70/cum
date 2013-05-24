@@ -24,6 +24,11 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected boolean dscned = false;
 	protected boolean joined = false;
 	protected String joinSeshRslt;
+	protected boolean lft = false;
+
+	public boolean isLft() {
+		return lft;
+	}
 
 	public String getJoinSeshRslt() {
 		return joinSeshRslt;
@@ -100,7 +105,7 @@ public class DummySeshView implements AudSeshViewIntf {
 	 */
 	@Override
 	public void seshLft() {
-		// TODO Auto-generated method stub
+		this.lft = true;
 
 	}
 
