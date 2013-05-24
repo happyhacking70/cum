@@ -19,6 +19,16 @@ public class DummyAdptr implements AudAdptrIntf {
 	protected String seshNameToJoinChnl;
 	protected String audNameToJoinChnl;
 	protected String chnlTypeToJoin;
+	protected String seshNameToJin;
+	protected String audNameToJoinSesh;
+
+	public String getSeshNameToJin() {
+		return seshNameToJin;
+	}
+
+	public String getAudNameToJoinSesh() {
+		return audNameToJoinSesh;
+	}
 
 	public String getChnlTypeToJoin() {
 		return chnlTypeToJoin;
@@ -49,7 +59,8 @@ public class DummyAdptr implements AudAdptrIntf {
 	 */
 	@Override
 	public void joinSesh(String seshName, String audName) {
-		// TODO Auto-generated method stub
+		this.seshNameToJin = seshName;
+		this.audNameToJoinSesh = audName;
 
 	}
 
