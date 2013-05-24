@@ -29,6 +29,16 @@ public class DummyAdptr implements AudAdptrIntf {
 	protected String seshNameToRjctChnl;
 	protected String chnlTypeToRjctChnl;
 	protected String chnlNameToRjctChnl;
+	protected String audNameToLvChnl;
+	protected String audNameToRjctChnl;
+
+	public String getAudNameToLvChnl() {
+		return audNameToLvChnl;
+	}
+
+	public String getAudNameToRjctChnl() {
+		return audNameToRjctChnl;
+	}
 
 	public String getSeshNameToRjctChnl() {
 		return seshNameToRjctChnl;
@@ -143,10 +153,12 @@ public class DummyAdptr implements AudAdptrIntf {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void lvChnl(String seshName, String chnlType, String chnlName) {
+	public void lvChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
 		this.seshNameToLvChnl = seshName;
 		this.chnlTypeToLvChnl = chnlType;
 		this.chnlNameToLevChnl = chnlName;
+		this.audNameToLvChnl = audName;
 	}
 
 	/*
@@ -157,10 +169,12 @@ public class DummyAdptr implements AudAdptrIntf {
 	 * java.lang.String, java.lang.String)
 	 */
 	@Override
-	public void rjctChnl(String seshName, String chnlType, String chnlName) {
+	public void rjctChnl(String seshName, String chnlType, String chnlName,
+			String audName) {
 		this.seshNameToRjctChnl = seshName;
 		this.chnlTypeToRjctChnl = chnlType;
 		this.chnlNameToRjctChnl = chnlName;
+		this.audNameToRjctChnl = audName;
 	}
 
 	/*

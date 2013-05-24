@@ -5,13 +5,14 @@ package jp.happyhacking.cum.aud.seshLyr;
 
 import jp.happyhacking.cum.aud.audLyr.AudChnlViewIntf;
 import jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf;
+import jp.happyhacking.cum.aud.audLyr.AudSeshViewIntfForSesh;
 import jp.happyhacking.cum.aud.chnlLyr.DummyChniView;
 
 /**
  * @author happyhacking70@gmail.com
  * 
  */
-public class DummySeshView implements AudSeshViewIntf {
+public class DummySeshView implements AudSeshViewIntf, AudSeshViewIntfForSesh {
 	protected DummyChniView chnlView = null;
 	protected String chnlNameFailed;
 	protected String rslt;
@@ -229,6 +230,41 @@ public class DummySeshView implements AudSeshViewIntf {
 	@Override
 	public void seshJoined() {
 		this.joined = true;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#lvSesh()
+	 */
+	@Override
+	public void lvSesh() {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#joinChnl(java.lang.String)
+	 */
+	@Override
+	public void joinChnl(String chnlName) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#rjctChnl(java.lang.String)
+	 */
+	@Override
+	public void rjctChnl(String chnlName) {
+		// TODO Auto-generated method stub
 
 	}
 

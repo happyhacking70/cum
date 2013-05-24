@@ -24,10 +24,16 @@ public class CumExcpIllegalChnlStatus extends CumExcpAbst {
 		this.status = status;
 	}
 
+	/**
+	 * @return name of channel
+	 */
 	public String getChnlName() {
 		return chnlName;
 	}
 
+	/**
+	 * @return status
+	 */
 	public String getStatus() {
 		return status;
 	}

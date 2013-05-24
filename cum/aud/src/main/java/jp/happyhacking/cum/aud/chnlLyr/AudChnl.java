@@ -10,7 +10,6 @@ import jp.happyhacking.cum.aud.excp.CumExcpChnlNotExist;
 import jp.happyhacking.cum.aud.excp.CumExcpIgnoreChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
-import jp.happyhacking.cum.aud.seshLyr.AudSesh;
 import jp.happyhacking.cum.aud.seshLyr.AudSeshChnlIntf;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 
@@ -50,8 +49,9 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 */
 	public enum Status {
 		/**
-		 * initial state. When {@link AudSesh#chnlReged(String, HashMap)} is
-		 * invoked, this class is instantiated and should be set to this. state
+		 * initial state. When
+		 * {@link AudSesh#chnlReged(String, String, HashMap)} is invoked, this
+		 * class is instantiated and should be set to this. state
 		 */
 		init,
 		/** under joining */
@@ -97,7 +97,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * .cum.aud.audLyr.AudChnlViewIntf)
 	 */
 	@Override
-	public void chnlJoined() throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlJoined() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlJoined();
 		chnlStatus = Status.joined;
 
@@ -115,7 +115,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForView#lvChnl()
 	 */
 	@Override
-	public void lvChnl() throws CumExcpIllegalChnlStatus,
+	synchronized public void lvChnl() throws CumExcpIllegalChnlStatus,
 			CumExcpIllegalSeshStatus, CumExcpChnlNotExist {
 		checkStatuslvChnl();
 		chnlStatus = Status.lving;
@@ -128,7 +128,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlClsed()
 	 */
 	@Override
-	public void chnlClsed() throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlClsed() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlClsed();
 		chnlStatus = Status.clsed;
 		chnlView.chnlClsed();
@@ -141,7 +141,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#seshClsed()
 	 */
 	@Override
-	public void seshClsed() throws CumExcpIllegalChnlStatus {
+	synchronized public void seshClsed() throws CumExcpIllegalChnlStatus {
 		try {
 			checkStatusseshClsed();
 			chnlStatus = Status.clsed;
@@ -159,7 +159,8 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * .lang.String)
 	 */
 	@Override
-	public void chnlJoinedFailed(String rslt) throws CumExcpIllegalChnlStatus {
+	synchronized public void joinChnlFailed(String rslt)
+			throws CumExcpIllegalChnlStatus {
 		// since join channel is session level, channel just change status
 		// without notifying channel view.
 		checkStatuschnlJoinedFailed();
@@ -174,8 +175,8 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * lang.String, java.util.HashMap)
 	 */
 	@Override
-	public void chnlCmdRcved(String actionName, HashMap<String, String> params)
-			throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlCmdRcved(String actionName,
+			HashMap<String, String> params) throws CumExcpIllegalChnlStatus {
 		try {
 			checkStatuschnlCmdRcved();
 			chnlView.chnlCmdRcved(actionName, params);
@@ -190,10 +191,10 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlLft()
 	 */
 	@Override
-	public void chnlLft() throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlLft() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlLft();
 		chnlStatus = Status.init;
-		chnlView.chnlLeft();
+		chnlView.chnlLft();
 
 	}
 
@@ -205,7 +206,8 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * .lang.String)
 	 */
 	@Override
-	public void chnlLvFailed(String rslt) throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlLvFailed(String rslt)
+			throws CumExcpIllegalChnlStatus {
 		checkStatuschnlLvFailed();
 		chnlStatus = Status.init;
 		chnlView.chnlLvFailed(rslt);
@@ -217,7 +219,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlJoining()
 	 */
 	@Override
-	public void chnlJoining() throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlJoining() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlJoining();
 		chnlStatus = Status.joining;
 	}
@@ -228,7 +230,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlRjcting()
 	 */
 	@Override
-	public void chnlRjcting() throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlRjcting() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlRjcting();
 		chnlStatus = Status.rjcting;
 	}
@@ -239,7 +241,7 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlRjected()
 	 */
 	@Override
-	public void chnlRjcted() throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlRjcted() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlRjected();
 		chnlStatus = Status.init;
 	}
@@ -252,10 +254,59 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	 * .lang.String)
 	 */
 	@Override
-	public void chnlRjctFailed(String rslt) throws CumExcpIllegalChnlStatus {
+	synchronized public void chnlRjctFailed() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlRjctFailed();
 		chnlStatus = Status.init;
 
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlDscned()
+	 */
+	@Override
+	public void chnlDscned() throws CumExcpIllegalChnlStatus {
+		checkStatuschnlDscned();
+		chnlStatus = Status.dscned;
+		chnlView.chnlDscned();
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#seshLving()
+	 */
+	@Override
+	synchronized public void seshLving() throws CumExcpIllegalChnlStatus {
+		try {
+			checkStatusSeshLving();
+			chnlView.seshLving();
+			chnlStatus = Status.init;
+		} catch (CumExcpIgnoreChnlStatus e) {
+		}
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#getChnlType()
+	 */
+	@Override
+	public String getChnlType() {
+		return chnlType;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#getRsces()
+	 */
+	@Override
+	public HashMap<String, ChnlRscIntf> getRsces() {
+		return rsces;
 	}
 
 	void checkStatuslvChnl() throws CumExcpIllegalChnlStatus {
@@ -468,35 +519,6 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#chnlDscned()
-	 */
-	@Override
-	public void chnlDscned() throws CumExcpIllegalChnlStatus {
-		checkStatuschnlDscned();
-		chnlStatus = Status.dscned;
-		chnlView.chnlDscned();
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#seshLving()
-	 */
-	@Override
-	public void seshLving() throws CumExcpIllegalChnlStatus {
-		try {
-			checkStatusSeshLving();
-			chnlView.seshLving();
-			chnlStatus = Status.init;
-		} catch (CumExcpIgnoreChnlStatus e) {
-		}
-
-	}
-
 	void checkStatusSeshLving() throws CumExcpIllegalChnlStatus,
 			CumExcpIgnoreChnlStatus {
 		if (chnlStatus == Status.init) {
@@ -509,26 +531,6 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 			throw new CumExcpIllegalChnlStatus(chnlName, chnlStatus.name());
 		} else if (chnlStatus == Status.rjcting) {
 		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#getChnlType()
-	 */
-	@Override
-	public String getChnlType() {
-		return chnlType;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh#getRsces()
-	 */
-	@Override
-	public HashMap<String, ChnlRscIntf> getRsces() {
-		return rsces;
 	}
 
 }

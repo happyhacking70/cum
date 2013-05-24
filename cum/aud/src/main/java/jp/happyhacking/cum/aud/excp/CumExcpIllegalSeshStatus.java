@@ -15,7 +15,7 @@ public class CumExcpIllegalSeshStatus extends CumExcpAbst {
 	protected String status;
 
 	/**
-	 * @param chnlName
+	 * @param seshName
 	 * @param status
 	 */
 	public CumExcpIllegalSeshStatus(String seshName, String status) {
@@ -24,10 +24,16 @@ public class CumExcpIllegalSeshStatus extends CumExcpAbst {
 		this.status = status;
 	}
 
+	/**
+	 * @return name of session
+	 */
 	public String getSeshName() {
 		return seshName;
 	}
 
+	/**
+	 * @return status
+	 */
 	public String getStatus() {
 		return status;
 	}

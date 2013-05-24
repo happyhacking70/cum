@@ -47,6 +47,7 @@ public class AudSesh_lvChnl_Test extends AudSeshTestAbst {
 		assertEquals(chnlType, adptr.getChnlTypeToLvChnl());
 		assertEquals(chnlNameA, adptr.getChnlNameToLevChnl());
 		assertEquals(seshName, adptr.getSeshNameToLvChnl());
+		assertEquals(audNameA, adptr.getAudNameToLvChnl());
 	}
 
 	@Test(expected = CumExcpChnlNotExist.class)

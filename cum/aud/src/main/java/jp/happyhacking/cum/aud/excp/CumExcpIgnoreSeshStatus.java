@@ -15,7 +15,7 @@ public class CumExcpIgnoreSeshStatus extends CumExcpAbst {
 	protected String status;
 
 	/**
-	 * @param chnlName
+	 * @param seshName
 	 * @param status
 	 */
 	public CumExcpIgnoreSeshStatus(String seshName, String status) {
@@ -24,10 +24,16 @@ public class CumExcpIgnoreSeshStatus extends CumExcpAbst {
 		this.status = status;
 	}
 
+	/**
+	 * @return name of session
+	 */
 	public String getSeshName() {
 		return seshName;
 	}
 
+	/**
+	 * @return status
+	 */
 	public String getStatus() {
 		return status;
 	}

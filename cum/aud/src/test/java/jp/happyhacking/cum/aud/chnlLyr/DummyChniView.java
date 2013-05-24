@@ -108,7 +108,7 @@ public class DummyChniView implements AudChnlViewIntf {
 	 * @see jp.happyhacking.cum.aud.audLyr.AudChnlViewIntf#chnlLeft()
 	 */
 	@Override
-	public void chnlLeft() {
+	public void chnlLft() {
 		chnlLft = true;
 	}
 

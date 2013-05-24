@@ -6,7 +6,7 @@ package jp.happyhacking.cum.aud.seshLyr;
 import java.util.HashMap;
 
 import jp.happyhacking.cum.aud.adptrLyr.AudAdptrIntf;
-import jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf;
+import jp.happyhacking.cum.aud.audLyr.AudSeshViewIntfForSesh;
 import jp.happyhacking.cum.aud.chnlLyr.AudChnl;
 import jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh;
 import jp.happyhacking.cum.aud.excp.CumExcpChnlExists;
@@ -19,6 +19,17 @@ import jp.happyhacking70.cum.cmd.res.impl.ResCmdJoinChnl;
 import jp.happyhacking70.cum.cmd.rsc.ChnlRscIntf;
 
 /**
+ * 
+ * Audience Session<BR>
+ * <BR>
+ * State Transition Diagram of Aud Session <BR>
+ * <img src="doc-files/AudSeshStateTransitionDiagram.bmp"
+ * alt="State Transition Diagram of Aud Session"/> <BR>
+ * Session Status and Methods<BR>
+ * <iframe src="doc-files/AudSeshStateAndMethods.html" width="1700"
+ * height="300"></iframe>
+ * 
+ * 
  * @author happyhacking70@gmail.com
  * 
  */
@@ -40,19 +51,28 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		dscned
 	}
 
+	/** session status */
 	protected Status seshStatus = Status.init;
+	/** name of session */
 	protected String seshName;
+	/** name of audience */
 	protected String audName;
-	protected AudSeshViewIntf seshView;
+	/** session view */
+	protected AudSeshViewIntfForSesh seshView;
+	/** audience adaptor */
 	protected AudAdptrIntf adptr;
+	/** channels in this session */
 	protected HashMap<String, AudChnlIntfForSesh> chnls = new HashMap<String, AudChnlIntfForSesh>();
 
 	/**
 	 * @param seshName
+	 *            name of session
 	 * @param audName
+	 *            name of audience
 	 * @param seshView
+	 *            session view
 	 */
-	public AudSesh(String seshName, String audName, AudSeshViewIntf seshView,
+	public AudSesh(String seshName, String audName, AudSeshViewIntfForSesh seshView,
 			AudAdptrIntf adptr) {
 		super();
 		this.seshName = seshName;
@@ -292,7 +312,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		lvChnlCheckStatus();
 		AudChnlIntfForSesh chnl = getChnl(chnlName);
 
-		adptr.lvChnl(seshName, chnl.getChnlType(), chnlName);
+		adptr.lvChnl(seshName, chnl.getChnlType(), chnlName, audName);
 	}
 
 	/*
@@ -331,6 +351,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			lvChnlFailedCheckStatus();
 			AudChnlIntfForSesh chnl = getChnl(chnlName);
 			chnl.chnlLvFailed(rslt);
+			chnls.remove(chnlName);
 		} catch (CumExcpIgnoreSeshStatus e) {
 		}
 
@@ -351,7 +372,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 
 		AudChnlIntfForSesh chnl = getChnl(chnlName);
 		chnl.chnlRjcting();
-		adptr.rjctChnl(seshName, chnl.getChnlType(), chnlName);
+		adptr.rjctChnl(seshName, chnl.getChnlType(), chnlName, audName);
 	}
 
 	/*
@@ -366,7 +387,8 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			CumExcpIllegalChnlStatus {
 		try {
 			chnlRjctedCheckStatus();
-			getChnl(chnlName);
+			AudChnlIntfForSesh chnl = getChnl(chnlName);
+			chnl.chnlRjcted();
 			seshView.chnlRjcted(chnlName);
 		} catch (CumExcpIgnoreSeshStatus e) {
 		}
@@ -387,6 +409,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			chnlRjctFailedCheckStatus();
 			getChnl(chnlName);
 			seshView.chnlRjctFailed(chnlName, rslt);
+			chnls.remove(chnlName);
 		} catch (CumExcpIgnoreSeshStatus e) {
 		}
 
@@ -406,6 +429,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			chnlClsedCheckStatus();
 			AudChnlIntfForSesh chnl = getChnl(chnlName);
 			chnl.chnlClsed();
+			chnls.remove(chnlName);
 		} catch (CumExcpIgnoreSeshStatus e) {
 		}
 
@@ -432,6 +456,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void seshJoinedCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -447,6 +474,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void seshJoinFailedCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -462,6 +492,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void seshLftCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -477,6 +510,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void lvSeshFailedCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -492,6 +528,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void seshClsedCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -518,6 +557,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlRegedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -534,6 +577,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlJoinedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -550,6 +597,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlJoinFailedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -566,6 +617,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlRjctedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -582,6 +637,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlRjctFailedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -598,6 +657,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void lftChnlCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -614,6 +677,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void lvChnlFailedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -630,6 +697,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlClsedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -646,6 +717,10 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 * @throws CumExcpIgnoreSeshStatus
+	 */
 	protected void chnlCmdRcvedCheckStatus() throws CumExcpIllegalSeshStatus,
 			CumExcpIgnoreSeshStatus {
 		if (seshStatus == Status.init) {
@@ -662,6 +737,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void joinSeshCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 		} else if (seshStatus == Status.joining) {
@@ -677,6 +755,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void lvSeshCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -692,6 +773,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void joinChnlCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -707,6 +791,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void rjctChnlCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -722,6 +809,9 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @throws CumExcpIllegalSeshStatus
+	 */
 	protected void lvChnlCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
@@ -737,6 +827,11 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
+	/**
+	 * @param chnlName
+	 * @return Audience Channel
+	 * @throws CumExcpChnlNotExist
+	 */
 	protected AudChnlIntfForSesh getChnl(String chnlName)
 			throws CumExcpChnlNotExist {
 		AudChnlIntfForSesh chnl = chnls.get(chnlName);
