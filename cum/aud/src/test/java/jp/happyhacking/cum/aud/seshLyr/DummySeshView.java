@@ -25,6 +25,11 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected boolean joined = false;
 	protected String joinSeshRslt;
 	protected boolean lft = false;
+	protected String lvSeshFailedRslt;
+
+	public String getLvSeshFailedRslt() {
+		return lvSeshFailedRslt;
+	}
 
 	public boolean isLft() {
 		return lft;
@@ -117,8 +122,8 @@ public class DummySeshView implements AudSeshViewIntf {
 	 * .String)
 	 */
 	@Override
-	public void seshLvFailed(String rslt) {
-		// TODO Auto-generated method stub
+	public void lvSeshFailed(String rslt) {
+		this.lvSeshFailedRslt = rslt;
 
 	}
 

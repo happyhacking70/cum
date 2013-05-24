@@ -136,7 +136,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			throws CumExcpIllegalSeshStatus {
 		lvSeshFailedCheckStatus();
 		seshStatus = Status.init;
-		seshView.seshLvFailed(rslt);
+		seshView.lvSeshFailed(rslt);
 	}
 
 	/*

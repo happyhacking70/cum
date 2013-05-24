@@ -32,7 +32,7 @@ public interface AudSeshViewIntf {
 	/**
 	 * @param rslt
 	 */
-	void seshLvFailed(String rslt);
+	void lvSeshFailed(String rslt);
 
 	/**
 	 * 
