@@ -21,6 +21,21 @@ public class DummyAdptr implements AudAdptrIntf {
 	protected String chnlTypeToJoin;
 	protected String seshNameToJin;
 	protected String audNameToJoinSesh;
+	protected String seshNameToLvChnl;
+	protected String chnlTypeToLvChnl;
+	protected String chnlNameToLevChnl;
+
+	public String getSeshNameToLvChnl() {
+		return seshNameToLvChnl;
+	}
+
+	public String getChnlTypeToLvChnl() {
+		return chnlTypeToLvChnl;
+	}
+
+	public String getChnlNameToLevChnl() {
+		return chnlNameToLevChnl;
+	}
 
 	public String getSeshNameToJin() {
 		return seshNameToJin;
@@ -103,8 +118,9 @@ public class DummyAdptr implements AudAdptrIntf {
 	 */
 	@Override
 	public void lvChnl(String seshName, String chnlType, String chnlName) {
-		// TODO Auto-generated method stub
-
+		this.seshNameToLvChnl = seshName;
+		this.chnlTypeToLvChnl = chnlType;
+		this.chnlNameToLevChnl = chnlName;
 	}
 
 	/*
