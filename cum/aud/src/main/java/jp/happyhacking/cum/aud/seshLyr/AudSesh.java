@@ -176,26 +176,23 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 	@Override
 	public void seshDscned() throws CumExcpIllegalChnlStatuMulti,
 			CumExcpIllegalSeshStatus {
-		try {
-			seshDscnedCheckStatus();
-			seshStatus = Status.dscned;
-			CumExcpIllegalChnlStatuMulti multiExcp = new CumExcpIllegalChnlStatuMulti();
+		seshDscnedCheckStatus();
+		seshStatus = Status.dscned;
+		CumExcpIllegalChnlStatuMulti multiExcp = new CumExcpIllegalChnlStatuMulti();
 
-			for (AudChnlIntfForSesh chnl : chnls.values()) {
-				try {
-					chnl.chnlDscned();
-				} catch (CumExcpIllegalChnlStatus e) {
-					multiExcp.add(e);
-				}
+		for (AudChnlIntfForSesh chnl : chnls.values()) {
+			try {
+				chnl.chnlDscned();
+			} catch (CumExcpIllegalChnlStatus e) {
+				multiExcp.add(e);
 			}
-
-			if (multiExcp.size() > 0) {
-				throw multiExcp;
-			}
-
-			seshView.seshDscned();
-		} catch (CumExcpIgnoreSeshStatus e1) {
 		}
+
+		if (multiExcp.size() > 0) {
+			throw multiExcp;
+		}
+
+		seshView.seshDscned();
 
 	}
 
@@ -508,15 +505,14 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 		}
 	}
 
-	protected void seshDscnedCheckStatus() throws CumExcpIllegalSeshStatus,
-			CumExcpIgnoreSeshStatus {
+	protected void seshDscnedCheckStatus() throws CumExcpIllegalSeshStatus {
 		if (seshStatus == Status.init) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
 		} else if (seshStatus == Status.joining) {
 		} else if (seshStatus == Status.joined) {
 		} else if (seshStatus == Status.lving) {
 		} else if (seshStatus == Status.clsed) {
-			throw new CumExcpIgnoreSeshStatus(seshName, seshStatus.name());
+			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
 		} else if (seshStatus == Status.dscned) {
 			throw new CumExcpIllegalSeshStatus(seshName, seshStatus.name());
 		}
