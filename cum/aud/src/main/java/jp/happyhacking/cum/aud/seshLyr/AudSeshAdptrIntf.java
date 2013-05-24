@@ -64,7 +64,7 @@ public interface AudSeshAdptrIntf {
 	public abstract void chnlRjctFailed(String chnlName, String rslt)
 			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist;
 
-	public abstract void lftChnl(String chnlName)
+	public abstract void chnlLft(String chnlName)
 			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist,
 			CumExcpIllegalChnlStatus;
 

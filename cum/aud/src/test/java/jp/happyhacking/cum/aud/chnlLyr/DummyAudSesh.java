@@ -215,7 +215,7 @@ public class DummyAudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 	 * jp.happyhacking.cum.aud.seshLyr.AudSeshChnlIntf#lftChnl(java.lang.String)
 	 */
 	@Override
-	public void lftChnl(String chnlName) {
+	public void chnlLft(String chnlName) {
 		// TODO Auto-generated method stub
 
 	}

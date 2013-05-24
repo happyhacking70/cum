@@ -306,7 +306,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 	 * jp.happyhacking.cum.aud.seshLyr.AudSeshIntf#lftChnl(java.lang.String)
 	 */
 	@Override
-	synchronized public void lftChnl(String chnlName)
+	synchronized public void chnlLft(String chnlName)
 			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist,
 			CumExcpIllegalChnlStatus {
 		try {
