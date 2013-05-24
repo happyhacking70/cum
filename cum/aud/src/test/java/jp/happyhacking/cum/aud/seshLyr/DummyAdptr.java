@@ -24,6 +24,16 @@ public class DummyAdptr implements AudAdptrIntf {
 	protected String seshNameToLvChnl;
 	protected String chnlTypeToLvChnl;
 	protected String chnlNameToLevChnl;
+	protected String seshNameToLv;
+	protected String audNameToLv;
+
+	public String getSeshNameToLv() {
+		return seshNameToLv;
+	}
+
+	public String getAudNameToLv() {
+		return audNameToLv;
+	}
 
 	public String getSeshNameToLvChnl() {
 		return seshNameToLvChnl;
@@ -88,7 +98,8 @@ public class DummyAdptr implements AudAdptrIntf {
 	 */
 	@Override
 	public void lvSesh(String seshName, String audName) {
-		// TODO Auto-generated method stub
+		this.seshNameToLv = seshName;
+		this.audNameToLv = audName;
 
 	}
 

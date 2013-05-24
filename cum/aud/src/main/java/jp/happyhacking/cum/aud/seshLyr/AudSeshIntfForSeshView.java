@@ -7,7 +7,6 @@ import jp.happyhacking.cum.aud.adptrLyr.AudAdptrIntf;
 import jp.happyhacking.cum.aud.chnlLyr.AudChnl;
 import jp.happyhacking.cum.aud.chnlLyr.AudChnl.Status;
 import jp.happyhacking.cum.aud.excp.CumExcpChnlNotExist;
-import jp.happyhacking.cum.aud.excp.CumExcpIgnoreChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
 
@@ -20,7 +19,7 @@ public interface AudSeshIntfForSeshView {
 	public abstract void joinSesh() throws CumExcpIllegalSeshStatus;
 
 	public abstract void lvSesh() throws CumExcpIllegalSeshStatus,
-			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus;
+			CumExcpIllegalChnlStatus;
 
 	/**
 	 * Join Channel<BR>

@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import jp.happyhacking.cum.aud.chnlLyr.TestExcp;
 import jp.happyhacking.cum.aud.excp.CumExcpChnlExists;
-import jp.happyhacking.cum.aud.excp.CumExcpIgnoreChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatuMulti;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalSeshStatus;
@@ -87,9 +86,6 @@ public class AudSeshTestAbst {
 			e.printStackTrace();
 			throw new TestExcp("lvSesh");
 		} catch (CumExcpIllegalChnlStatus e) {
-			e.printStackTrace();
-			throw new TestExcp("lvSesh");
-		} catch (CumExcpIgnoreChnlStatus e) {
 			e.printStackTrace();
 			throw new TestExcp("lvSesh");
 		}

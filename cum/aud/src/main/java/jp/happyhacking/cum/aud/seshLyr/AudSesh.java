@@ -11,7 +11,6 @@ import jp.happyhacking.cum.aud.chnlLyr.AudChnl;
 import jp.happyhacking.cum.aud.chnlLyr.AudChnlIntfForSesh;
 import jp.happyhacking.cum.aud.excp.CumExcpChnlExists;
 import jp.happyhacking.cum.aud.excp.CumExcpChnlNotExist;
-import jp.happyhacking.cum.aud.excp.CumExcpIgnoreChnlStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIgnoreSeshStatus;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatuMulti;
 import jp.happyhacking.cum.aud.excp.CumExcpIllegalChnlStatus;
@@ -106,7 +105,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 	 */
 	@Override
 	synchronized public void lvSesh() throws CumExcpIllegalSeshStatus,
-			CumExcpIllegalChnlStatus, CumExcpIgnoreChnlStatus {
+			CumExcpIllegalChnlStatus {
 		lvSeshCheckStatus();
 		seshStatus = Status.lving;
 		for (AudChnlIntfForSesh chnl : chnls.values()) {
@@ -331,10 +330,13 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			throws CumExcpIllegalSeshStatus, CumExcpChnlNotExist,
 			CumExcpIllegalChnlStatus {
 
-		lvChnlCheckStatus();
+		try {
+			lvChnlFailedCheckStatus();
+			AudChnlIntfForSesh chnl = getChnl(chnlName);
+			chnl.chnlLvFailed(rslt);
+		} catch (CumExcpIgnoreSeshStatus e) {
+		}
 
-		AudChnlIntfForSesh chnl = getChnl(chnlName);
-		chnl.chnlLvFailed(rslt);
 	}
 
 	/*
