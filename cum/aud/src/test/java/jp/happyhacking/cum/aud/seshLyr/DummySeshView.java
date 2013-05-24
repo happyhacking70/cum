@@ -20,8 +20,13 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected String chnlNameRjcted;
 	protected String chnlNameRjctFailed;
 	protected String rsltChnlRjctFailed;
-	protected boolean clsed;
-	protected boolean dscned;
+	protected boolean clsed = false;
+	protected boolean dscned = false;
+	protected boolean joined = false;
+
+	public boolean isJoined() {
+		return joined;
+	}
 
 	public boolean isDscned() {
 		return dscned;
@@ -139,7 +144,6 @@ public class DummySeshView implements AudSeshViewIntf {
 	@Override
 	public AudChnlViewIntf getChnlView(String chnlType) {
 		chnlView = new DummyChniView();
-		System.out.println("chnlView created");
 		return chnlView;
 	}
 
@@ -199,6 +203,17 @@ public class DummySeshView implements AudSeshViewIntf {
 	public void chnlReged(String chnlType, String chnlName) {
 		this.chnlTypeReged = chnlType;
 		this.chnlNameReged = chnlName;
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see jp.happyhacking.cum.aud.audLyr.AudSeshViewIntf#seshJoined()
+	 */
+	@Override
+	public void seshJoined() {
+		this.joined = true;
 
 	}
 

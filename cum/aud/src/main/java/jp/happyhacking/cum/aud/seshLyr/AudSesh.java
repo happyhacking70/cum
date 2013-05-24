@@ -82,7 +82,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 	synchronized public void seshJoined() throws CumExcpIllegalSeshStatus {
 		seshJoinedCheckStatus();
 		seshStatus = Status.joined;
-		seshView.joinSesh();
+		seshView.seshJoined();
 	}
 
 	/*

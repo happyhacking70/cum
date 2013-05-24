@@ -15,6 +15,11 @@ public interface AudSeshViewIntf {
 	void joinSesh();
 
 	/**
+	 * 
+	 */
+	void seshJoined();
+
+	/**
 	 * @param rslt
 	 */
 	void seshJoinFailed(String rslt);
