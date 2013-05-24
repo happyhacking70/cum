@@ -20,6 +20,11 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected String chnlNameRjcted;
 	protected String chnlNameRjctFailed;
 	protected String rsltChnlRjctFailed;
+	protected boolean clsed;
+
+	public boolean isClsed() {
+		return clsed;
+	}
 
 	public String getChnlNameRjctFailed() {
 		return chnlNameRjctFailed;
@@ -104,7 +109,7 @@ public class DummySeshView implements AudSeshViewIntf {
 	 */
 	@Override
 	public void seshClsed() {
-		// TODO Auto-generated method stub
+		this.clsed = true;
 
 	}
 
