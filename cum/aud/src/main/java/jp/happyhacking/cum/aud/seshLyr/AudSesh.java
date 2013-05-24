@@ -95,7 +95,7 @@ public class AudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 			throws CumExcpIllegalSeshStatus {
 		seshJoinFailedCheckStatus();
 		seshStatus = Status.init;
-		seshView.seshJoinFailed(rslt);
+		seshView.joinSseshFailed(rslt);
 	}
 
 	/*

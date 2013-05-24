@@ -23,6 +23,11 @@ public class DummySeshView implements AudSeshViewIntf {
 	protected boolean clsed = false;
 	protected boolean dscned = false;
 	protected boolean joined = false;
+	protected String joinSeshRslt;
+
+	public String getJoinSeshRslt() {
+		return joinSeshRslt;
+	}
 
 	public boolean isJoined() {
 		return joined;
@@ -83,8 +88,8 @@ public class DummySeshView implements AudSeshViewIntf {
 	 * .String)
 	 */
 	@Override
-	public void seshJoinFailed(String rslt) {
-		// TODO Auto-generated method stub
+	public void joinSseshFailed(String rslt) {
+		this.joinSeshRslt = rslt;
 
 	}
 

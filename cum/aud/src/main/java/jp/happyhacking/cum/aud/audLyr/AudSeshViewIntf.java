@@ -22,7 +22,7 @@ public interface AudSeshViewIntf {
 	/**
 	 * @param rslt
 	 */
-	void seshJoinFailed(String rslt);
+	void joinSseshFailed(String rslt);
 
 	/**
 	 * 
