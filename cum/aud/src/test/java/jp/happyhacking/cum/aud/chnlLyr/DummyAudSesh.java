@@ -260,4 +260,17 @@ public class DummyAudSesh implements AudSeshAdptrIntf, AudSeshChnlIntf,
 
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * jp.happyhacking.cum.aud.seshLyr.AudSeshChnlIntf#fetchRsc(java.lang.String
+	 * , java.lang.String, java.lang.String)
+	 */
+	@Override
+	public ChnlRscIntf fetchRsc(String chnlType, String chnlName, String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

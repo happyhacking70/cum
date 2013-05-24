@@ -100,6 +100,12 @@ public class AudChnl implements AudChnlIntfForSesh, AudChnlIntfForView {
 	public void chnlJoined() throws CumExcpIllegalChnlStatus {
 		checkStatuschnlJoined();
 		chnlStatus = Status.joined;
+
+		for (String rscName : rsces.keySet()) {
+			rsces.put(rscName, sesh.fetchRsc(chnlType, chnlName,
+					rsces.get(rscName).getName()));
+		}
+
 		chnlView.chnlJoined();
 	}
 

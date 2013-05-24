@@ -28,7 +28,8 @@ public interface AudAdptrIntf {
 	 * @param chnlName
 	 * @param audName
 	 */
-	void joinChnl(String seshName, String chnlName, String audName);
+	void joinChnl(String seshName, String chnlType, String chnlName,
+			String audName);
 
 	/**
 	 * @param seshName
